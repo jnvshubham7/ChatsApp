@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+@SuppressWarnings("ALL")
 public class GroupChatActivity extends AppCompatActivity {
 
     com.example.chatsapp.databinding.ActivityGroupChatBinding binding;

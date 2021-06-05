@@ -67,7 +67,8 @@
                 android:ems="10"
                 android:hint="Type your phone number"
                 android:padding="10dp"
-                android:phoneNumber="true" />
+                android:phoneNumber="true"
+                android:text="+91 " />
 
             <Button
                 android:id="@+id/continueBtn"

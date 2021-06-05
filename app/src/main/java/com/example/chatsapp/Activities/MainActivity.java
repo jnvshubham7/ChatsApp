@@ -24,7 +24,6 @@ import com.example.chatsapp.databinding.ActivityMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,7 +36,9 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         users = new ArrayList<>();
         userStatuses = new ArrayList<>();
 
-        database.getReference().child("users").child(FirebaseAuth.getInstance().getUid())
+        database.getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -97,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 users.clear();
                 for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                     User user = snapshot1.getValue(User.class);
+                    assert user != null;
                     if(!user.getUid().equals(FirebaseAuth.getInstance().getUid()))
                         users.add(user);
                 }
@@ -119,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                         UserStatus status = new UserStatus();
                         status.setName(storySnapshot.child("name").getValue(String.class));
                         status.setProfileImage(storySnapshot.child("profileImage").getValue(String.class));
+                        //noinspection ConstantConditions
                         status.setLastUpdated(storySnapshot.child("lastUpdated").getValue(Long.class));
 
                         ArrayList<Status> statuses = new ArrayList<>();
@@ -143,19 +146,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.status:
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(intent, 75);
-                        break;
-                }
-                return false;
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.status) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(intent, 75);
             }
+            return false;
         });
 
     }
@@ -193,7 +191,7 @@ public class MainActivity extends AppCompatActivity {
 
                                     database.getReference()
                                             .child("stories")
-                                            .child(FirebaseAuth.getInstance().getUid())
+                                            .child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                                             .updateChildren(obj);
 
                                     database.getReference().child("stories")
@@ -216,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         String currentId = FirebaseAuth.getInstance().getUid();
+        assert currentId != null;
         database.getReference().child("presence").child(currentId).setValue("Online");
     }
 
@@ -223,6 +222,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         String currentId = FirebaseAuth.getInstance().getUid();
+        assert currentId != null;
         database.getReference().child("presence").child(currentId).setValue("Offline");
     }
 

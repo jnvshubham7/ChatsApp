@@ -27,7 +27,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
+@SuppressWarnings("ALL")
 public class GroupMessagesAdapter extends RecyclerView.Adapter {
 
     Context context;
@@ -56,7 +58,7 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemViewType(int position) {
         Message message = messages.get(position);
-        if(FirebaseAuth.getInstance().getUid().equals(message.getSenderId())) {
+        if(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()).equals(message.getSenderId())) {
             return ITEM_SENT;
         } else {
             return ITEM_RECEIVE;
@@ -125,6 +127,7 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()) {
                                 User user = snapshot.getValue(User.class);
+                                assert user != null;
                                 viewHolder.binding.name.setText("@" + user.getName());
                             }
                         }
@@ -223,6 +226,7 @@ public class GroupMessagesAdapter extends RecyclerView.Adapter {
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             if(snapshot.exists()) {
                                 User user = snapshot.getValue(User.class);
+                                assert user != null;
                                 viewHolder.binding.name.setText("@" + user.getName());
                             }
                         }

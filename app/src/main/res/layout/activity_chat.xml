@@ -29,8 +29,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:tint="@color/white"
-                app:srcCompat="@drawable/ic_left_arrow" />
+                app:srcCompat="@drawable/ic_left_arrow"
+                app:tint="@color/white" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile"

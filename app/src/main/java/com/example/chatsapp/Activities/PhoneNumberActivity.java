@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.chatsapp.databinding.ActivityPhoneNumberBinding;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 public class PhoneNumberActivity extends AppCompatActivity {
 
     ActivityPhoneNumberBinding binding;
@@ -29,7 +31,7 @@ public class PhoneNumberActivity extends AppCompatActivity {
             finish();
         }
 
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
 
         binding.phoneBox.requestFocus();
 

@@ -20,9 +20,6 @@ import com.example.chatsapp.Adapters.MessagesAdapter;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityChatBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,12 +27,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -53,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
     String senderUid;
     String receiverUid;
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,12 +78,7 @@ public class ChatActivity extends AppCompatActivity {
                 .placeholder(R.drawable.avatar)
                 .into(binding.profile);
 
-        binding.imageView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        binding.imageView2.setOnClickListener(v -> finish());
 
         receiverUid = getIntent().getStringExtra("uid");
         senderUid = FirebaseAuth.getInstance().getUid();
@@ -95,6 +88,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if(snapshot.exists()) {
                     String status = snapshot.getValue(String.class);
+                    assert status != null;
                     if(!status.isEmpty()) {
                         if(status.equals("Offline")) {
                             binding.status.setVisibility(View.GONE);
@@ -128,6 +122,7 @@ public class ChatActivity extends AppCompatActivity {
                         messages.clear();
                         for(DataSnapshot snapshot1 : snapshot.getChildren()) {
                             Message message = snapshot1.getValue(Message.class);
+                            assert message != null;
                             message.setMessageId(snapshot1.getKey());
                             messages.add(message);
                         }
@@ -141,55 +136,42 @@ public class ChatActivity extends AppCompatActivity {
                     }
                 });
 
-        binding.sendBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String messageTxt = binding.messageBox.getText().toString();
+        binding.sendBtn.setOnClickListener(v -> {
+            String messageTxt = binding.messageBox.getText().toString();
 
-                Date date = new Date();
-                Message message = new Message(messageTxt, senderUid, date.getTime());
-                binding.messageBox.setText("");
+            Date date = new Date();
+            Message message = new Message(messageTxt, senderUid, date.getTime());
+            binding.messageBox.setText("");
 
-                String randomKey = database.getReference().push().getKey();
+            String randomKey = database.getReference().push().getKey();
 
-                HashMap<String, Object> lastMsgObj = new HashMap<>();
-                lastMsgObj.put("lastMsg", message.getMessage());
-                lastMsgObj.put("lastMsgTime", date.getTime());
+            HashMap<String, Object> lastMsgObj = new HashMap<>();
+            lastMsgObj.put("lastMsg", message.getMessage());
+            lastMsgObj.put("lastMsgTime", date.getTime());
 
-                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
-                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+            database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+            database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
-                database.getReference().child("chats")
-                        .child(senderRoom)
-                        .child("messages")
-                        .child(randomKey)
-                        .setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        database.getReference().child("chats")
-                                .child(receiverRoom)
-                                .child("messages")
-                                .child(randomKey)
-                                .setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
+            assert randomKey != null;
+            database.getReference().child("chats")
+                    .child(senderRoom)
+                    .child("messages")
+                    .child(randomKey)
+                    .setValue(message).addOnSuccessListener(aVoid -> database.getReference().child("chats")
+                            .child(receiverRoom)
+                            .child("messages")
+                            .child(randomKey)
+                            .setValue(message).addOnSuccessListener(aVoid1 -> {
 
-                            }
-                        });
-                    }
-                });
+                            }));
 
-            }
         });
 
-        binding.attachment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                intent.setType("image/*");
-                startActivityForResult(intent, 25);
-            }
+        binding.attachment.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            intent.setType("image/*");
+            startActivityForResult(intent, 25);
         });
 
         final Handler handler = new Handler();
@@ -211,7 +193,7 @@ public class ChatActivity extends AppCompatActivity {
                 handler.postDelayed(userStoppedTyping,1000);
             }
 
-            Runnable userStoppedTyping = new Runnable() {
+            final Runnable userStoppedTyping = new Runnable() {
                 @Override
                 public void run() {
                     database.getReference().child("presence").child(senderUid).setValue("Online");
@@ -220,7 +202,7 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
 //        getSupportActionBar().setTitle(name);
 //
@@ -238,57 +220,44 @@ public class ChatActivity extends AppCompatActivity {
                     Calendar calendar = Calendar.getInstance();
                     StorageReference reference = storage.getReference().child("chats").child(calendar.getTimeInMillis() + "");
                     dialog.show();
-                    reference.putFile(selectedImage).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            dialog.dismiss();
-                            if(task.isSuccessful()) {
-                                reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        String filePath = uri.toString();
+                    reference.putFile(selectedImage).addOnCompleteListener(task -> {
+                        dialog.dismiss();
+                        if(task.isSuccessful()) {
+                            reference.getDownloadUrl().addOnSuccessListener(uri -> {
+                                String filePath = uri.toString();
 
-                                        String messageTxt = binding.messageBox.getText().toString();
+                                String messageTxt = binding.messageBox.getText().toString();
 
-                                        Date date = new Date();
-                                        Message message = new Message(messageTxt, senderUid, date.getTime());
-                                        message.setMessage("photo");
-                                        message.setImageUrl(filePath);
-                                        binding.messageBox.setText("");
+                                Date date = new Date();
+                                Message message = new Message(messageTxt, senderUid, date.getTime());
+                                message.setMessage("photo");
+                                message.setImageUrl(filePath);
+                                binding.messageBox.setText("");
 
-                                        String randomKey = database.getReference().push().getKey();
+                                String randomKey = database.getReference().push().getKey();
 
-                                        HashMap<String, Object> lastMsgObj = new HashMap<>();
-                                        lastMsgObj.put("lastMsg", message.getMessage());
-                                        lastMsgObj.put("lastMsgTime", date.getTime());
+                                HashMap<String, Object> lastMsgObj = new HashMap<>();
+                                lastMsgObj.put("lastMsg", message.getMessage());
+                                lastMsgObj.put("lastMsgTime", date.getTime());
 
-                                        database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
-                                        database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+                                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+                                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
-                                        database.getReference().child("chats")
-                                                .child(senderRoom)
+                                assert randomKey != null;
+                                database.getReference().child("chats")
+                                        .child(senderRoom)
+                                        .child("messages")
+                                        .child(randomKey)
+                                        .setValue(message).addOnSuccessListener(aVoid -> database.getReference().child("chats")
+                                                .child(receiverRoom)
                                                 .child("messages")
                                                 .child(randomKey)
-                                                .setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                database.getReference().child("chats")
-                                                        .child(receiverRoom)
-                                                        .child("messages")
-                                                        .child(randomKey)
-                                                        .setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
+                                                .setValue(message).addOnSuccessListener(aVoid1 -> {
 
-                                                    }
-                                                });
-                                            }
-                                        });
+                                                }));
 
-                                        //Toast.makeText(ChatActivity.this, filePath, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }
+                                //Toast.makeText(ChatActivity.this, filePath, Toast.LENGTH_SHORT).show();
+                            });
                         }
                     });
                 }
@@ -300,6 +269,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         String currentId = FirebaseAuth.getInstance().getUid();
+        assert currentId != null;
         database.getReference().child("presence").child(currentId).setValue("Online");
     }
 
@@ -307,6 +277,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         String currentId = FirebaseAuth.getInstance().getUid();
+        assert currentId != null;
         database.getReference().child("presence").child(currentId).setValue("Offline");
     }
 
