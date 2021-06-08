@@ -32,10 +32,10 @@
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
-                android:hint="Type a message..."
+                android:hint="Type a message"
                 android:inputType="textPersonName"
                 android:padding="8dp"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/attachment"

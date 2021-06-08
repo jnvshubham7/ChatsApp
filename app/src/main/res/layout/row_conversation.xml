@@ -48,7 +48,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:text=""
-        android:textColor="#25D366"
+        android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
