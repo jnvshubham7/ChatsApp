@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp">
+    android:layout_marginLeft="50dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="10dp">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -33,7 +35,10 @@
             android:paddingRight="10dp"
             android:paddingBottom="5dp"
             android:text="TextView"
-            android:textSize="13sp" />
+            android:textColor="@color/black"
+            android:textColorHighlight="@color/sentcolor"
+            android:textIsSelectable="true"
+            android:textSize="16sp" />
     </LinearLayout>
 
     <ImageView

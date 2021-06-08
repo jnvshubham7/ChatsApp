@@ -11,6 +11,9 @@
         android:id="@+id/group"
         android:title="Groups" />
     <item
+        android:id="@+id/group"
+        android:title="New group" />
+    <item
         android:id="@+id/invite"
         android:title="Invite" />
     <item

@@ -21,8 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Profile Info"
-        android:textColor="@color/black"
+        android:text="Profile info"
+        android:textColor="@color/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -35,13 +35,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:gravity="center"
-        android:text="Please set your name and an optional profile image."
+        android:text="Please provide your name and an optional profile photo"
+        android:textColor="@color/black"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
         app:layout_constraintTop_toBottomOf="@+id/phoneLbl" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -64,18 +66,21 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/textbox_outline"
                 android:ems="10"
-                android:hint="Type your name"
-                android:padding="10dp"
-                />
+                android:hint="Type your name here"
+                android:padding="10dp" />
 
-            <Button
-                android:id="@+id/continueBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:backgroundTint="#4CAF50"
-                android:text="Setup Profile" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/continueBtn"
+        android:layout_width="153dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="188dp"
+        android:backgroundTint="#4CAF50"
+        android:text="Setup Profile"
+        app:layout_constraintEnd_toEndOf="@+id/cardView5"
+        app:layout_constraintStart_toStartOf="@+id/cardView5"
+        app:layout_constraintTop_toBottomOf="@+id/cardView5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

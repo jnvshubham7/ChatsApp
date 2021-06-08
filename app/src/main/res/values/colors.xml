@@ -11,4 +11,22 @@
     <color name="grey">#E3E3E3</color>
     <color name="green">#4CAF50</color>
     <color name="greenDark">#28852C</color>
+    <color name="sentcolor">#DCF8C6</color>
+
+    <color name="colorPrimary">#0b6156</color>
+    <color name="colorPrimaryDark">#095049</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="lightGrey">#EDEDED</color>
+    <color name="whatsAppColor">#0b6156</color>
+    <color name="red">#9F0B0B</color>
+    <color name="status_background">#009688</color>
+    <color name="chat_background">#8BC34A</color>
+    <color name="fb_color">#3c5793</color>
+
+    <color name="lightgreen">#e5ffcc</color>
+
+    <color name="grayBackground">#BCBCBC</color>
+    <color name="settingsIconColor">#0E8374</color>
+
 </resources>

@@ -12,5 +12,9 @@
         app:showAsAction="always" />
     <item android:title="Profile" />
     <item android:title="Block" />
+    <item android:title="Media, links, and docs" />
+    <item android:title="Search" />
+    <item android:title="Mute notifications" />
     <item android:title="Settings" />
+
 </menu>

@@ -45,7 +45,7 @@ public class OTPActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).hide();
 
     String phoneNumber = getIntent().getStringExtra("phoneNumber");
-    binding.phoneLbl.setText("Verify" + phoneNumber);
+    binding.phoneLbl.setText("Verify " + phoneNumber);
 
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
