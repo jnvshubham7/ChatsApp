@@ -50,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog dialog;
 
     User user;
+    private static final String ONESIGNAL_APP_ID = "501adfca-a519-4e24-a760-d2a878ac4b02";
+
+
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
