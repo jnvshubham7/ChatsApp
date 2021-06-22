@@ -17,6 +17,10 @@
         android:id="@+id/invite"
         android:title="Invite" />
     <item
+        android:id="@+id/my_profile"
+        android:title="My Profile" />
+    <item
         android:id="@+id/settings"
         android:title="Settings" />
+
 </menu>
