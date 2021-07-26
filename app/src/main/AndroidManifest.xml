@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.ProfileEditing"></activity>
+        <activity android:name=".Activities.Phone_Number_Activity"></activity>
+        <activity android:name=".Activities.ProfileEditing" />
         <activity android:name=".Activities.Group_Chat_Activity" />
         <activity
             android:name=".Activities.Chat_Activity"
@@ -22,7 +23,7 @@
             android:name=".Activities.OTP_Activity"
             android:windowSoftInputMode="stateVisible" />
         <activity
-            android:name=".Activities.Phone_Number_Activity"
+             android:name=".Splash_Screen_Activity"
             android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
