@@ -8,6 +8,7 @@ import android.os.Handler;
 
 import com.example.chatsapp.Activities.Main_Activity;
 import com.example.chatsapp.Activities.Phone_Number_Activity;
+import com.jaeger.library.StatusBarUtil;
 
 public class Splash_Screen_Activity extends AppCompatActivity {
 
