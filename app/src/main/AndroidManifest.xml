@@ -24,6 +24,7 @@
             android:windowSoftInputMode="stateVisible" />
         <activity
              android:name=".Splash_Screen_Activity"
+            android:exported="true"
             android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
