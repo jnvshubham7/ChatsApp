@@ -1,7 +1,45 @@
 # ChatsApp
 
+ChatsApp is a messaging Android application that allows users to connect, share stories, send photos, engage in group chats, and express themselves with emojis. The app is currently available on the Mi App Store and has gained popularity with over 105+ users.
 
-### Screenshots
+## Features
+
+- Free messaging
+- Story sharing
+- Photo sending
+- Group chatting
+- Emoji reactions
+
+## Technology Stack
+
+- Java
+- Android
+- Firebase
+- Android Studio
+
+## Installation
+
+To run the ChatsApp project locally, follow these steps:
+
+1. Clone the repository to your local machine.
+   ```bash
+   git clone https://github.com/yourusername/ChatsApp.git
+
+
+
+
+## App Link
+
+You can download and install the app from the Mi App Store using the following [link](https://global.app.mi.com/details?lo=IN&la=en_US&id=com.example.chatsapp).
+
+
+
+
+
+
+
+
+## Screenshots
 <p float="left">
   <img src="https://user-images.githubusercontent.com/69629803/147048350-d93dcd3f-1434-4f65-89c6-56c34b809a5c.jpg" width="400" />
   <img src="https://user-images.githubusercontent.com/69629803/126894485-6f20c82d-239e-4229-b51b-e211772ff831.jpg" width="400" />
