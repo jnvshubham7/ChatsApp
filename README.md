@@ -17,15 +17,26 @@ ChatsApp is a messaging Android application that allows users to connect, share 
 - Firebase
 - Android Studio
 
+
 ## Installation
 
 To run the ChatsApp project locally, follow these steps:
 
 1. Clone the repository to your local machine.
    ```bash
-   git clone https://github.com/yourusername/ChatsApp.git
+   git clone https://github.com/jnvshubham7/ChatsApp.git
+   ```
 
+2. Open the project in Android Studio.
 
+3. Build and run the app on an Android emulator or a physical device.
+
+   ```bash
+   cd ChatsApp
+   ```
+   Open the project in Android Studio and build the app using the IDE's build and run commands.
+
+Now you should be able to explore and test the ChatsApp on your local development environment.
 
 
 ## App Link
