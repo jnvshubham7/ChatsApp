@@ -3,4 +3,5 @@
     <string name="attachment">Attach file</string>
     <string name="camera">Open camera</string>
     <string name="send">Send message</string>
+    <string name="my_profile">My Profile</string>
 </resources>

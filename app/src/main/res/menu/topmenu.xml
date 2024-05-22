@@ -4,7 +4,14 @@
 
     <item
         android:id="@+id/profile"
-        android:title="My Profile" />
+        android:title="@string/my_profile" />
+
+    //logout
+
+    <item
+        android:id="@+id/logout"
+        android:title="Logout" />
+
 
 <!--    <item-->
 <!--        android:id="@+id/search"-->
