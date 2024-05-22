@@ -245,6 +245,10 @@ public class Main_Activity extends AppCompatActivity {
             case R.id.group:
                 startActivity(new Intent(Main_Activity.this, Group_Chat_Activity.class));
                 return true;
+                case R.id.profile:
+                startActivity(new Intent(Main_Activity.this, Profile_Editing.class));
+                return true;
+
             case R.id.search:
                 Toast.makeText(this, "Search clicked.", Toast.LENGTH_SHORT).show();
                 return true;
