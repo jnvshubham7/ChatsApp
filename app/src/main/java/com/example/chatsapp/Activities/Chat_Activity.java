@@ -167,7 +167,7 @@ public class Chat_Activity extends AppCompatActivity {
 
         });
 
-        binding.attachment.setOnClickListener(v -> {
+        binding.camera.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
