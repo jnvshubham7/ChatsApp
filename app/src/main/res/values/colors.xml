@@ -31,4 +31,7 @@
     <color name="hint_color">#757575</color>
     <color name="icon_tint">#676767</color>
 
+    <color name="dark_gray">#808080</color>
+    <color name="gray">#C0C0C0</color>
+
 </resources>

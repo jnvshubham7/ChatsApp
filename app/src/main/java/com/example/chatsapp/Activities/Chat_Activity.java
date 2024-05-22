@@ -10,12 +10,17 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.chatsapp.Adapters.Messages_Adapter;
 import com.example.chatsapp.Models.Message;
@@ -23,7 +28,6 @@ import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityChatBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,10 +37,14 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 public class Chat_Activity extends AppCompatActivity {
@@ -58,6 +66,10 @@ public class Chat_Activity extends AppCompatActivity {
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        FirebaseMessaging.getInstance().setAutoInitEnabled(true);
+        FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
+
 
         initViews();
         initFirebase();
@@ -109,35 +121,7 @@ public class Chat_Activity extends AppCompatActivity {
 
         senderRoom = senderUid + receiverUid;
         receiverRoom = receiverUid + senderUid;
-
-//        // Initialize Firebase
-//        FirebaseApp.initializeApp(this);
-//
-//        // Get the FCM registration token
-//        FirebaseMessaging.getInstance().getToken()
-//                .addOnCompleteListener(new OnCompleteListener<String>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<String> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
-//                            return;
-//                        }
-//
-//                        // Get new FCM registration token
-//                        String token = task.getResult();
-//                        Log.d(TAG, "FCM Registration Token: " + token);
-//
-//                        // Save or send the token as needed
-//                        sendTokenToServer(token);
-//                    }
-//                });
     }
-
-//    private void sendTokenToServer(String token) {
-//
-//
-//        database.getReference().child("users").child(senderUid).child("fcmToken").setValue(token);
-//    }
 
     private void initChat() {
         messages = new ArrayList<>();
@@ -193,8 +177,11 @@ public class Chat_Activity extends AppCompatActivity {
         database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
         if (randomKey != null) {
+            Toast.makeText(this, message.getMessage(), Toast.LENGTH_SHORT).show();
             database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
-                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message));
+                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
+                            .addOnSuccessListener(aVoid1 -> sendNotification(message.getMessage())));
+            Toast.makeText(this, message.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -246,7 +233,8 @@ public class Chat_Activity extends AppCompatActivity {
 
         if (randomKey != null) {
             database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
-                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message));
+                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
+                            .addOnSuccessListener(aVoid1 -> sendNotification(message.getMessage())));
         }
     }
 
@@ -297,4 +285,64 @@ public class Chat_Activity extends AppCompatActivity {
         finish();
         return super.onSupportNavigateUp();
     }
+
+    private void sendNotification(String message) {
+        database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String token = snapshot.getValue(String.class);
+                if (token != null) {
+                    sendFCMNotification(token, message);
+                } else {
+                    Log.e(TAG, "FCM Token is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e(TAG, "Database error: " + error.getMessage());
+            }
+        });
+    }
+
+
+    private void sendFCMNotification(String token, String message) {
+        String notificationTitle = "New Message";
+        String notificationMessage = message;
+
+        try {
+            JSONObject notification = new JSONObject();
+            notification.put("title", notificationTitle);
+            notification.put("body", notificationMessage);
+
+            JSONObject data = new JSONObject();
+            data.put("message", message);
+
+            JSONObject notificationBody = new JSONObject();
+            notificationBody.put("to", token);
+            notificationBody.put("notification", notification);
+            notificationBody.put("data", data);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
+                    response -> Log.d(TAG, "Notification Response: " + response.toString()),
+                    error -> Log.e(TAG, "Notification Error: " + error.toString())) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(request);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Log.e(TAG, "JSONException: " + e.getMessage());
+        }
+    }
+
 }

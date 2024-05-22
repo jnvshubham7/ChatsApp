@@ -1,7 +1,5 @@
 package com.example.chatsapp;
 
-
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -21,33 +19,32 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
 
-        sendNotification(title, body);
+        // Show custom notification UI
+        showNotification(title, body);
     }
 
-    private void sendNotification(String title, String body) {
+    private void showNotification(String title, String body) {
+        // Create an intent to open MainActivity when notification is clicked
         Intent intent = new Intent(this, Main_Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
-        String channelId = "default_channel_id";
+        // Create custom notification layout
         NotificationCompat.Builder notificationBuilder =
-                new NotificationCompat.Builder(this, channelId)
+                new NotificationCompat.Builder(this, "default_channel_id")
                         .setSmallIcon(R.drawable.ic_notification)
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent);
 
+        // Get the notification manager
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId,
-                    "Default channel",
-                    NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
+        // Show the notification
+        if (notificationManager != null) {
+            notificationManager.notify(0, notificationBuilder.build());
         }
-
-        notificationManager.notify(0, notificationBuilder.build());
     }
 }
