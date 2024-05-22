@@ -64,6 +64,13 @@ public class Main_Activity extends AppCompatActivity {
             if (item.getItemId() == R.id.status) {
                 selectImageFromGallery();
             }
+
+            else if(item.getItemId() == R.id.group) {
+                startActivity(new Intent(Main_Activity.this, Group_Chat_Activity.class));
+            }
+
+
+
             return false;
         });
     }
@@ -241,23 +248,34 @@ public class Main_Activity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.group:
-                startActivity(new Intent(Main_Activity.this, Group_Chat_Activity.class));
-                return true;
-                case R.id.profile:
-                startActivity(new Intent(Main_Activity.this, Profile_Editing.class));
-                return true;
 
-            case R.id.search:
-                Toast.makeText(this, "Search clicked.", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.settings:
-                Toast.makeText(this, "Settings clicked.", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+//        case R.id.profile:
+//        startActivity(new Intent(Main_Activity.this, Profile_Editing.class));
+//        return true;
+
+
+        if(item.getItemId() == R.id.profile) {
+            startActivity(new Intent(Main_Activity.this, Profile_Editing.class));
+            return true;
         }
+//
+
+//        switch (item.getItemId()) {
+//            case R.id.group:
+//                startActivity(new Intent(Main_Activity.this, Group_Chat_Activity.class));
+//                return true;
+
+
+//            case R.id.search:
+//                Toast.makeText(this, "Search clicked.", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.settings:
+//                Toast.makeText(this, "Settings clicked.", Toast.LENGTH_SHORT).show();
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+        return true;
     }
 
     @Override

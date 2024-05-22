@@ -3,24 +3,26 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search"
-        android:title="Search"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/group"
-        android:title="Groups" />
-    <item
-        android:id="@+id/new_group"
-        android:title="New group" />
-    <item
-        android:id="@+id/invite"
-        android:title="Invite" />
-    <item
         android:id="@+id/profile"
         android:title="My Profile" />
-    <item
-        android:id="@+id/settings"
-        android:title="Settings" />
+
+<!--    <item-->
+<!--        android:id="@+id/search"-->
+<!--        android:icon="@drawable/ic_search"-->
+<!--        android:title="Search"-->
+<!--        app:showAsAction="always" />-->
+<!--    <item-->
+<!--        android:id="@+id/group"-->
+<!--        android:title="Groups" />-->
+<!--    <item-->
+<!--        android:id="@+id/new_group"-->
+<!--        android:title="New group" />-->
+<!--    <item-->
+<!--        android:id="@+id/invite"-->
+<!--        android:title="Invite" />-->
+
+<!--    <item-->
+<!--        android:id="@+id/settings"-->
+<!--        android:title="Settings" />-->
 
 </menu>

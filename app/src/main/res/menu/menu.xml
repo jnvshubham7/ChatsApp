@@ -9,8 +9,13 @@
         android:id="@+id/status"
         android:icon="@drawable/ic_status"
         android:title="Status" />
+
     <item
-        android:id="@+id/calls"
-        android:icon="@drawable/ic_call"
-        android:title="Calls" />
+            android:id="@+id/group"
+            android:icon="@drawable/ic_group"
+            android:title="Groups" />
+<!--    <item-->
+<!--        android:id="@+id/calls"-->
+<!--        android:icon="@drawable/ic_call"-->
+<!--        android:title="Calls" />-->
 </menu>
