@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 
@@ -20,11 +21,15 @@ import com.example.chatsapp.Adapters.Messages_Adapter;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityChatBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -36,6 +41,7 @@ import java.util.Objects;
 
 public class Chat_Activity extends AppCompatActivity {
 
+    private static final String TAG = "Chat_Activity";
     private ActivityChatBinding binding;
     private Messages_Adapter adapter;
     private ArrayList<Message> messages;
@@ -103,6 +109,34 @@ public class Chat_Activity extends AppCompatActivity {
 
         senderRoom = senderUid + receiverUid;
         receiverRoom = receiverUid + senderUid;
+
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this);
+
+        // Get the FCM registration token
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        String token = task.getResult();
+                        Log.d(TAG, "FCM Registration Token: " + token);
+
+                        // Save or send the token as needed
+                        sendTokenToServer(token);
+                    }
+                });
+    }
+
+    private void sendTokenToServer(String token) {
+
+
+        database.getReference().child("users").child(senderUid).child("fcmToken").setValue(token);
     }
 
     private void initChat() {

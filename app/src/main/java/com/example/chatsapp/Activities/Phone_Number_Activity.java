@@ -41,6 +41,7 @@ public class Phone_Number_Activity extends AppCompatActivity {
                 Intent intent = new Intent(Phone_Number_Activity.this, OTP_Activity.class);
                 intent.putExtra("phoneNumber", binding.phoneBox.getText().toString());
                 startActivity(intent);
+
             }
         });
 
