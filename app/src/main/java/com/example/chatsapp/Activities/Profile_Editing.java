@@ -72,7 +72,16 @@ public class Profile_Editing extends AppCompatActivity {
                 if (currentUser != null) {
                     nameEditText.setText(currentUser.getName());
                     // Load profile image using a library like Glide or Picasso
-                     Glide.with(Profile_Editing.this).load(currentUser.getProfileImage()).into(profileImageView);
+
+                    if(currentUser.getProfileImage().equals("No Image")){
+                        profileImageView.setImageResource(R.drawable.avatar);
+                    }else{
+                        Glide.with(Profile_Editing.this).load(currentUser.getProfileImage()).placeholder(R.drawable.avatar).into(profileImageView);
+
+                    }
+
+
+
                 }
             }
 
