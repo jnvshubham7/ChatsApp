@@ -36,21 +36,16 @@ import java.util.Objects;
 
 public class Chat_Activity extends AppCompatActivity {
 
-    ActivityChatBinding binding;
+    private ActivityChatBinding binding;
+    private Messages_Adapter adapter;
+    private ArrayList<Message> messages;
+    private String senderRoom, receiverRoom;
+    private FirebaseDatabase database;
+    private FirebaseStorage storage;
+    private ProgressDialog dialog;
+    private String senderUid;
+    private String receiverUid;
 
-    Messages_Adapter adapter;
-    ArrayList<Message> messages;
-
-    String senderRoom, receiverRoom;
-
-    FirebaseDatabase database;
-    FirebaseStorage storage;
-
-    ProgressDialog dialog;
-    String senderUid;
-    String receiverUid;
-
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,8 +53,28 @@ public class Chat_Activity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setSupportActionBar(binding.toolbar);
+        initViews();
+        initFirebase();
+        initChat();
+        loadMessages();
+        setupSendButton();
+        setupCameraButton();
+        setupTypingIndicator();
+    }
 
+    private void initViews() {
+        setSupportActionBar(binding.toolbar);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+
+        binding.name.setText(getIntent().getStringExtra("name"));
+        Glide.with(this).load(getIntent().getStringExtra("image"))
+                .placeholder(R.drawable.avatar)
+                .into(binding.profile);
+
+        binding.imageView2.setOnClickListener(v -> finish());
+    }
+
+    private void initFirebase() {
         database = FirebaseDatabase.getInstance();
         storage = FirebaseStorage.getInstance();
 
@@ -67,218 +82,174 @@ public class Chat_Activity extends AppCompatActivity {
         dialog.setMessage("Uploading image...");
         dialog.setCancelable(false);
 
-        messages = new ArrayList<>();
-
-
-        String name = getIntent().getStringExtra("name");
-        String profile = getIntent().getStringExtra("image");
-
-        binding.name.setText(name);
-        Glide.with(Chat_Activity.this).load(profile)
-                .placeholder(R.drawable.avatar)
-                .into(binding.profile);
-
-        binding.imageView2.setOnClickListener(v -> finish());
-
         receiverUid = getIntent().getStringExtra("uid");
-        senderUid = FirebaseAuth.getInstance().getUid();
+        senderUid = Objects.requireNonNull(FirebaseAuth.getInstance().getUid());
 
         database.getReference().child("presence").child(receiverUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()) {
-                    String status = snapshot.getValue(String.class);
-                    assert status != null;
-                    if(!status.isEmpty()) {
-                        if(status.equals("Offline")) {
-                            binding.status.setVisibility(View.GONE);
-                        } else {
-                            binding.status.setText(status);
-                            binding.status.setVisibility(View.VISIBLE);
-                        }
-                    }
+                String status = snapshot.getValue(String.class);
+                if (status != null && !status.isEmpty()) {
+                    binding.status.setVisibility(status.equals("Offline") ? View.GONE : View.VISIBLE);
+                    binding.status.setText(status);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                // Handle database error
             }
         });
 
         senderRoom = senderUid + receiverUid;
         receiverRoom = receiverUid + senderUid;
+    }
 
+    private void initChat() {
+        messages = new ArrayList<>();
         adapter = new Messages_Adapter(this, messages, senderRoom, receiverRoom);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
+    }
 
-        database.getReference().child("chats")
-                .child(senderRoom)
-                .child("messages")
+    private void loadMessages() {
+        database.getReference().child("chats").child(senderRoom).child("messages")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         messages.clear();
-                        for(DataSnapshot snapshot1 : snapshot.getChildren()) {
+                        for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                             Message message = snapshot1.getValue(Message.class);
-                            assert message != null;
-                            message.setMessageId(snapshot1.getKey());
-                            messages.add(message);
+                            if (message != null) {
+                                message.setMessageId(snapshot1.getKey());
+                                messages.add(message);
+                            }
                         }
-
                         adapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // Handle database error
                     }
                 });
+    }
 
+    private void setupSendButton() {
         binding.sendBtn.setOnClickListener(v -> {
             String messageTxt = binding.messageBox.getText().toString();
-
-            Date date = new Date();
-            Message message = new Message(messageTxt, senderUid, date.getTime());
-            binding.messageBox.setText("");
-
-            String randomKey = database.getReference().push().getKey();
-
-            HashMap<String, Object> lastMsgObj = new HashMap<>();
-            lastMsgObj.put("lastMsg", message.getMessage());
-            lastMsgObj.put("lastMsgTime", date.getTime());
-
-            database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
-            database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
-
-            assert randomKey != null;
-            database.getReference().child("chats")
-                    .child(senderRoom)
-                    .child("messages")
-                    .child(randomKey)
-                    .setValue(message).addOnSuccessListener(aVoid -> database.getReference().child("chats")
-                            .child(receiverRoom)
-                            .child("messages")
-                            .child(randomKey)
-                            .setValue(message).addOnSuccessListener(aVoid1 -> {
-
-                            }));
-
+            if (!messageTxt.trim().isEmpty()) {
+                sendMessage(messageTxt);
+            }
         });
+    }
 
+    private void sendMessage(String messageTxt) {
+        Date date = new Date();
+        Message message = new Message(messageTxt, senderUid, date.getTime());
+        binding.messageBox.setText("");
+
+        String randomKey = database.getReference().push().getKey();
+
+        HashMap<String, Object> lastMsgObj = new HashMap<>();
+        lastMsgObj.put("lastMsg", message.getMessage());
+        lastMsgObj.put("lastMsgTime", date.getTime());
+
+        database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+        database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+
+        if (randomKey != null) {
+            database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
+                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message));
+        }
+    }
+
+    private void setupCameraButton() {
         binding.camera.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_GET_CONTENT);
+            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, 25);
         });
-
-        final Handler handler = new Handler();
-        binding.messageBox.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                database.getReference().child("presence").child(senderUid).setValue("typing...");
-                handler.removeCallbacksAndMessages(null);
-                handler.postDelayed(userStoppedTyping,1000);
-            }
-
-            final Runnable userStoppedTyping = new Runnable() {
-                @Override
-                public void run() {
-                    database.getReference().child("presence").child(senderUid).setValue("Online");
-                }
-            };
-        });
-
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-
-//        getSupportActionBar().setTitle(name);
-//
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if(requestCode == 25) {
-            if(data != null) {
-                if(data.getData() != null) {
-                    Uri selectedImage = data.getData();
-                    Calendar calendar = Calendar.getInstance();
-                    StorageReference reference = storage.getReference().child("chats").child(calendar.getTimeInMillis() + "");
-                    dialog.show();
-                    reference.putFile(selectedImage).addOnCompleteListener(task -> {
-                        dialog.dismiss();
-                        if(task.isSuccessful()) {
-                            reference.getDownloadUrl().addOnSuccessListener(uri -> {
-                                String filePath = uri.toString();
-
-                                String messageTxt = binding.messageBox.getText().toString();
-
-                                Date date = new Date();
-                                Message message = new Message(messageTxt, senderUid, date.getTime());
-                                message.setMessage("photo");
-                                message.setImageUrl(filePath);
-                                binding.messageBox.setText("");
-
-                                String randomKey = database.getReference().push().getKey();
-
-                                HashMap<String, Object> lastMsgObj = new HashMap<>();
-                                lastMsgObj.put("lastMsg", message.getMessage());
-                                lastMsgObj.put("lastMsgTime", date.getTime());
-
-                                database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
-                                database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
-
-                                assert randomKey != null;
-                                database.getReference().child("chats")
-                                        .child(senderRoom)
-                                        .child("messages")
-                                        .child(randomKey)
-                                        .setValue(message).addOnSuccessListener(aVoid -> database.getReference().child("chats")
-                                                .child(receiverRoom)
-                                                .child("messages")
-                                                .child(randomKey)
-                                                .setValue(message).addOnSuccessListener(aVoid1 -> {
-
-                                                }));
-
-                                //Toast.makeText(ChatActivity.this, filePath, Toast.LENGTH_SHORT).show();
-                            });
-                        }
-                    });
-                }
-            }
+        if (requestCode == 25 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            uploadImage(data.getData());
         }
+    }
+
+    private void uploadImage(Uri selectedImage) {
+        Calendar calendar = Calendar.getInstance();
+        StorageReference reference = storage.getReference().child("chats").child(String.valueOf(calendar.getTimeInMillis()));
+        dialog.show();
+        reference.putFile(selectedImage).addOnCompleteListener(task -> {
+            dialog.dismiss();
+            if (task.isSuccessful()) {
+                reference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String filePath = uri.toString();
+                    sendMessageWithImage(filePath);
+                });
+            }
+        });
+    }
+
+    private void sendMessageWithImage(String filePath) {
+        Date date = new Date();
+        Message message = new Message("photo", senderUid, date.getTime());
+        message.setImageUrl(filePath);
+        binding.messageBox.setText("");
+
+        String randomKey = database.getReference().push().getKey();
+
+        HashMap<String, Object> lastMsgObj = new HashMap<>();
+        lastMsgObj.put("lastMsg", message.getMessage());
+        lastMsgObj.put("lastMsgTime", date.getTime());
+
+        database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
+        database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
+
+        if (randomKey != null) {
+            database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
+                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message));
+        }
+    }
+
+    private void setupTypingIndicator() {
+        final Handler handler = new Handler();
+        binding.messageBox.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No action needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                database.getReference().child("presence").child(senderUid).setValue("typing...");
+                handler.removeCallbacksAndMessages(null);
+                handler.postDelayed(userStoppedTyping, 1000);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // No action needed
+            }
+
+            final Runnable userStoppedTyping = () -> database.getReference().child("presence").child(senderUid).setValue("Online");
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        String currentId = FirebaseAuth.getInstance().getUid();
-        assert currentId != null;
-        database.getReference().child("presence").child(currentId).setValue("Online");
+        database.getReference().child("presence").child(senderUid).setValue("Online");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        String currentId = FirebaseAuth.getInstance().getUid();
-        assert currentId != null;
-        database.getReference().child("presence").child(currentId).setValue("Offline");
+        database.getReference().child("presence").child(senderUid).setValue("Offline");
     }
 
     @Override

@@ -1,6 +1,10 @@
-<vector android:height="12dp" android:viewportHeight="490.667"
-    android:viewportWidth="490.667" android:width="12dp" xmlns:android="http://schemas.android.com/apk/res/android">
-    <path android:fillColor="#FF000000" android:pathData="M448,128h-67.627l-39.04,-42.667H192v64h-64v64H64v213.333c0,23.467 19.2,42.667 42.667,42.667H448c23.467,0 42.667,-19.2 42.667,-42.667v-256C490.667,147.2 471.467,128 448,128zM277.333,405.333c-58.88,0 -106.667,-47.787 -106.667,-106.667S218.453,192 277.333,192S384,239.787 384,298.667S336.213,405.333 277.333,405.333z"/>
-    <path android:fillColor="#FF000000" android:pathData="M64,192l42.667,0l0,-64l64,0l0,-42.667l-64,0l0,-64l-42.667,0l0,64l-64,0l0,42.667l64,0z"/>
-    <path android:fillColor="#FF000000" android:pathData="M277.333,230.4c-37.76,0 -68.267,30.507 -68.267,68.267h0c0,37.76 30.507,68.267 68.267,68.267c37.76,0 68.267,-30.507 68.267,-68.267S315.093,230.4 277.333,230.4z"/>
+<!-- res/drawable/ic_camera.xml -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#676767"
+        android:pathData="M12,8c-2.21,0 -4,1.79 -4,4s1.79,4 4,4 4,-1.79 4,-4 -1.79,-4 -4,-4zM20,5h-2.7L15.9,3.4c-0.2,-0.2 -0.51,-0.4 -0.82,-0.4h-6.16c-0.31,0 -0.62,0.2 -0.82,0.4L6.7,5H4c-1.1,0 -2,0.9 -2,2v12c0,1.1 0.9,2 2,2h16c1.1,0 2,-0.9 2,-2V7c0,-1.1 -0.9,-2 -2,-2zm-8,14c-3.31,0 -6,-2.69 -6,-6s2.69,-6 6,-6 6,2.69 6,6 -2.69,6 -6,6z"/>
 </vector>

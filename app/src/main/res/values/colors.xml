@@ -28,5 +28,7 @@
 
     <color name="grayBackground">#BCBCBC</color>
     <color name="settingsIconColor">#0E8374</color>
+    <color name="hint_color">#757575</color>
+    <color name="icon_tint">#676767</color>
 
 </resources>
