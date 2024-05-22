@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "907271864443",
+    "firebase_url": "https://chatsapp-5344e-default-rtdb.firebaseio.com",
     "project_id": "chatsapp-5344e",
     "storage_bucket": "chatsapp-5344e.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "907271864443-svglglk7l3m8h0l3nr68gksnbe23m44g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.chatsapp",
+            "certificate_hash": "1d038cc0d0f3336304ab00bd0cdd38a367a1491a"
+          }
+        },
         {
           "client_id": "907271864443-iqsbvsifikhc5bcv4ehumo4n9maih8kk.apps.googleusercontent.com",
           "client_type": 3
