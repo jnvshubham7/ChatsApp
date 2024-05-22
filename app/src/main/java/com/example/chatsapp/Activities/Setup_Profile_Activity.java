@@ -4,14 +4,20 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.databinding.ActivitySetupProfileBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -22,6 +28,7 @@ import java.util.Objects;
 @SuppressWarnings("deprecation")
 public class Setup_Profile_Activity extends AppCompatActivity {
 
+    private static final String TAG = "Setup_Profile_Activity";
     ActivitySetupProfileBinding binding;
     FirebaseAuth auth;
     FirebaseDatabase database;
@@ -61,19 +68,51 @@ public class Setup_Profile_Activity extends AppCompatActivity {
             }
 
             dialog.show();
-            if(selectedImage != null) {
-                StorageReference reference = storage.getReference().child("Profiles").child(Objects.requireNonNull(auth.getUid()));
-                reference.putFile(selectedImage).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
-                        reference.getDownloadUrl().addOnSuccessListener(uri -> {
-                            String imageUrl = uri.toString();
 
+            FirebaseApp.initializeApp(this);
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(task -> {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        String fcmToken = task.getResult();
+                        Log.d(TAG, "FCM Registration Token: " + fcmToken);
+
+                        if(selectedImage != null) {
+                            StorageReference reference = storage.getReference().child("Profiles").child(Objects.requireNonNull(auth.getUid()));
+                            reference.putFile(selectedImage).addOnCompleteListener(task1 -> {
+                                if(task1.isSuccessful()) {
+                                    reference.getDownloadUrl().addOnSuccessListener(uri -> {
+                                        String imageUrl = uri.toString();
+
+                                        String uid = auth.getUid();
+                                        String phone = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
+                                        String name1 = binding.nameBox.getText().toString();
+
+                                        User user = new User(uid, name1, phone, imageUrl, fcmToken);
+
+                                        database.getReference()
+                                                .child("users")
+                                                .child(uid)
+                                                .setValue(user)
+                                                .addOnSuccessListener(aVoid -> {
+                                                    dialog.dismiss();
+                                                    Intent intent = new Intent(Setup_Profile_Activity.this, Main_Activity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                });
+                                    });
+                                }
+                            });
+                        } else {
                             String uid = auth.getUid();
                             String phone = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
-                            String name1 = binding.nameBox.getText().toString();
 
-                            User user = new User(uid, name1, phone, imageUrl);
+                            User user = new User(uid, name, phone, "No Image", fcmToken);
 
+                            assert uid != null;
                             database.getReference()
                                     .child("users")
                                     .child(uid)
@@ -84,28 +123,8 @@ public class Setup_Profile_Activity extends AppCompatActivity {
                                         startActivity(intent);
                                         finish();
                                     });
-                        });
-                    }
-                });
-            } else {
-                String uid = auth.getUid();
-                String phone = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
-
-                User user = new User(uid, name, phone, "No Image");
-
-                assert uid != null;
-                database.getReference()
-                        .child("users")
-                        .child(uid)
-                        .setValue(user)
-                        .addOnSuccessListener(aVoid -> {
-                            dialog.dismiss();
-                            Intent intent = new Intent(Setup_Profile_Activity.this, Main_Activity.class);
-                            startActivity(intent);
-                            finish();
-                        });
-            }
-
+                        }
+                    });
         });
     }
 
@@ -133,7 +152,6 @@ public class Setup_Profile_Activity extends AppCompatActivity {
                         });
                     }
                 });
-
 
                 binding.imageView.setImageURI(data.getData());
                 selectedImage = data.getData();

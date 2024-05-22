@@ -2,18 +2,22 @@ package com.example.chatsapp.Models;
 
 public class User {
 
-    private String uid, name, phoneNumber, profileImage;
+    private String uid, name, phoneNumber, profileImage, fcmToken;
 
     public User() {
 
+
     }
 
-    public User(String uid, String name, String phoneNumber, String profileImage) {
+    public User(String uid, String name, String phoneNumber, String profileImage, String fcmToken) {
         this.uid = uid;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.profileImage = profileImage;
+        this.fcmToken = fcmToken;
     }
+
+
 
     public String getUid() {
         return uid;

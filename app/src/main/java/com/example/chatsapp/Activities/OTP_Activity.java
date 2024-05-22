@@ -1,5 +1,7 @@
 package com.example.chatsapp.Activities;
 
+import static android.content.ContentValues.TAG;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatsapp.databinding.ActivityOtpactivityBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -20,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -97,6 +103,8 @@ public class OTP_Activity extends AppCompatActivity {
             auth.signInWithCredential(credential).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Toast.makeText(OTP_Activity.this, "OTP Verified", Toast.LENGTH_SHORT).show();
+
+
                     Intent intent = new Intent(OTP_Activity.this, Setup_Profile_Activity.class);
                     startActivity(intent);
                     finishAffinity();
