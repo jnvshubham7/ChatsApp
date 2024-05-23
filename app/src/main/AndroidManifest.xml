@@ -1,11 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chatsapp">
 
+    <!-- Specify hardware features and permissions -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +17,7 @@
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
 
+        <!-- Define application activities -->
         <activity
             android:name=".Activities.Profile_Editing"
             android:exported="false" />
@@ -41,14 +43,16 @@
             android:name=".Activities.Main_Activity"
             android:windowSoftInputMode="stateAlwaysHidden" />
 
+        <!-- Define application services -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <!-- Define metadata for the application -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
