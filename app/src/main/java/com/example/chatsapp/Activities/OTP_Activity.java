@@ -80,6 +80,8 @@ public class OTP_Activity extends AppCompatActivity {
                             // Other errors
                             Toast.makeText(OTP_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
+                        Intent intent = new Intent(OTP_Activity.this, Phone_Number_Activity.class);
+                        startActivity(intent);
                         Log.e("VerificationFailed", "Verification failed with error: " + e.getMessage());
                     }
 
