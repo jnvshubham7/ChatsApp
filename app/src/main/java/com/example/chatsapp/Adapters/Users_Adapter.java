@@ -59,16 +59,32 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                     @SuppressLint("SetTextI18n")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        if(snapshot.exists()) {
+                        if (snapshot.exists()) {
                             String lastMsg = snapshot.child("lastMsg").getValue(String.class);
-                            @SuppressWarnings("ConstantConditions") long time = snapshot.child("lastMsgTime").getValue(Long.class);
-                            @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
-                            holder.binding.msgTime.setText(dateFormat.format(new Date(time)));
+                            @SuppressWarnings("ConstantConditions")
+                            long time_date = snapshot.child("lastMsgTime").getValue(Long.class);
+
+                            // Format the time
+                            @SuppressLint("SimpleDateFormat")
+                            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                            String formattedTime = timeFormat.format(new Date(time_date));
+
+                            // Format the date
+                            @SuppressLint("SimpleDateFormat")
+                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                            String formattedDate = dateFormat.format(new Date(time_date));
+
+                            // Combine time and date
+                            String timeAndDate = formattedTime + " - " + formattedDate;
+
+                            holder.binding.msgTime.setText(timeAndDate); // Set the combined time and date
                             holder.binding.lastMsg.setText(lastMsg);
                         } else {
                             holder.binding.lastMsg.setText("Tap to chat");
+                            holder.binding.msgTime.setText("");
                         }
                     }
+
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
