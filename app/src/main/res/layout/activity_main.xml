@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f9f9f9"
+    android:background="?android:attr/windowBackground"
     tools:context=".Activities.Main_Activity">
 
     <!-- Status List with Shimmer Effect -->
@@ -29,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
-        android:background="#B6B6B6"
+        android:background="?android:attr/textColorSecondary"
         app:layout_constraintTop_toBottomOf="@+id/statusList"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="message_background">#2C2C2C</color>
+    <color name="message_text">#FFFFFF</color>
+
+    <color name="receive_message_background">#3C3C3C</color>
+    <color name="receive_message_text">#FFFFFF</color>
+</resources>

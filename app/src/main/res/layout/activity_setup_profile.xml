@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Profile info"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?android:attr/textColorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -36,7 +37,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Please provide your name and an optional profile photo"
-        android:textColor="@color/black"
+        android:textColor="?android:attr/textColorSecondary"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
@@ -67,21 +68,20 @@
                 android:background="@drawable/textbox_outline"
                 android:ems="10"
                 android:hint="Type your name here"
-                android:padding="10dp" />
-
+                android:padding="10dp"
+                android:textColor="?android:attr/textColorPrimary" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/continueBtn"
         android:layout_width="153dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="?attr/colorPrimary"
         android:text="Setup Profile"
+        android:textColor="?android:attr/textColorPrimaryInverse"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
-        app:layout_constraintStart_toStartOf="@+id/cardView5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView5" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

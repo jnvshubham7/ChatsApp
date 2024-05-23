@@ -34,4 +34,11 @@
     <color name="dark_gray">#808080</color>
     <color name="gray">#C0C0C0</color>
 
+
+    <color name="message_background_light">#FFFFFF</color>
+    <color name="message_text_light">#000000</color>
+
+    <color name="receive_message_background">#F0F0F0</color>
+    <color name="receive_message_text">#000000</color>
+
 </resources>
