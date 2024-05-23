@@ -170,18 +170,14 @@ public class Main_Activity extends AppCompatActivity {
 
     private void setupBottomNavigationView() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.status:
-                    selectImageFromGallery();
-                    return true;
-                case R.id.group:
-                    startActivity(new Intent(Main_Activity.this, Group_Chat_Activity.class));
-                    return true;
-                default:
-                    return false;
+            if (item.getItemId() == R.id.status) {
+                selectImageFromGallery();
+                return true;
             }
+            return false;
         });
     }
+
 
     private void selectImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
