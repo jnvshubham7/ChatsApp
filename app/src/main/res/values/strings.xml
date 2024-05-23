@@ -4,4 +4,9 @@
     <string name="camera">Open camera</string>
     <string name="send">Send message</string>
     <string name="my_profile">My Profile</string>
+    <string name="profile_desc">Please provide your name and an optional profile photo</string>
+    <string name="profile_info">Profile Info</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="name_edit_hint">Type your name here</string>
+    <string name="save_profile">Save Profile</string>
 </resources>

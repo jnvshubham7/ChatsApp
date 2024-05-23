@@ -41,4 +41,20 @@
     <color name="receive_message_background">#F0F0F0</color>
     <color name="receive_message_text">#000000</color>
 
+    <color name="backgroundLight">#FFFFFF</color>
+
+    <color name="textColorLight">#000000</color>
+
+    <color name="message_background">#2C2C2C</color>
+    <color name="message_text">#FFFFFF</color>
+    <color name="backgroundDark">#121212</color>
+    <color name="textColorDark">#FFFFFF</color>
+
+    <color name="colorBackgroundCard">#FFFFFF</color>
+
+    <!-- Define the colorBackground attribute -->
+    <color name="colorBackground">#FFFFFF</color>
+
+
+
 </resources>

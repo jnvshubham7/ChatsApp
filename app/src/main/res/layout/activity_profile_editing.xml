@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".Activities.Profile_Editing">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -26,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Profile Info"
-        android:textColor="@color/colorPrimary"
+        android:textColor="?attr/colorPrimary"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +41,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Please provide your name and an optional profile photo"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorOnBackground"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/profileInfoLabel"
         app:layout_constraintStart_toStartOf="@+id/profileInfoLabel"
@@ -54,6 +55,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         app:cardCornerRadius="10dp"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileDescription">
@@ -71,7 +73,8 @@
                 android:background="@drawable/textbox_outline"
                 android:ems="10"
                 android:hint="Type your name here"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:textColor="?attr/colorOnBackground" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -80,8 +83,9 @@
         android:layout_width="153dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="?attr/colorPrimary"
         android:text="Save Profile"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
