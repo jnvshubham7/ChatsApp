@@ -322,15 +322,32 @@ public class Chat_Activity extends AppCompatActivity {
     }
 
     private void sendNotification(String message) {
-        database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String token = snapshot.getValue(String.class);
-                if (token != null) {
-                    sendFCMNotification(token, message);
+                String senderName = snapshot.getValue(String.class);
+                if (senderName != null) {
+                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String token = snapshot.getValue(String.class);
+                            if (token != null) {
+                                sendFCMNotification(token, message, senderName);
+                            } else {
+                                Toast.makeText(Chat_Activity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "FCM Token is null");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Database error: " + error.getMessage());
+                        }
+                    });
                 } else {
-                    Toast.makeText(Chat_Activity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "FCM Token is null");
+                    Toast.makeText(Chat_Activity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Sender name is null");
                 }
             }
 
@@ -342,14 +359,14 @@ public class Chat_Activity extends AppCompatActivity {
         });
     }
 
-    private void sendFCMNotification(String token, String message) {
-        String notificationTitle = "New Message";
-        String notificationMessage = message;
+
+    private void sendFCMNotification(String token, String message, String senderName) {
+        String notificationTitle = senderName;
 
         try {
             JSONObject notification = new JSONObject();
             notification.put("title", notificationTitle);
-            notification.put("body", notificationMessage);
+            notification.put("body", message);
 
             JSONObject data = new JSONObject();
             data.put("message", message);
@@ -385,4 +402,5 @@ public class Chat_Activity extends AppCompatActivity {
             Log.e(TAG, "JSONException: " + e.getMessage());
         }
     }
+
 }
