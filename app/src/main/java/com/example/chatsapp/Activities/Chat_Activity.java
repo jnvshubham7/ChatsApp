@@ -47,9 +47,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+
+
 public class Chat_Activity extends AppCompatActivity {
 
-    private static final String TAG = "Chat_Activity";
+    private static final String TAG = "Chat_Activity_Error";
     private ActivityChatBinding binding;
     private Messages_Adapter adapter;
     private ArrayList<Message> messages;
@@ -69,7 +71,6 @@ public class Chat_Activity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
-
 
         initViews();
         initFirebase();
@@ -177,11 +178,24 @@ public class Chat_Activity extends AppCompatActivity {
         database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
         if (randomKey != null) {
-            Toast.makeText(this, message.getMessage(), Toast.LENGTH_SHORT).show();
             database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
-                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
-                            .addOnSuccessListener(aVoid1 -> sendNotification(message.getMessage())));
-            Toast.makeText(this, message.getMessage(), Toast.LENGTH_SHORT).show();
+                    .addOnSuccessListener(aVoid -> {
+                        database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
+                                .addOnSuccessListener(aVoid1 -> {
+                                    sendNotification(message.getMessage());
+                                    Toast.makeText(Chat_Activity.this, "Message sent: " + message.getMessage(), Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(Chat_Activity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Failed to send message to receiver: ", e);
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(Chat_Activity.this, "Failed to send message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to send message: ", e);
+                    });
+        } else {
+            Toast.makeText(Chat_Activity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -211,7 +225,13 @@ public class Chat_Activity extends AppCompatActivity {
                 reference.getDownloadUrl().addOnSuccessListener(uri -> {
                     String filePath = uri.toString();
                     sendMessageWithImage(filePath);
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(Chat_Activity.this, "Failed to get download URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Failed to get download URL: ", e);
                 });
+            } else {
+                Toast.makeText(Chat_Activity.this, "Image upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Image upload failed: ", task.getException());
             }
         });
     }
@@ -233,8 +253,23 @@ public class Chat_Activity extends AppCompatActivity {
 
         if (randomKey != null) {
             database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
-                    .addOnSuccessListener(aVoid -> database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
-                            .addOnSuccessListener(aVoid1 -> sendNotification(message.getMessage())));
+                    .addOnSuccessListener(aVoid -> {
+                        database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
+                                .addOnSuccessListener(aVoid1 -> {
+                                    sendNotification(message.getMessage());
+                                    Toast.makeText(Chat_Activity.this, "Image message sent: " + message.getMessage(), Toast.LENGTH_SHORT).show();
+                                })
+                                .addOnFailureListener(e -> {
+                                    Toast.makeText(Chat_Activity.this, "Failed to send image message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Failed to send image message to receiver: ", e);
+                                });
+                    })
+                    .addOnFailureListener(e -> {
+                        Toast.makeText(Chat_Activity.this, "Failed to send image message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to send image message: ", e);
+                    });
+        } else {
+            Toast.makeText(Chat_Activity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -294,17 +329,18 @@ public class Chat_Activity extends AppCompatActivity {
                 if (token != null) {
                     sendFCMNotification(token, message);
                 } else {
+                    Toast.makeText(Chat_Activity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "FCM Token is null");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Database error: " + error.getMessage());
             }
         });
     }
-
 
     private void sendFCMNotification(String token, String message) {
         String notificationTitle = "New Message";
@@ -324,8 +360,14 @@ public class Chat_Activity extends AppCompatActivity {
             notificationBody.put("data", data);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
-                    response -> Log.d(TAG, "Notification Response: " + response.toString()),
-                    error -> Log.e(TAG, "Notification Error: " + error.toString())) {
+                    response -> {
+                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Notification Response: " + response.toString());
+                    },
+                    error -> {
+                        Toast.makeText(Chat_Activity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Notification Error: " + error.toString());
+                    }) {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> headers = new HashMap<>();
@@ -335,14 +377,12 @@ public class Chat_Activity extends AppCompatActivity {
                 }
             };
 
-
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(request);
 
         } catch (JSONException e) {
-            e.printStackTrace();
+            Toast.makeText(Chat_Activity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "JSONException: " + e.getMessage());
         }
     }
-
 }
