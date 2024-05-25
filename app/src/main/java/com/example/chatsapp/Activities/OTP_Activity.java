@@ -55,7 +55,7 @@ public class OTP_Activity extends AppCompatActivity {
         String phoneNumber = getIntent().getStringExtra("phoneNumber");
         binding.phoneLbl.setText("Verify " + phoneNumber);
 
-        Toast.makeText(this, phoneNumber, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, phoneNumber, Toast.LENGTH_SHORT).show();
 
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
@@ -99,7 +99,7 @@ public class OTP_Activity extends AppCompatActivity {
         PhoneAuthProvider.verifyPhoneNumber(options);
 
         binding.otpView.setOtpCompletionListener(otp -> {
-            Toast.makeText(OTP_Activity.this, otp, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(OTP_Activity.this, otp, Toast.LENGTH_SHORT).show();
             PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, otp);
 
             auth.signInWithCredential(credential).addOnCompleteListener(task -> {
