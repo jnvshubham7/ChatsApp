@@ -319,42 +319,6 @@ public class Chat_Activity extends AppCompatActivity {
         });
     }
 
-    private void sendNotification(String message) {
-        RequestQueue queue = Volley.newRequestQueue(this);
-
-        String url = "https://fcm.googleapis.com/fcm/send";
-        JSONObject data = new JSONObject();
-
-        try {
-            data.put("title", "New Message");
-            data.put("body", message);
-            data.put("sound", "default");
-
-            JSONObject notificationData = new JSONObject();
-            notificationData.put("to", "/topics/" + receiverUid);
-            notificationData.put("data", data);
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, notificationData,
-                    response -> {
-                        // Handle response
-                    }, error -> {
-                // Handle error
-            }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Content-Type", "application/json");
-                    headers.put("Authorization", "key=YOUR_SERVER_KEY");
-                    return headers;
-                }
-            };
-
-            queue.add(request);
-        } catch (JSONException e) {
-            Log.e(TAG, "sendNotification: ", e);
-        }
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -369,4 +333,100 @@ public class Chat_Activity extends AppCompatActivity {
         super.onPause();
         database.getReference().child("presence").child(senderUid).setValue("Offline");
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.chat_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish();
+        return super.onSupportNavigateUp();
+    }
+
+    private void sendNotification(String message) {
+        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String senderName = snapshot.getValue(String.class);
+                if (senderName != null) {
+                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String token = snapshot.getValue(String.class);
+                            if (token != null) {
+                                sendFCMNotification(token, message, senderName);
+                            } else {
+                                Toast.makeText(Chat_Activity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "FCM Token is null");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Database error: " + error.getMessage());
+                        }
+                    });
+                } else {
+                    Toast.makeText(Chat_Activity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Sender name is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Database error: " + error.getMessage());
+            }
+        });
+    }
+
+
+    private void sendFCMNotification(String token, String message, String senderName) {
+        String notificationTitle = senderName;
+
+        try {
+            JSONObject notification = new JSONObject();
+            notification.put("title", notificationTitle);
+            notification.put("body", message);
+
+            JSONObject data = new JSONObject();
+            data.put("message", message);
+
+            JSONObject notificationBody = new JSONObject();
+            notificationBody.put("to", token);
+            notificationBody.put("notification", notification);
+            notificationBody.put("data", data);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
+                    response -> {
+//                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "Notification Response: " + response.toString());
+                    },
+                    error -> {
+                        Toast.makeText(Chat_Activity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Notification Error: " + error.toString());
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(request);
+
+        } catch (JSONException e) {
+            Toast.makeText(Chat_Activity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "JSONException: " + e.getMessage());
+        }
+    }
+
 }
+
