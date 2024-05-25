@@ -46,7 +46,8 @@
         <!-- Define application services -->
         <service
             android:name=".MyFirebaseMessagingService"
-            android:exported="false">
+            android:exported="true"
+            android:permission="com.google.firebase.MESSAGING_EVENT">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -58,7 +59,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_send" />
+            android:resource="@drawable/ic_notification" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/green" />

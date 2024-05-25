@@ -23,24 +23,30 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "onMessageReceived: called");
 
-        // Handle FCM messages here.
-        if (!remoteMessage.getData().isEmpty()) {
+        if (remoteMessage.getNotification() != null) {
+            // If message contains a notification payload
+            String title = remoteMessage.getNotification().getTitle();
+            String body = remoteMessage.getNotification().getBody();
+            Log.d(TAG, "Notification payload: title=" + title + ", body=" + body);
+            showNotification(title, body);
+        } else if (!remoteMessage.getData().isEmpty()) {
+            // If message contains a data payload
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
             String title = remoteMessage.getData().get("title");
             String body = remoteMessage.getData().get("body");
 
             if (title == null) {
-                title = "Default Title"; // Set a default title if none is provided
+                title = "Default Title";
             }
             if (body == null) {
-                body = remoteMessage.getData().get("message"); // Use "message" key if "body" is not provided
+                body = remoteMessage.getData().get("message");
                 if (body == null) {
-                    body = "Default Body"; // Set a default body if none is provided
+                    body = "Default Body";
                 }
             }
 
-            // Show custom notification UI
+            Log.d(TAG, "Data payload: title=" + title + ", body=" + body);
             showNotification(title, body);
         } else {
             Log.d(TAG, "Message data payload is empty");
@@ -50,35 +56,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showNotification(String title, String body) {
         Log.d(TAG, "showNotification: called with title: " + title + ", body: " + body);
 
-        // Create an intent to open MainActivity when notification is clicked
         Intent intent = new Intent(this, Main_Activity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
-        // Create notification channel if necessary
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
-            if (notificationManager != null) {
-                notificationManager.createNotificationChannel(channel);
-            }
+        if (notificationManager == null) {
+            Log.d(TAG, "Notification manager is null");
+            return;
         }
 
-        // Create custom notification layout
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_notification)
+                        .setSmallIcon(R.drawable.ic_chats)
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent);
+        Log.d(TAG, "Notification built");
 
-        // Show the notification
-        if (notificationManager != null) {
+        try {
             notificationManager.notify(0, notificationBuilder.build());
             Log.d(TAG, "Notification displayed");
-        } else {
-            Log.d(TAG, "Notification manager is null");
+        } catch (Exception e) {
+            Log.e(TAG, "Error displaying notification", e);
         }
     }
 
