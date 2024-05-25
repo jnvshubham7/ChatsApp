@@ -71,9 +71,11 @@ public class Chat_Activity extends AppCompatActivity {
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
 
-        binding.messageBox.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.showSoftInput(binding.messageBox, InputMethodManager.SHOW_IMPLICIT);
+        // Set focus on message box after a delay without opening the keyboard
+        new Handler().postDelayed(() -> {
+            binding.messageBox.requestFocus();
+            hideKeyboard();
+        }, 100);
 
         initViews();
         initFirebase();
@@ -82,6 +84,11 @@ public class Chat_Activity extends AppCompatActivity {
         setupSendButton();
         setupCameraButton();
         setupTypingIndicator();
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(binding.messageBox.getWindowToken(), 0);
     }
 
     private void initViews() {
@@ -283,7 +290,9 @@ public class Chat_Activity extends AppCompatActivity {
         final Handler handler = new Handler();
         binding.messageBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // No implementation needed
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -293,30 +302,45 @@ public class Chat_Activity extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                // No implementation needed
+            }
         });
-
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     private void sendNotification(String message) {
-        String name = getIntent().getStringExtra("name");
-        String token = getIntent().getStringExtra("token");
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        String url = "https://fcm.googleapis.com/fcm/send";
+        JSONObject data = new JSONObject();
+
         try {
+            data.put("title", "New Message");
+            data.put("body", message);
+            data.put("sound", "default");
+
             JSONObject notificationData = new JSONObject();
-            notificationData.put("title", name);
-            notificationData.put("body", message);
-            notificationData.put("token", token);
+            notificationData.put("to", "/topics/" + receiverUid);
+            notificationData.put("data", data);
 
-            String notificationUrl = "https://fcm.googleapis.com/fcm/send";
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, notificationUrl, notificationData,
-                    response -> Log.d(TAG, "Notification sent successfully"),
-                    error -> Log.e(TAG, "Notification failed to send", error));
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, notificationData,
+                    response -> {
+                        // Handle response
+                    }, error -> {
+                // Handle error
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    headers.put("Authorization", "key=YOUR_SERVER_KEY");
+                    return headers;
+                }
+            };
 
-            RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(request);
         } catch (JSONException e) {
-            Log.e(TAG, "Failed to create notification JSON", e);
+            Log.e(TAG, "sendNotification: ", e);
         }
     }
 
