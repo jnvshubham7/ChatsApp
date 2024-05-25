@@ -1,6 +1,5 @@
 package com.example.chatsapp.Adapters;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 
 public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewHolder> {
@@ -40,7 +41,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
     @Override
     public UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.row_conversation, parent, false);
-
         return new UsersViewHolder(view);
     }
 
@@ -49,7 +49,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
         User user = users.get(position);
 
         String senderId = FirebaseAuth.getInstance().getUid();
-
         String senderRoom = senderId + user.getUid();
 
         FirebaseDatabase.getInstance().getReference()
@@ -61,7 +60,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             String lastMsg = snapshot.child("lastMsg").getValue(String.class);
-                            @SuppressWarnings("ConstantConditions")
                             long time_date = snapshot.child("lastMsgTime").getValue(Long.class);
 
                             // Format the time
@@ -85,13 +83,11 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                         }
                     }
 
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
 
                     }
                 });
-
 
         holder.binding.username.setText(user.getName());
 
@@ -122,6 +118,4 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
             binding = RowConversationBinding.bind(itemView);
         }
     }
-
 }
-

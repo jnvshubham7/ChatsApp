@@ -22,7 +22,7 @@
             android:name=".Activities.Profile_Editing"
             android:exported="false" />
         <activity android:name=".Activities.Phone_Number_Activity" />
-        <activity android:name=".Activities.Group_Chat_Activity" />
+
         <activity
             android:name=".Activities.Chat_Activity"
             android:theme="@style/Theme.ChatsApp.NoActionBar" />

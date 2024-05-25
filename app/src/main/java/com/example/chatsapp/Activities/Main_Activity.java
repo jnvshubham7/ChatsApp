@@ -37,6 +37,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,6 +129,13 @@ public class Main_Activity extends AppCompatActivity {
                             users.add(user);
                         }
                     }
+                    // Sort the users list alphabetically
+                    Collections.sort(users, new Comparator<User>() {
+                        @Override
+                        public int compare(User u1, User u2) {
+                            return u1.getName().compareToIgnoreCase(u2.getName());
+                        }
+                    });
                     binding.recyclerView.hideShimmerAdapter();
                     usersAdapter.notifyDataSetChanged();
                 }
@@ -180,7 +189,6 @@ public class Main_Activity extends AppCompatActivity {
             return false;
         });
     }
-
 
     private void selectImageFromGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
