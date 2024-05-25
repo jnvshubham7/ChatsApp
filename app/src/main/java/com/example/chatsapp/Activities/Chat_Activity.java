@@ -183,7 +183,7 @@ public class Chat_Activity extends AppCompatActivity {
                         database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
                                     sendNotification(message.getMessage());
-                                    Toast.makeText(Chat_Activity.this, "Message sent: " + message.getMessage(), Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(Chat_Activity.this, "Message sent: " + message.getMessage(), Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(Chat_Activity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -378,7 +378,7 @@ public class Chat_Activity extends AppCompatActivity {
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
                     response -> {
-                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Notification Response: " + response.toString());
                     },
                     error -> {
