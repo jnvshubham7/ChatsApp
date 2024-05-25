@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,8 +48,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-
-
 public class Chat_Activity extends AppCompatActivity {
 
     private static final String TAG = "Chat_Activity_Error";
@@ -71,6 +70,10 @@ public class Chat_Activity extends AppCompatActivity {
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
+
+        binding.messageBox.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.showSoftInput(binding.messageBox, InputMethodManager.SHOW_IMPLICIT);
 
         initViews();
         initFirebase();
@@ -145,6 +148,11 @@ public class Chat_Activity extends AppCompatActivity {
                             }
                         }
                         adapter.notifyDataSetChanged();
+
+                        // Ensure smooth scroll only if there are messages
+                        if (!messages.isEmpty()) {
+                            binding.recyclerView.smoothScrollToPosition(messages.size() - 1);
+                        }
                     }
 
                     @Override
@@ -183,7 +191,6 @@ public class Chat_Activity extends AppCompatActivity {
                         database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
                                     sendNotification(message.getMessage());
-//                                    Toast.makeText(Chat_Activity.this, "Message sent: " + message.getMessage(), Toast.LENGTH_SHORT).show();
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(Chat_Activity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -256,17 +263,16 @@ public class Chat_Activity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
-                                    sendNotification(message.getMessage());
-                                    Toast.makeText(Chat_Activity.this, "Image message sent: " + message.getMessage(), Toast.LENGTH_SHORT).show();
+                                    sendNotification("photo");
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(Chat_Activity.this, "Failed to send image message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                                    Log.e(TAG, "Failed to send image message to receiver: ", e);
+                                    Toast.makeText(Chat_Activity.this, "Failed to send image to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Log.e(TAG, "Failed to send image to receiver: ", e);
                                 });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(Chat_Activity.this, "Failed to send image message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "Failed to send image message: ", e);
+                        Toast.makeText(Chat_Activity.this, "Failed to send image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to send image: ", e);
                     });
         } else {
             Toast.makeText(Chat_Activity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
@@ -277,30 +283,50 @@ public class Chat_Activity extends AppCompatActivity {
         final Handler handler = new Handler();
         binding.messageBox.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // No action needed
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                database.getReference().child("presence").child(senderUid).setValue("typing...");
+                database.getReference().child("presence").child(senderUid).setValue("Typing...");
                 handler.removeCallbacksAndMessages(null);
-                handler.postDelayed(userStoppedTyping, 1000);
+                handler.postDelayed(() -> database.getReference().child("presence").child(senderUid).setValue("Online"), 1000);
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-                // No action needed
-            }
-
-            final Runnable userStoppedTyping = () -> database.getReference().child("presence").child(senderUid).setValue("Online");
+            public void afterTextChanged(Editable s) {}
         });
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+    }
+
+    private void sendNotification(String message) {
+        String name = getIntent().getStringExtra("name");
+        String token = getIntent().getStringExtra("token");
+        try {
+            JSONObject notificationData = new JSONObject();
+            notificationData.put("title", name);
+            notificationData.put("body", message);
+            notificationData.put("token", token);
+
+            String notificationUrl = "https://fcm.googleapis.com/fcm/send";
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, notificationUrl, notificationData,
+                    response -> Log.d(TAG, "Notification sent successfully"),
+                    error -> Log.e(TAG, "Notification failed to send", error));
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(request);
+        } catch (JSONException e) {
+            Log.e(TAG, "Failed to create notification JSON", e);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         database.getReference().child("presence").child(senderUid).setValue("Online");
+        if (!messages.isEmpty()) {
+            binding.recyclerView.scrollToPosition(messages.size() - 1);
+        }
     }
 
     @Override
@@ -308,99 +334,4 @@ public class Chat_Activity extends AppCompatActivity {
         super.onPause();
         database.getReference().child("presence").child(senderUid).setValue("Offline");
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.chat_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return super.onSupportNavigateUp();
-    }
-
-    private void sendNotification(String message) {
-        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String senderName = snapshot.getValue(String.class);
-                if (senderName != null) {
-                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String token = snapshot.getValue(String.class);
-                            if (token != null) {
-                                sendFCMNotification(token, message, senderName);
-                            } else {
-                                Toast.makeText(Chat_Activity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "FCM Token is null");
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, "Database error: " + error.getMessage());
-                        }
-                    });
-                } else {
-                    Toast.makeText(Chat_Activity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Sender name is null");
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Database error: " + error.getMessage());
-            }
-        });
-    }
-
-
-    private void sendFCMNotification(String token, String message, String senderName) {
-        String notificationTitle = senderName;
-
-        try {
-            JSONObject notification = new JSONObject();
-            notification.put("title", notificationTitle);
-            notification.put("body", message);
-
-            JSONObject data = new JSONObject();
-            data.put("message", message);
-
-            JSONObject notificationBody = new JSONObject();
-            notificationBody.put("to", token);
-            notificationBody.put("notification", notification);
-            notificationBody.put("data", data);
-
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
-                    response -> {
-//                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "Notification Response: " + response.toString());
-                    },
-                    error -> {
-                        Toast.makeText(Chat_Activity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
-                        Log.e(TAG, "Notification Error: " + error.toString());
-                    }) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
-                    headers.put("Content-Type", "application/json");
-                    return headers;
-                }
-            };
-
-            RequestQueue queue = Volley.newRequestQueue(this);
-            queue.add(request);
-
-        } catch (JSONException e) {
-            Toast.makeText(Chat_Activity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e(TAG, "JSONException: " + e.getMessage());
-        }
-    }
-
 }
