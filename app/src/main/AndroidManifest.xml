@@ -25,7 +25,10 @@
 
         <activity
             android:name=".Activities.Chat_Activity"
-            android:theme="@style/Theme.ChatsApp.NoActionBar" />
+            android:theme="@style/Theme.ChatsApp.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize"/>
+
+
         <activity android:name=".Activities.Setup_Profile_Activity" />
         <activity
             android:name=".Activities.OTP_Activity"

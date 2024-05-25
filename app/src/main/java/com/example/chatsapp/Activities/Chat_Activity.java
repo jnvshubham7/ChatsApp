@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -50,6 +51,12 @@ import java.util.Objects;
 
 public class Chat_Activity extends AppCompatActivity {
 
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(binding.messageBox.getWindowToken(), 0);
+    }
+
     private static final String TAG = "Chat_Activity_Error";
     private ActivityChatBinding binding;
     private Messages_Adapter adapter;
@@ -71,11 +78,16 @@ public class Chat_Activity extends AppCompatActivity {
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
 
-        // Set focus on message box after a delay without opening the keyboard
-        new Handler().postDelayed(() -> {
-            binding.messageBox.requestFocus();
-            hideKeyboard();
-        }, 100);
+        binding.messageBox.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                binding.messageBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                binding.messageBox.requestFocus();
+                hideKeyboard();
+            }
+        });
+
+
 
         initViews();
         initFirebase();
@@ -84,12 +96,10 @@ public class Chat_Activity extends AppCompatActivity {
         setupSendButton();
         setupCameraButton();
         setupTypingIndicator();
+
+
     }
 
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(binding.messageBox.getWindowToken(), 0);
-    }
 
     private void initViews() {
         setSupportActionBar(binding.toolbar);
@@ -171,6 +181,7 @@ public class Chat_Activity extends AppCompatActivity {
 
     private void setupSendButton() {
         binding.sendBtn.setOnClickListener(v -> {
+            binding.messageBox.requestFocus();
             String messageTxt = binding.messageBox.getText().toString();
             if (!messageTxt.trim().isEmpty()) {
                 sendMessage(messageTxt);
