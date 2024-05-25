@@ -18,11 +18,13 @@ import com.example.chatsapp.databinding.ItemSentBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
-@SuppressWarnings("ALL")
-public class Messages_Adapter extends RecyclerView.Adapter {
+public class Messages_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     ArrayList<Message> messages;
@@ -66,7 +68,9 @@ public class Messages_Adapter extends RecyclerView.Adapter {
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Message message = messages.get(position);
 
-        if (holder.getClass() == SentViewHolder.class) {
+        SimpleDateFormat sdf = new SimpleDateFormat("h:mm a", Locale.getDefault());
+
+        if (holder instanceof SentViewHolder) {
             SentViewHolder viewHolder = (SentViewHolder) holder;
 
             if (message.getMessage().equals("photo")) {
@@ -81,48 +85,14 @@ public class Messages_Adapter extends RecyclerView.Adapter {
                 viewHolder.binding.image.setVisibility(View.GONE);
                 viewHolder.binding.message.setVisibility(View.VISIBLE);
             }
+            viewHolder.binding.timestamp.setText(sdf.format(new Date(message.getTimestamp())));
 
             viewHolder.itemView.setOnLongClickListener(v -> {
-                View view = LayoutInflater.from(context).inflate(R.layout.delete_dialog, null);
-                DeleteDialogBinding binding = DeleteDialogBinding.bind(view);
-                AlertDialog dialog = new AlertDialog.Builder(context)
-                        .setTitle("Delete Message")
-                        .setView(binding.getRoot())
-                        .create();
-
-                binding.everyone.setOnClickListener(v1 -> {
-                    message.setMessage("This message is removed.");
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("chats")
-                            .child(senderRoom)
-                            .child("messages")
-                            .child(message.getMessageId()).setValue(message);
-
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("chats")
-                            .child(receiverRoom)
-                            .child("messages")
-                            .child(message.getMessageId()).setValue(message);
-                    dialog.dismiss();
-                });
-
-                binding.delete.setOnClickListener(v12 -> {
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("chats")
-                            .child(senderRoom)
-                            .child("messages")
-                            .child(message.getMessageId()).setValue(null);
-                    dialog.dismiss();
-                });
-
-                binding.cancel.setOnClickListener(v13 -> dialog.dismiss());
-
-                dialog.show();
-
+                showDeleteDialog(message);
                 return false;
             });
 
-        } else {
+        } else if (holder instanceof ReceiverViewHolder) {
             ReceiverViewHolder viewHolder = (ReceiverViewHolder) holder;
 
             if (message.getMessage().equals("photo")) {
@@ -137,47 +107,51 @@ public class Messages_Adapter extends RecyclerView.Adapter {
                 viewHolder.binding.image.setVisibility(View.GONE);
                 viewHolder.binding.message.setVisibility(View.VISIBLE);
             }
+            viewHolder.binding.timestamp.setText(sdf.format(new Date(message.getTimestamp())));
 
             viewHolder.itemView.setOnLongClickListener(v -> {
-                View view = LayoutInflater.from(context).inflate(R.layout.delete_dialog, null);
-                DeleteDialogBinding binding = DeleteDialogBinding.bind(view);
-                AlertDialog dialog = new AlertDialog.Builder(context)
-                        .setTitle("Delete Message")
-                        .setView(binding.getRoot())
-                        .create();
-
-                binding.everyone.setOnClickListener(v1 -> {
-                    message.setMessage("This message is removed.");
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("chats")
-                            .child(senderRoom)
-                            .child("messages")
-                            .child(message.getMessageId()).setValue(message);
-
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("chats")
-                            .child(receiverRoom)
-                            .child("messages")
-                            .child(message.getMessageId()).setValue(message);
-                    dialog.dismiss();
-                });
-
-                binding.delete.setOnClickListener(v12 -> {
-                    FirebaseDatabase.getInstance().getReference()
-                            .child("chats")
-                            .child(senderRoom)
-                            .child("messages")
-                            .child(message.getMessageId()).setValue(null);
-                    dialog.dismiss();
-                });
-
-                binding.cancel.setOnClickListener(v13 -> dialog.dismiss());
-
-                dialog.show();
-
+                showDeleteDialog(message);
                 return false;
             });
         }
+    }
+
+    private void showDeleteDialog(Message message) {
+        View view = LayoutInflater.from(context).inflate(R.layout.delete_dialog, null);
+        DeleteDialogBinding binding = DeleteDialogBinding.bind(view);
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setTitle("Delete Message")
+                .setView(binding.getRoot())
+                .create();
+
+        binding.everyone.setOnClickListener(v1 -> {
+            message.setMessage("This message is removed.");
+            FirebaseDatabase.getInstance().getReference()
+                    .child("chats")
+                    .child(senderRoom)
+                    .child("messages")
+                    .child(message.getMessageId()).setValue(message);
+
+            FirebaseDatabase.getInstance().getReference()
+                    .child("chats")
+                    .child(receiverRoom)
+                    .child("messages")
+                    .child(message.getMessageId()).setValue(message);
+            dialog.dismiss();
+        });
+
+        binding.delete.setOnClickListener(v12 -> {
+            FirebaseDatabase.getInstance().getReference()
+                    .child("chats")
+                    .child(senderRoom)
+                    .child("messages")
+                    .child(message.getMessageId()).setValue(null);
+            dialog.dismiss();
+        });
+
+        binding.cancel.setOnClickListener(v13 -> dialog.dismiss());
+
+        dialog.show();
     }
 
     @Override
@@ -185,7 +159,7 @@ public class Messages_Adapter extends RecyclerView.Adapter {
         return messages.size();
     }
 
-    public class SentViewHolder extends RecyclerView.ViewHolder {
+    public static class SentViewHolder extends RecyclerView.ViewHolder {
 
         ItemSentBinding binding;
 
@@ -195,7 +169,7 @@ public class Messages_Adapter extends RecyclerView.Adapter {
         }
     }
 
-    public class ReceiverViewHolder extends RecyclerView.ViewHolder {
+    public static class ReceiverViewHolder extends RecyclerView.ViewHolder {
 
         ItemReceiveBinding binding;
 

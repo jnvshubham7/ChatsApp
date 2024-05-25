@@ -2,19 +2,19 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:icon="@drawable/ic_video"
-        android:title="Video Call"
-        app:showAsAction="always" />
-    <item
-        android:icon="@drawable/ic_call"
-        android:title="Audio Call"
-        app:showAsAction="always" />
+<!--    <item-->
+<!--        android:icon="@drawable/ic_video"-->
+<!--        android:title="Video Call"-->
+<!--        app:showAsAction="always" />-->
+<!--    <item-->
+<!--        android:icon="@drawable/ic_call"-->
+<!--        android:title="Audio Call"-->
+<!--        app:showAsAction="always" />-->
     <item android:title="Profile" />
-    <item android:title="Block" />
-    <item android:title="Media, links, and docs" />
-    <item android:title="Search" />
-    <item android:title="Mute notifications" />
-    <item android:title="Settings" />
+<!--    <item android:title="Block" />-->
+<!--    <item android:title="Media, links, and docs" />-->
+<!--    <item android:title="Search" />-->
+<!--    <item android:title="Mute notifications" />-->
+<!--    <item android:title="Settings" />-->
 
 </menu>

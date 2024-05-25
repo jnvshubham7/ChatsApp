@@ -224,6 +224,7 @@ public class Chat_Activity extends AppCompatActivity {
         }
     }
 
+
     private void setupCameraButton() {
         binding.camera.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
