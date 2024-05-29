@@ -97,7 +97,30 @@ public class Chat_Activity extends AppCompatActivity {
         setupCameraButton();
         setupTypingIndicator();
 
+        markMessagesAsRead();
 
+
+    }
+
+    private void markMessagesAsRead() {
+        database.getReference().child("chats").child(senderRoom).child("messages")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                            Message message = messageSnapshot.getValue(Message.class);
+                            if (message != null && !message.isRead() && !message.getSenderId().equals(senderUid)) {
+                                message.setRead(true);
+                                messageSnapshot.getRef().setValue(message);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(Chat_Activity.this, "Failed to mark messages as read: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
 
@@ -179,6 +202,7 @@ public class Chat_Activity extends AppCompatActivity {
                 });
     }
 
+
     private void setupSendButton() {
         binding.sendBtn.setOnClickListener(v -> {
             binding.messageBox.requestFocus();
@@ -192,6 +216,8 @@ public class Chat_Activity extends AppCompatActivity {
     private void sendMessage(String messageTxt) {
         Date date = new Date();
         Message message = new Message(messageTxt, senderUid, date.getTime());
+        message.setRead(false); // Set read to false
+
         binding.messageBox.setText("");
 
         String randomKey = database.getReference().push().getKey();
@@ -266,6 +292,8 @@ public class Chat_Activity extends AppCompatActivity {
         Date date = new Date();
         Message message = new Message("photo", senderUid, date.getTime());
         message.setImageUrl(filePath);
+        message.setRead(false); // Set read to false
+
         binding.messageBox.setText("");
 
         String randomKey = database.getReference().push().getKey();
@@ -320,6 +348,7 @@ public class Chat_Activity extends AppCompatActivity {
         });
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -327,6 +356,26 @@ public class Chat_Activity extends AppCompatActivity {
         if (!messages.isEmpty()) {
             binding.recyclerView.scrollToPosition(messages.size() - 1);
         }
+
+        // Mark all messages as read in receiverRoom
+        database.getReference().child("chats").child(receiverRoom).child("messages")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot messageSnapshot : snapshot.getChildren()) {
+                            Message message = messageSnapshot.getValue(Message.class);
+                            if (message != null && !message.getSenderId().equals(senderUid) && !message.isRead()) {
+                                message.setRead(true);
+                                messageSnapshot.getRef().setValue(message);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle database error
+                    }
+                });
     }
 
     @Override
@@ -334,6 +383,9 @@ public class Chat_Activity extends AppCompatActivity {
         super.onPause();
         database.getReference().child("presence").child(senderUid).setValue("Offline");
     }
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
