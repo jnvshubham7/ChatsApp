@@ -2,6 +2,11 @@
 
 ChatsApp is a messaging Android application that allows users to connect, share stories, send photos, engage in group chats, and express themselves with emojis. The app is currently available on the Mi App Store and has gained popularity with over 105+ users.
 
+<h2 align="center">
+  <a href="https://global.app.mi.com/details?lo=IN&la=en_US&id=com.example.chatsapp" style="display: inline-block;">Deploy Link - ChatsApp</a>
+  
+</h2>
+
 ## Features
 
 - Free messaging
@@ -39,9 +44,7 @@ To run the ChatsApp project locally, follow these steps:
 Now you should be able to explore and test the ChatsApp on your local development environment.
 
 
-## App Link
 
-You can download and install the app from the Mi App Store using the following [link](https://global.app.mi.com/details?lo=IN&la=en_US&id=com.example.chatsapp).
 
 
 
