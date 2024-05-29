@@ -24,8 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 
 public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewHolder> {
@@ -36,7 +34,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
     public Users_Adapter(Context context, ArrayList<User> users) {
         this.context = context;
         this.users = users;
-        fetchAndSortUsers();
     }
 
     @NonNull
@@ -93,14 +90,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                                 holder.binding.unreadCount.setVisibility(View.GONE);
                             }
 
-                            // Update user object
-                            user.setLastMsgTime(time_date);
-                            user.setUnreadCount(unreadCount);
-
-                            // Sort users and notify adapter
-                            sortUsers();
-                            notifyDataSetChanged();
-
                         } else {
                             holder.binding.lastMsg.setText("Tap to chat");
                             holder.binding.msgTime.setText("");
@@ -132,44 +121,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
     @Override
     public int getItemCount() {
         return users.size();
-    }
-
-    private void fetchAndSortUsers() {
-        // Here you can fetch the user list from the database and call sortUsers()
-        // For example:
-        FirebaseDatabase.getInstance().getReference().child("users")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        users.clear();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            User user = dataSnapshot.getValue(User.class);
-                            users.add(user);
-                        }
-                        sortUsers();
-                        notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle error
-                    }
-                });
-    }
-
-    private void sortUsers() {
-        Collections.sort(users, new Comparator<User>() {
-            @Override
-            public int compare(User u1, User u2) {
-                // First, compare by unread count
-                int unreadCompare = Long.compare(u2.getUnreadCount(), u1.getUnreadCount());
-                if (unreadCompare != 0) {
-                    return unreadCompare;
-                }
-                // If unread counts are equal, compare by last message time
-                return Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime());
-            }
-        });
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {

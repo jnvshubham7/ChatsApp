@@ -3,8 +3,6 @@ package com.example.chatsapp.Models;
 public class User {
 
     private String uid, name, phoneNumber, profileImage, fcmToken;
-    private long unreadCount;
-    private long lastMsgTime;
 
     public User() {
 
@@ -51,23 +49,5 @@ public class User {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
-    }
-
-    public long getUnreadCount() {
-        return unreadCount;
-
-    }
-
-    public long getLastMsgTime() {
-        return lastMsgTime;
-    }
-
-    public void setLastMsgTime(long timeDate) {
-        this.lastMsgTime = timeDate;
-    }
-
-    public void setUnreadCount(long unreadCount) {
-        this.unreadCount = unreadCount;
-
     }
 }
