@@ -21,6 +21,11 @@
         <item name="colorSurface">@color/backgroundLight</item>
         <item name="colorOnSurface">@color/textColorLight</item>
 
+
+
+        <!-- Selectable item background -->
+<!--        <item name="selectableItemBackground">@color/selectable_background_light</item>-->
+
     </style>
 
     <style name="Theme.ChatsApp.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">

@@ -111,7 +111,10 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
 
                             Log.d("time_date_error", user.getTimeAndDate() + "");
 
-                            holder.binding.lastMsg.setText(lastMsg);
+                            // Truncate the last message if it is too long
+                            if (lastMsg != null && lastMsg.length() > 30) {
+                                lastMsg = lastMsg.substring(0, 30) + "...";
+                            }
 
                             // Count unread messages
                             long unreadCount = 0;
@@ -138,15 +141,11 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                                 holder.binding.lastMsg.setTypeface(Typeface.DEFAULT);
 
                                 holder.binding.msgTime.setTextColor(holder.binding.msgTime.getTextColors());
-
-
                                 holder.binding.lastMsg.setTextColor(holder.binding.lastMsg.getTextColors());
-
 
                                 holder.binding.unreadCount.setVisibility(View.GONE);
                             }
-                        }
-                        else {
+                        } else {
                             holder.binding.lastMsg.setText("Tap to chat");
                             holder.binding.msgTime.setText("");
                             holder.binding.unreadCount.setVisibility(View.GONE);
@@ -173,6 +172,7 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
             context.startActivity(intent);
         });
     }
+
 
     @Override
     public int getItemCount() {

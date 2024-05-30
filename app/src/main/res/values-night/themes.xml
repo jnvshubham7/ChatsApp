@@ -20,6 +20,9 @@
         <!-- Surface color. -->
         <item name="colorSurface">@color/backgroundDark</item>
         <item name="colorOnSurface">@color/textColorDark</item>
+
+        <!-- Selectable item background -->
+<!--        <item name="selectableItemBackground">@color/selectable_background_dark</item>-->
     </style>
 
 
