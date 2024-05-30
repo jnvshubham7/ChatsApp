@@ -38,15 +38,15 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
 public class Main_Activity extends AppCompatActivity {
 
-    private static final String TAG = "Main_Activity__";
+    private static final String TAG = "Main_Activity";
     private static final int REQUEST_CODE_NOTIFICATION = 100;
 
     private ActivityMainBinding binding;
@@ -122,41 +122,11 @@ public class Main_Activity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    users.clear();
+                    List<User> tempUsers = new ArrayList<>();
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         User user = userSnapshot.getValue(User.class);
                         if (user != null && !user.getUid().equals(FirebaseAuth.getInstance().getUid())) {
-                            users.add(user);
-
-                            String senderId = FirebaseAuth.getInstance().getUid();
-                            String senderRoom = senderId + user.getUid();
-
-                            database.getReference()
-                                    .child("chats")
-                                    .child(senderRoom)
-                                    .addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            if (snapshot.exists()) {
-                                                Long lastMsgTime = snapshot.child("lastMsgTime").getValue(Long.class);
-                                                if (lastMsgTime != null) {
-                                                    user.setLastMsgTime(lastMsgTime);
-                                                } else {
-                                                    user.setLastMsgTime(0);
-                                                }
-                                            } else {
-                                                user.setLastMsgTime(0);
-                                            }
-
-                                            // Sort users after setting the last message time
-                                            sortUsersByLastMsgTime();
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-                                            Log.e(TAG, "Error fetching last message time", error.toException());
-                                        }
-                                    });
+                            fetchLastMsgTime(user, tempUsers, snapshot.getChildrenCount());
                         }
                     }
                 }
@@ -169,16 +139,43 @@ public class Main_Activity extends AppCompatActivity {
         });
     }
 
+    private void fetchLastMsgTime(User user, List<User> tempUsers, long totalUsers) {
+        String senderId = FirebaseAuth.getInstance().getUid();
+        String senderRoom = senderId + user.getUid();
+
+        database.getReference().child("chats").child(senderRoom)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Long lastMsgTime = snapshot.child("lastMsgTime").getValue(Long.class);
+                            user.setLastMsgTime(lastMsgTime != null ? lastMsgTime : 0);
+                        } else {
+                            user.setLastMsgTime(0);
+                        }
+
+                        tempUsers.add(user);
+
+                        if (tempUsers.size() == totalUsers - 1) {
+                            users.clear();
+                            users.addAll(tempUsers);
+                            sortUsersByLastMsgTime();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "Error fetching last message time", error.toException());
+                    }
+                });
+    }
+
     private void sortUsersByLastMsgTime() {
-        // Sort the users list based on the last message time in descending order
+        Collections.sort(users, (u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
 
-        users.sort((u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
-
-        // Notify the adapter of the changes
         binding.recyclerView.hideShimmerAdapter();
         usersAdapter.notifyDataSetChanged();
     }
-
 
     private void fetchStories() {
         database.getReference().child("stories").addValueEventListener(new ValueEventListener() {
