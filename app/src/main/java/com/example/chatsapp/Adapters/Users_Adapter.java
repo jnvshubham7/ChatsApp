@@ -3,6 +3,12 @@ package com.example.chatsapp.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -117,9 +123,26 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                             }
 
                             if (unreadCount > 0) {
+                                SpannableString spannableString = new SpannableString(lastMsg);
+                                assert lastMsg != null;
+                                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                holder.binding.lastMsg.setText(spannableString);
+
+                                holder.binding.msgTime.setTextColor(Color.GREEN);
+
                                 holder.binding.unreadCount.setVisibility(View.VISIBLE);
                                 holder.binding.unreadCount.setText(String.valueOf(unreadCount));
                             } else {
+                                holder.binding.lastMsg.setText(lastMsg);
+                                holder.binding.lastMsg.setTypeface(Typeface.DEFAULT);
+
+                                holder.binding.msgTime.setTextColor(holder.binding.msgTime.getTextColors());
+
+
+                                holder.binding.lastMsg.setTextColor(holder.binding.lastMsg.getTextColors());
+
+
                                 holder.binding.unreadCount.setVisibility(View.GONE);
                             }
                         }
