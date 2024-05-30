@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class Main_Activity extends AppCompatActivity {
 
-    private static final String TAG = "Main_Activity";
+    private static final String TAG = "Main_Activity__";
     private static final int REQUEST_CODE_NOTIFICATION = 100;
 
     private ActivityMainBinding binding;
@@ -117,7 +117,7 @@ public class Main_Activity extends AppCompatActivity {
         binding.statusList.showShimmerAdapter();
     }
 
-    private void fetchUsers() {
+    public void fetchUsers() {
         database.getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -127,17 +127,38 @@ public class Main_Activity extends AppCompatActivity {
                         User user = userSnapshot.getValue(User.class);
                         if (user != null && !user.getUid().equals(FirebaseAuth.getInstance().getUid())) {
                             users.add(user);
+
+                            String senderId = FirebaseAuth.getInstance().getUid();
+                            String senderRoom = senderId + user.getUid();
+
+                            database.getReference()
+                                    .child("chats")
+                                    .child(senderRoom)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            if (snapshot.exists()) {
+                                                Long lastMsgTime = snapshot.child("lastMsgTime").getValue(Long.class);
+                                                if (lastMsgTime != null) {
+                                                    user.setLastMsgTime(lastMsgTime);
+                                                } else {
+                                                    user.setLastMsgTime(0);
+                                                }
+                                            } else {
+                                                user.setLastMsgTime(0);
+                                            }
+
+                                            // Sort users after setting the last message time
+                                            sortUsersByLastMsgTime();
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.e(TAG, "Error fetching last message time", error.toException());
+                                        }
+                                    });
                         }
                     }
-                    // Sort the users list alphabetically
-                    users.sort(new Comparator<User>() {
-                        @Override
-                        public int compare(User u1, User u2) {
-                            return u1.getName().compareToIgnoreCase(u2.getName());
-                        }
-                    });
-                    binding.recyclerView.hideShimmerAdapter();
-                    usersAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -147,6 +168,17 @@ public class Main_Activity extends AppCompatActivity {
             }
         });
     }
+
+    private void sortUsersByLastMsgTime() {
+        // Sort the users list based on the last message time in descending order
+
+        users.sort((u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
+
+        // Notify the adapter of the changes
+        binding.recyclerView.hideShimmerAdapter();
+        usersAdapter.notifyDataSetChanged();
+    }
+
 
     private void fetchStories() {
         database.getReference().child("stories").addValueEventListener(new ValueEventListener() {
@@ -289,7 +321,6 @@ public class Main_Activity extends AppCompatActivity {
             }
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

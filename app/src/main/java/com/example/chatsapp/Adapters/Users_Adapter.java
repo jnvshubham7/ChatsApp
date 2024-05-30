@@ -3,6 +3,7 @@ package com.example.chatsapp.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,8 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
 
     Context context;
     ArrayList<User> users;
+
+    User user;
 
     public Users_Adapter(Context context, ArrayList<User> users) {
         this.context = context;
@@ -69,9 +72,17 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
                             String formattedDate = dateFormat.format(new Date(time_date));
 
-                            String timeAndDate = formattedTime + " - " + formattedDate;
+                            user.setTimeAndDate(time_date);
 
-                            holder.binding.msgTime.setText(timeAndDate);
+                            user.setLastMsgTime(time_date);
+
+                            Log.d("time_date_error", user.getTimeAndDate() + "");
+
+
+
+
+
+                            holder.binding.msgTime.setText(formattedTime);
                             holder.binding.lastMsg.setText(lastMsg);
 
                             // Count unread messages

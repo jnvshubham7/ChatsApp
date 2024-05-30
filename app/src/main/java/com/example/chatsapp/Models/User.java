@@ -4,6 +4,21 @@ public class User {
 
     private String uid, name, phoneNumber, profileImage, fcmToken;
 
+    private  long timeAndDate;
+
+    private long lastMsgTime; // Add this field
+
+    // Existing constructors and methods
+
+    public long getLastMsgTime() {
+        return lastMsgTime;
+    }
+
+    public void setLastMsgTime(long lastMsgTime) {
+        this.lastMsgTime = lastMsgTime;
+    }
+
+
     public User() {
 
 
@@ -16,6 +31,16 @@ public class User {
         this.profileImage = profileImage;
         this.fcmToken = fcmToken;
     }
+
+    public long getTimeAndDate() {
+        return timeAndDate;
+    }
+
+    public void setTimeAndDate(long timeAndDate) {
+        this.timeAndDate = timeAndDate;
+    }
+
+
 
 
 

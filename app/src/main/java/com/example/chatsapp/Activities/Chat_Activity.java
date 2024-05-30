@@ -65,6 +65,8 @@ public class Chat_Activity extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseStorage storage;
     private ProgressDialog dialog;
+
+    private  Main_Activity mainActivity;
     private String senderUid;
     private String receiverUid;
 
@@ -218,6 +220,7 @@ public class Chat_Activity extends AppCompatActivity {
         Message message = new Message(messageTxt, senderUid, date.getTime());
         message.setRead(false); // Set read to false
 
+
         binding.messageBox.setText("");
 
         String randomKey = database.getReference().push().getKey();
@@ -245,10 +248,17 @@ public class Chat_Activity extends AppCompatActivity {
                         Toast.makeText(Chat_Activity.this, "Failed to send message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Failed to send message: ", e);
                     });
+
+//            mainActivity.fetchUsers();
+
+
         } else {
             Toast.makeText(Chat_Activity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
         }
+
     }
+
+
 
 
     private void setupCameraButton() {
