@@ -21,7 +21,7 @@
         app:shimmer_demo_angle="20"
         app:shimmer_demo_child_count="10"
         app:shimmer_demo_layout="@layout/demo_status"
-        app:shimmer_demo_layout_manager_type="linear_horizontal"
+        app:shimmer_demo_layout_manager_type="linear_vertical"
          />
 
     <!-- Divider View -->
