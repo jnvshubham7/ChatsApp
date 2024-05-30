@@ -2,6 +2,7 @@ package com.example.chatsapp.Adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.chatsapp.FullImageActivity;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.DeleteDialogBinding;
@@ -80,6 +82,12 @@ public class Messages_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         .load(message.getImageUrl())
                         .placeholder(R.drawable.placeholder)
                         .into(viewHolder.binding.image);
+
+                viewHolder.binding.image.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    intent.putExtra("imageUrl", message.getImageUrl());
+                    context.startActivity(intent);
+                });
             } else {
                 viewHolder.binding.message.setText(message.getMessage());
                 viewHolder.binding.image.setVisibility(View.GONE);
@@ -102,6 +110,12 @@ public class Messages_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                         .load(message.getImageUrl())
                         .placeholder(R.drawable.placeholder)
                         .into(viewHolder.binding.image);
+
+                viewHolder.binding.image.setOnClickListener(v -> {
+                    Intent intent = new Intent(context, FullImageActivity.class);
+                    intent.putExtra("imageUrl", message.getImageUrl());
+                    context.startActivity(intent);
+                });
             } else {
                 viewHolder.binding.message.setText(message.getMessage());
                 viewHolder.binding.image.setVisibility(View.GONE);
@@ -115,6 +129,7 @@ public class Messages_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             });
         }
     }
+
 
     private void showDeleteDialog(Message message) {
         View view = LayoutInflater.from(context).inflate(R.layout.delete_dialog, null);

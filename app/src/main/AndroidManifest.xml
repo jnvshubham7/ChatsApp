@@ -1,10 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.chatsapp">
-
     <!-- Specify hardware features and permissions -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -16,19 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".FullImageActivity"
+            android:exported="false" />
         <!-- Define application activities -->
         <activity
             android:name=".Activities.Profile_Editing"
             android:exported="false" />
         <activity android:name=".Activities.Phone_Number_Activity" />
-
         <activity
             android:name=".Activities.Chat_Activity"
             android:theme="@style/Theme.ChatsApp.NoActionBar"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
-
-
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity android:name=".Activities.Setup_Profile_Activity" />
         <activity
             android:name=".Activities.OTP_Activity"
@@ -39,14 +39,13 @@
             android:windowSoftInputMode="stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.Main_Activity"
-            android:windowSoftInputMode="stateAlwaysHidden" />
-
-        <!-- Define application services -->
+            android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Define application services -->
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="true"
@@ -54,9 +53,7 @@
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
-
-        <!-- Define metadata for the application -->
+        </service> <!-- Define metadata for the application -->
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
