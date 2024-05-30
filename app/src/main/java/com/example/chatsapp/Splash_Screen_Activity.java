@@ -13,7 +13,7 @@ import com.jaeger.library.StatusBarUtil;
 
 public class Splash_Screen_Activity extends AppCompatActivity {
 
-    private static final int SPLASH_DISPLAY_LENGTH = 2000;
+    private static final int SPLASH_DISPLAY_LENGTH = 3000;  // Increased to allow full animations
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +26,15 @@ public class Splash_Screen_Activity extends AppCompatActivity {
         ImageView logo = findViewById(R.id.imageView4);
         TextView appName = findViewById(R.id.textView);
 
-        // Apply the scale and fade-in animation to the logo
-        Animation scaleFadeIn = AnimationUtils.loadAnimation(this, R.anim.scale_fade_in);
-        logo.startAnimation(scaleFadeIn);
-        appName.startAnimation(scaleFadeIn);
+        // Apply the scale, rotate, and fade-in animation to the logo
+        Animation scaleRotateFadeIn = AnimationUtils.loadAnimation(this, R.anim.scale_rotate_fade_in);
+        logo.startAnimation(scaleRotateFadeIn);
+
+        // Delay the text animation slightly
+        new Handler().postDelayed(() -> {
+            Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+            appName.startAnimation(fadeIn);
+        }, 500);
 
         new Handler().postDelayed(() -> {
             // Apply the translate and fade-out animation
