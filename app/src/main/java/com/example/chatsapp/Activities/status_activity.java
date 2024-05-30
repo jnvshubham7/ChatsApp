@@ -87,7 +87,7 @@ public class status_activity extends AppCompatActivity {
 
     private void setupAdapters() {
         statusAdapter = new Top_Status_Adapter(this, userStatuses);
-        binding.statusList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        binding.statusList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         binding.statusList.setAdapter(statusAdapter);
         binding.statusList.showShimmerAdapter();
     }
