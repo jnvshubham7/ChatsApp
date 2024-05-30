@@ -102,6 +102,14 @@ public class Chat_Activity extends AppCompatActivity {
         markMessagesAsRead();
 
 
+        binding.toolbar.setOnClickListener(v -> {
+            Intent intent = new Intent(Chat_Activity.this, ProfileActivity.class);
+            intent.putExtra("name", getIntent().getStringExtra("name"));
+            intent.putExtra("image", getIntent().getStringExtra("image"));
+            startActivity(intent);
+        });
+
+
     }
 
     private void markMessagesAsRead() {

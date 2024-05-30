@@ -18,9 +18,11 @@
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".FullImageActivity"
+            android:name=".Activities.ProfileActivity"
             android:exported="false" />
-        <!-- Define application activities -->
+        <activity
+            android:name=".FullImageActivity"
+            android:exported="false" /> <!-- Define application activities -->
         <activity
             android:name=".Activities.Profile_Editing"
             android:exported="false" />
