@@ -5,8 +5,8 @@
     <color name="message_background">#2C2C2C</color>
     <color name="message_text">#FFFFFF</color>
 
-    <color name="receive_message_background">#3C3C3C</color>
-    <color name="receive_message_text">#FFFFFF</color>
+    <color name="receive_message_background">#EDEDED</color> <!-- Light gray -->
+    <color name="receive_message_text">#000000</color> <!-- Black text -->
 
     <color name="colorPrimary">#BB86FC</color>
     <color name="colorPrimaryDark">#3700B3</color>

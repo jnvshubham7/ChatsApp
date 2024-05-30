@@ -38,7 +38,7 @@
     <color name="message_background_light">#FFFFFF</color>
     <color name="message_text_light">#000000</color>
 
-    <color name="receive_message_background">#F0F0F0</color>
+    <color name="receive_message_background">#66DA6B</color>
     <color name="receive_message_text">#000000</color>
 
     <color name="backgroundLight">#FFFFFF</color>
@@ -51,6 +51,9 @@
     <color name="textColorDark">#FFFFFF</color>
 
     <color name="colorBackgroundCard">#FFFFFF</color>
+
+    <color name="send_message_background">#DCF8C6</color> <!-- Light green -->
+    <color name="send_message_text">#000000</color> <!-- Black text -->
 
     <!-- Define the colorBackground attribute -->
     <color name="colorBackground">#FFFFFF</color>
