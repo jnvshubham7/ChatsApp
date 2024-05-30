@@ -59,7 +59,7 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
         String lastUpdatedTime = sdf.format(lastStatus.getTimeStamp());
         holder.binding.lastUpdatedTime.setText(lastUpdatedTime);
 
-        holder.binding.circularStatusView.setOnClickListener(v -> {
+        holder.binding.statusItemLayout.setOnClickListener(v -> {
             ArrayList<MyStory> myStories = new ArrayList<>();
             for (Status status : userStatus.getStatuses()) {
                 myStories.add(new MyStory(status.getImageUrl()));
