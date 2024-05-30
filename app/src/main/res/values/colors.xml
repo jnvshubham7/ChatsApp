@@ -64,10 +64,11 @@
 
     <color name="camera_icon_color">#676767</color>
 
-<!--    <color name="background_light">#FFFFFF</color>-->
-<!--    <color name="text_light">#000000</color>-->
-<!--    <color name="selectable_background_light">?attr/selectableItemBackground</color>-->
-
+    <color name="background_light">#FFFFFF</color>
+    <color name="text_light">#000000</color>
+    <color name="surface_light">#FFFFFF</color>
+    <color name="on_surface_light">#000000</color>
+    <color name="divider">#BDBDBD</color> <!-- Light gray divider -->
 
 
 

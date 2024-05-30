@@ -28,9 +28,11 @@
 
     <color name="camera_icon_color">#FFFFFF</color>
 
-<!--    <color name="background_dark">#121212</color>-->
-<!--    <color name="text_dark">#FFFFFF</color>-->
-<!--    <color name="selectable_background_dark">?attr/selectableItemBackground</color>-->
+    <color name="background_dark">#121212</color>
+    <color name="text_dark">#FFFFFF</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="on_surface_dark">#FFFFFF</color>
+    <color name="divider">#373737</color> <!-- Dark gray divider -->
 
 
 
