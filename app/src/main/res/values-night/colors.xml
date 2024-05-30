@@ -5,8 +5,7 @@
     <color name="message_background">#2C2C2C</color>
     <color name="message_text">#FFFFFF</color>
 
-    <color name="receive_message_background">#EDEDED</color> <!-- Light gray -->
-    <color name="receive_message_text">#FFFFFF</color> <!-- Black text -->
+
 
     <color name="colorPrimary">#BB86FC</color>
     <color name="colorPrimaryDark">#3700B3</color>
@@ -19,6 +18,13 @@
     <color name="textColorDark">#FFFFFF</color>
     <color name="colorBackgroundCard">#121212</color>
     <color name="received_message_background">#2E2E2E</color>
+
+
+    <color name="receive_message_background">#2E2E2E</color> <!-- Dark gray for received messages -->
+    <color name="receive_message_text">#FFFFFF</color> <!-- White text for received messages -->
+    <color name="send_message_background">#2C2C2C</color> <!-- Dark gray for sent messages -->
+    <color name="send_message_text">#2C2C2C</color> <!-- White text for sent messages -->
+
 
 
 
