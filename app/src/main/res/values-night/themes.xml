@@ -20,6 +20,8 @@
         <item name="colorOnSurface">@color/textColorDark</item>
         <!-- Selectable item background -->
         <item name="selectableItemBackground">@drawable/selectable_background_dark</item>
+
+
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.DayNight">
