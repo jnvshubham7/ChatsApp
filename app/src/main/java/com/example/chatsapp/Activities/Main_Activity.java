@@ -70,7 +70,7 @@ public class Main_Activity extends AppCompatActivity {
         fetchCurrentUser();
         setupAdapters();
         fetchUsers();
-        fetchStories();
+//        fetchStories();
         setupBottomNavigationView();
         retrieveFCMToken();
 
@@ -109,12 +109,12 @@ public class Main_Activity extends AppCompatActivity {
         usersAdapter = new Users_Adapter(this, users);
         statusAdapter = new Top_Status_Adapter(this, userStatuses);
 
-        binding.statusList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        binding.statusList.setAdapter(statusAdapter);
+//        binding.statusList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+//        binding.statusList.setAdapter(statusAdapter);
 
         binding.recyclerView.setAdapter(usersAdapter);
         binding.recyclerView.showShimmerAdapter();
-        binding.statusList.showShimmerAdapter();
+//        binding.statusList.showShimmerAdapter();
     }
 
     public void fetchUsers() {
@@ -177,100 +177,101 @@ public class Main_Activity extends AppCompatActivity {
         usersAdapter.notifyDataSetChanged();
     }
 
-    private void fetchStories() {
-        database.getReference().child("stories").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    userStatuses.clear();
-                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                        User_Status userStatus = new User_Status();
-                        userStatus.setName(Objects.requireNonNull(userSnapshot.child("name").getValue()).toString());
-                        userStatus.setProfileImage(Objects.requireNonNull(userSnapshot.child("profileImage").getValue()).toString());
-                        userStatus.setLastUpdated(Long.parseLong(Objects.requireNonNull(userSnapshot.child("lastUpdated").getValue()).toString()));
-
-                        ArrayList<Status> statuses = new ArrayList<>();
-                        for (DataSnapshot statusSnapshot : userSnapshot.child("statuses").getChildren()) {
-                            Status status = statusSnapshot.getValue(Status.class);
-                            statuses.add(status);
-                        }
-                        userStatus.setStatuses(statuses);
-                        userStatuses.add(userStatus);
-                    }
-                    binding.statusList.hideShimmerAdapter();
-                    statusAdapter.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e(TAG, "Error fetching stories", error.toException());
-            }
-        });
-    }
+//    private void fetchStories() {
+//        database.getReference().child("stories").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                if (snapshot.exists()) {
+//                    userStatuses.clear();
+//                    for (DataSnapshot userSnapshot : snapshot.getChildren()) {
+//                        User_Status userStatus = new User_Status();
+//                        userStatus.setName(Objects.requireNonNull(userSnapshot.child("name").getValue()).toString());
+//                        userStatus.setProfileImage(Objects.requireNonNull(userSnapshot.child("profileImage").getValue()).toString());
+//                        userStatus.setLastUpdated(Long.parseLong(Objects.requireNonNull(userSnapshot.child("lastUpdated").getValue()).toString()));
+//
+//                        ArrayList<Status> statuses = new ArrayList<>();
+//                        for (DataSnapshot statusSnapshot : userSnapshot.child("statuses").getChildren()) {
+//                            Status status = statusSnapshot.getValue(Status.class);
+//                            statuses.add(status);
+//                        }
+//                        userStatus.setStatuses(statuses);
+//                        userStatuses.add(userStatus);
+//                    }
+////                    binding.statusList.hideShimmerAdapter();
+//                    statusAdapter.notifyDataSetChanged();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//                Log.e(TAG, "Error fetching stories", error.toException());
+//            }
+//        });
+//    }
 
     private void setupBottomNavigationView() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             if (item.getItemId() == R.id.status) {
-                selectImageFromGallery();
+                Intent intent = new Intent(Main_Activity.this, status_activity.class);
+                startActivity(intent);
                 return true;
             }
             return false;
         });
     }
 
-    private void selectImageFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/*");
-        startActivityForResult(intent, 75);
-    }
+//    private void selectImageFromGallery() {
+//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+//        intent.setType("image/*");
+//        startActivityForResult(intent, 75);
+//    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 75 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            uploadImage(data.getData());
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 75 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+//            uploadImage(data.getData());
+//        }
+//    }
 
-    private void uploadImage(Uri imageUri) {
-        dialog.show();
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-        StorageReference reference = storage.getReference().child("status").child(new Date().getTime() + "");
+//    private void uploadImage(Uri imageUri) {
+//        dialog.show();
+//        FirebaseStorage storage = FirebaseStorage.getInstance();
+//        StorageReference reference = storage.getReference().child("status").child(new Date().getTime() + "");
+//
+//        reference.putFile(imageUri).addOnCompleteListener(task -> {
+//            if (task.isSuccessful()) {
+//                reference.getDownloadUrl().addOnSuccessListener(uri -> {
+//                    saveStatusToDatabase(uri);
+//                    dialog.dismiss();
+//                });
+//            } else {
+//                dialog.dismiss();
+//                Log.e(TAG, "Failed to upload image", task.getException());
+//            }
+//        });
+//    }
 
-        reference.putFile(imageUri).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                reference.getDownloadUrl().addOnSuccessListener(uri -> {
-                    saveStatusToDatabase(uri);
-                    dialog.dismiss();
-                });
-            } else {
-                dialog.dismiss();
-                Log.e(TAG, "Failed to upload image", task.getException());
-            }
-        });
-    }
-
-    private void saveStatusToDatabase(Uri uri) {
-        Date date = new Date();
-        User_Status userStatus = new User_Status();
-        userStatus.setName(currentUser.getName());
-        userStatus.setProfileImage(currentUser.getProfileImage());
-        userStatus.setLastUpdated(date.getTime());
-
-        Map<String, Object> statusData = new HashMap<>();
-        statusData.put("name", userStatus.getName());
-        statusData.put("profileImage", userStatus.getProfileImage());
-        statusData.put("lastUpdated", userStatus.getLastUpdated());
-
-        Status status = new Status(uri.toString(), userStatus.getLastUpdated());
-
-        String uid = FirebaseAuth.getInstance().getUid();
-        if (uid != null) {
-            database.getReference().child("stories").child(uid).updateChildren(statusData);
-            database.getReference().child("stories").child(uid).child("statuses").push().setValue(status);
-        }
-    }
+//    private void saveStatusToDatabase(Uri uri) {
+//        Date date = new Date();
+//        User_Status userStatus = new User_Status();
+//        userStatus.setName(currentUser.getName());
+//        userStatus.setProfileImage(currentUser.getProfileImage());
+//        userStatus.setLastUpdated(date.getTime());
+//
+//        Map<String, Object> statusData = new HashMap<>();
+//        statusData.put("name", userStatus.getName());
+//        statusData.put("profileImage", userStatus.getProfileImage());
+//        statusData.put("lastUpdated", userStatus.getLastUpdated());
+//
+//        Status status = new Status(uri.toString(), userStatus.getLastUpdated());
+//
+//        String uid = FirebaseAuth.getInstance().getUid();
+//        if (uid != null) {
+//            database.getReference().child("stories").child(uid).updateChildren(statusData);
+//            database.getReference().child("stories").child(uid).child("statuses").push().setValue(status);
+//        }
+//    }
 
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {

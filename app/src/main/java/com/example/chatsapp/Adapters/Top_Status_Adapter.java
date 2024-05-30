@@ -1,6 +1,5 @@
 package com.example.chatsapp.Adapters;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,13 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chatsapp.Activities.Main_Activity;
+import com.example.chatsapp.Activities.status_activity;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User_Status;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ItemStatusBinding;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import omari.hamza.storyview.StoryView;
 import omari.hamza.storyview.callback.StoryClickListeners;
@@ -41,22 +42,30 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
 
     @Override
     public void onBindViewHolder(@NonNull TopStatusViewHolder holder, int position) {
-
         User_Status userStatus = userStatuses.get(position);
-
         Status lastStatus = userStatus.getStatuses().get(userStatus.getStatuses().size() - 1);
 
+        // Load the image using Glide
         Glide.with(context).load(lastStatus.getImageUrl()).into(holder.binding.image);
 
+        // Set the portion count
         holder.binding.circularStatusView.setPortionsCount(userStatus.getStatuses().size());
 
-        holder.binding.circularStatusView.setOnClickListener(v -> {
+        // Set the username
+        holder.binding.username.setText(userStatus.getName());
+
+        // Format and set the last updated time
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        String lastUpdatedTime = sdf.format(lastStatus.getTimeStamp());
+        holder.binding.lastUpdatedTime.setText(lastUpdatedTime);
+
+        holder.binding.statusItemLayout.setOnClickListener(v -> {
             ArrayList<MyStory> myStories = new ArrayList<>();
-            for(Status status : userStatus.getStatuses()) {
+            for (Status status : userStatus.getStatuses()) {
                 myStories.add(new MyStory(status.getImageUrl()));
             }
 
-            new StoryView.Builder(((Main_Activity)context).getSupportFragmentManager())
+            new StoryView.Builder(((status_activity) context).getSupportFragmentManager())
                     .setStoriesList(myStories) // Required
                     .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
                     .setTitleText(userStatus.getName()) // Default is Hidden
@@ -92,5 +101,4 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
             binding = ItemStatusBinding.bind(itemView);
         }
     }
-
 }

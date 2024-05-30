@@ -27,4 +27,6 @@ public class Status {
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
+
+
 }

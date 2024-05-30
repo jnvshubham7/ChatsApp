@@ -5,8 +5,7 @@
     <color name="message_background">#2C2C2C</color>
     <color name="message_text">#FFFFFF</color>
 
-    <color name="receive_message_background">#3C3C3C</color>
-    <color name="receive_message_text">#FFFFFF</color>
+
 
     <color name="colorPrimary">#BB86FC</color>
     <color name="colorPrimaryDark">#3700B3</color>
@@ -18,6 +17,23 @@
     <color name="textColorLight">#FFFFFF</color>
     <color name="textColorDark">#FFFFFF</color>
     <color name="colorBackgroundCard">#121212</color>
+    <color name="received_message_background">#2E2E2E</color>
+
+
+    <color name="receive_message_background">#2E2E2E</color> <!-- Dark gray for received messages -->
+    <color name="receive_message_text">#FFFFFF</color> <!-- White text for received messages -->
+    <color name="send_message_background">#2C2C2C</color> <!-- Dark gray for sent messages -->
+    <color name="send_message_text">#2C2C2C</color> <!-- White text for sent messages -->
+
+
+    <color name="camera_icon_color">#FFFFFF</color>
+
+    <color name="background_dark">#121212</color>
+    <color name="text_dark">#FFFFFF</color>
+    <color name="surface_dark">#1E1E1E</color>
+    <color name="on_surface_dark">#FFFFFF</color>
+    <color name="divider">#373737</color> <!-- Dark gray divider -->
+
 
 
 
