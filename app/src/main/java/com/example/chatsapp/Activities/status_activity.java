@@ -18,6 +18,7 @@ import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.User_Status;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityStatus2Binding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -57,6 +58,7 @@ public class status_activity extends AppCompatActivity {
         fetchCurrentUser();
         setupAdapters();
         fetchStories();
+        setupAddStatusButton(); // Initialize the FloatingActionButton
     }
 
     private void initializeComponents() {
@@ -122,6 +124,11 @@ public class status_activity extends AppCompatActivity {
                 Log.e(TAG, "Error fetching stories", error.toException());
             }
         });
+    }
+
+    private void setupAddStatusButton() {
+        FloatingActionButton addStatusButton = findViewById(R.id.addStatus);
+        addStatusButton.setOnClickListener(v -> selectImageFromGallery());
     }
 
     private void selectImageFromGallery() {
