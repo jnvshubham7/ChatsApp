@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chatsapp.Activities.Main_Activity;
+import com.example.chatsapp.Activities.status_activity;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User_Status;
 import com.example.chatsapp.R;
@@ -56,7 +57,7 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
                 myStories.add(new MyStory(status.getImageUrl()));
             }
 
-            new StoryView.Builder(((Main_Activity)context).getSupportFragmentManager())
+            new StoryView.Builder(((status_activity)context).getSupportFragmentManager())
                     .setStoriesList(myStories) // Required
                     .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
                     .setTitleText(userStatus.getName()) // Default is Hidden
