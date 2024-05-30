@@ -296,12 +296,14 @@ public class Main_Activity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updatePresenceStatus("Online");
+        fetchUsers();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         updatePresenceStatus("Offline");
+        fetchUsers();
     }
 
     private void updatePresenceStatus(String status) {
