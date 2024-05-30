@@ -3,6 +3,7 @@ package com.example.chatsapp.Adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,12 +25,15 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewHolder> {
 
     Context context;
     ArrayList<User> users;
+
+    User user;
 
     public Users_Adapter(Context context, ArrayList<User> users) {
         this.context = context;
@@ -59,19 +63,48 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
                             String lastMsg = snapshot.child("lastMsg").getValue(String.class);
-                            long time_date = snapshot.child("lastMsgTime").getValue(Long.class);
+                            Long time_date = snapshot.child("lastMsgTime").getValue(Long.class);
 
-                            @SuppressLint("SimpleDateFormat")
-                            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-                            String formattedTime = timeFormat.format(new Date(time_date));
+                            if (time_date == null) {
+                                holder.binding.msgTime.setText("");
+                            } else {
+                                // Get current time
+                                long currentTime = System.currentTimeMillis();
 
-                            @SuppressLint("SimpleDateFormat")
-                            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                            String formattedDate = dateFormat.format(new Date(time_date));
+                                // Calculate time difference in milliseconds
+                                long timeDifference = currentTime - time_date;
 
-                            String timeAndDate = formattedTime + " - " + formattedDate;
+                                // Format for time
+                                SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
+                                // Format for date
+                                SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-                            holder.binding.msgTime.setText(timeAndDate);
+                                if (timeDifference < 24 * 60 * 60 * 1000) { // within 24 hours
+                                    String formattedTime = timeFormat.format(new Date(time_date));
+                                    holder.binding.msgTime.setText(formattedTime);
+                                } else {
+                                    // Get calendar instance
+                                    Calendar messageCalendar = Calendar.getInstance();
+                                    messageCalendar.setTimeInMillis(time_date);
+                                    int messageDayOfYear = messageCalendar.get(Calendar.DAY_OF_YEAR);
+
+                                    Calendar currentCalendar = Calendar.getInstance();
+                                    currentCalendar.setTimeInMillis(currentTime);
+                                    int currentDayOfYear = currentCalendar.get(Calendar.DAY_OF_YEAR);
+
+                                    if (messageDayOfYear == currentDayOfYear - 1) {
+                                        holder.binding.msgTime.setText("Yesterday");
+                                    } else {
+                                        String formattedDate = dateFormat.format(new Date(time_date));
+                                        holder.binding.msgTime.setText(formattedDate);
+                                    }
+                                }
+                            }
+
+                            user.setLastMsgTime(time_date != null ? time_date : 0); // Set 0 if time_date is null
+
+                            Log.d("time_date_error", user.getTimeAndDate() + "");
+
                             holder.binding.lastMsg.setText(lastMsg);
 
                             // Count unread messages
@@ -89,8 +122,8 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                             } else {
                                 holder.binding.unreadCount.setVisibility(View.GONE);
                             }
-
-                        } else {
+                        }
+                        else {
                             holder.binding.lastMsg.setText("Tap to chat");
                             holder.binding.msgTime.setText("");
                             holder.binding.unreadCount.setVisibility(View.GONE);

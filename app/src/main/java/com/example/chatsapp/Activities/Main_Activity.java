@@ -38,9 +38,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -117,27 +117,18 @@ public class Main_Activity extends AppCompatActivity {
         binding.statusList.showShimmerAdapter();
     }
 
-    private void fetchUsers() {
+    public void fetchUsers() {
         database.getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    users.clear();
+                    List<User> tempUsers = new ArrayList<>();
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         User user = userSnapshot.getValue(User.class);
                         if (user != null && !user.getUid().equals(FirebaseAuth.getInstance().getUid())) {
-                            users.add(user);
+                            fetchLastMsgTime(user, tempUsers, snapshot.getChildrenCount());
                         }
                     }
-                    // Sort the users list alphabetically
-                    users.sort(new Comparator<User>() {
-                        @Override
-                        public int compare(User u1, User u2) {
-                            return u1.getName().compareToIgnoreCase(u2.getName());
-                        }
-                    });
-                    binding.recyclerView.hideShimmerAdapter();
-                    usersAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -146,6 +137,44 @@ public class Main_Activity extends AppCompatActivity {
                 Log.e(TAG, "Error fetching users", error.toException());
             }
         });
+    }
+
+    private void fetchLastMsgTime(User user, List<User> tempUsers, long totalUsers) {
+        String senderId = FirebaseAuth.getInstance().getUid();
+        String senderRoom = senderId + user.getUid();
+
+        database.getReference().child("chats").child(senderRoom)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Long lastMsgTime = snapshot.child("lastMsgTime").getValue(Long.class);
+                            user.setLastMsgTime(lastMsgTime != null ? lastMsgTime : 0);
+                        } else {
+                            user.setLastMsgTime(0);
+                        }
+
+                        tempUsers.add(user);
+
+                        if (tempUsers.size() == totalUsers - 1) {
+                            users.clear();
+                            users.addAll(tempUsers);
+                            sortUsersByLastMsgTime();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e(TAG, "Error fetching last message time", error.toException());
+                    }
+                });
+    }
+
+    private void sortUsersByLastMsgTime() {
+        Collections.sort(users, (u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
+
+        binding.recyclerView.hideShimmerAdapter();
+        usersAdapter.notifyDataSetChanged();
     }
 
     private void fetchStories() {
@@ -267,12 +296,14 @@ public class Main_Activity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updatePresenceStatus("Online");
+        fetchUsers();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         updatePresenceStatus("Offline");
+        fetchUsers();
     }
 
     private void updatePresenceStatus(String status) {
@@ -289,7 +320,6 @@ public class Main_Activity extends AppCompatActivity {
             }
         }
     }
-
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
