@@ -51,6 +51,7 @@
     <color name="textColorDark">#FFFFFF</color>
 
     <color name="colorBackgroundCard">#FFFFFF</color>
+    <color name="received_message_background">#D3D3D3</color>
 
     <color name="send_message_background">#DCF8C6</color> <!-- Light green -->
     <color name="send_message_text">#000000</color> <!-- Black text -->
