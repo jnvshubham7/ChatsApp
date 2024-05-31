@@ -1,9 +1,12 @@
 package com.example.chatsapp.Activities;
 
 import android.os.Bundle;
+import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import com.example.chatsapp.Fragments.MainFragment;
+import com.example.chatsapp.Fragments.StatusFragment;
 import com.example.chatsapp.R;
 
 public class Main_Activity extends AppCompatActivity {
@@ -15,8 +18,9 @@ public class Main_Activity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new MainFragment())
+                    .replace(R.id.fragment_container, new StatusFragment())
                     .commit();
         }
     }
+
 }
