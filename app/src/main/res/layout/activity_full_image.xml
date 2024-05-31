@@ -11,15 +11,15 @@
         android:contentDescription="full_image"
         android:scaleType="fitCenter" />
 
-    <ImageView
-        android:id="@+id/backButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:padding="8dp"
-        android:src="@drawable/ic_back"
-        android:contentDescription="back_button"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:background="@color/colorAccent" />
+<!--    <ImageView-->
+<!--        android:id="@+id/backButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="16dp"-->
+<!--        android:padding="8dp"-->
+<!--        android:src="@drawable/ic_back"-->
+<!--        android:contentDescription="back_button"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:background="@color/colorAccent" />-->
 </RelativeLayout>

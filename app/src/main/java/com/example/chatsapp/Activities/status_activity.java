@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -73,6 +75,16 @@ public class status_activity extends AppCompatActivity {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Status");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+
+
+
+
         initializeComponents();
 
         fetchCurrentUser();
@@ -82,6 +94,26 @@ public class status_activity extends AppCompatActivity {
         setupAddStatusButton(); // Initialize the FloatingActionButton
         setupAddStatusButtonCam();
     }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Close this activity and return to the previous one
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish(); // Close this activity and return to the previous one
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 
     private void initializeComponents() {
         dialog = new ProgressDialog(this);
