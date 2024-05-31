@@ -6,14 +6,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.databinding.ActivitySetupProfileBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
@@ -99,7 +96,7 @@ public class Setup_Profile_Activity extends AppCompatActivity {
                                                 .setValue(user)
                                                 .addOnSuccessListener(aVoid -> {
                                                     dialog.dismiss();
-                                                    Intent intent = new Intent(Setup_Profile_Activity.this, Main_Activity.class);
+                                                    Intent intent = new Intent(Setup_Profile_Activity.this, MainActivity.class);
                                                     startActivity(intent);
                                                     finish();
                                                 });
@@ -119,7 +116,7 @@ public class Setup_Profile_Activity extends AppCompatActivity {
                                     .setValue(user)
                                     .addOnSuccessListener(aVoid -> {
                                         dialog.dismiss();
-                                        Intent intent = new Intent(Setup_Profile_Activity.this, Main_Activity.class);
+                                        Intent intent = new Intent(Setup_Profile_Activity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     });

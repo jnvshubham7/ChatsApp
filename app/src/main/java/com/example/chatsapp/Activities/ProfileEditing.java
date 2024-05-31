@@ -20,7 +20,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.bumptech.glide.Glide;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.R;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,7 +32,7 @@ import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class Profile_Editing extends AppCompatActivity {
+public class ProfileEditing extends AppCompatActivity {
 
     private CircleImageView profileImageView;
     private EditText nameEditText;
@@ -107,7 +106,7 @@ public class Profile_Editing extends AppCompatActivity {
                     if(currentUser.getProfileImage().equals("No Image")){
                         profileImageView.setImageResource(R.drawable.avatar);
                     }else{
-                        Glide.with(Profile_Editing.this).load(currentUser.getProfileImage()).placeholder(R.drawable.avatar).into(profileImageView);
+                        Glide.with(ProfileEditing.this).load(currentUser.getProfileImage()).placeholder(R.drawable.avatar).into(profileImageView);
 
                     }
 
@@ -118,7 +117,7 @@ public class Profile_Editing extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Profile_Editing.this, "Failed to fetch profile", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileEditing.this, "Failed to fetch profile", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -164,7 +163,7 @@ public class Profile_Editing extends AppCompatActivity {
                 });
             } else {
                 progressDialog.dismiss();
-                Toast.makeText(Profile_Editing.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProfileEditing.this, "Failed to upload image", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -176,6 +175,6 @@ public class Profile_Editing extends AppCompatActivity {
             database.getReference().child("users").child(uid).child("profileImage").setValue(imageUrl);
         }
         progressDialog.dismiss();
-        Toast.makeText(Profile_Editing.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ProfileEditing.this, "Profile updated successfully", Toast.LENGTH_SHORT).show();
     }
 }

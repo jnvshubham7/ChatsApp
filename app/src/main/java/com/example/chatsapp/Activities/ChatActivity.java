@@ -24,12 +24,10 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.chatsapp.Adapters.Messages_Adapter;
+import com.example.chatsapp.Adapters.MessagesAdapter;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityChatBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,7 +47,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Chat_Activity extends AppCompatActivity {
+public class ChatActivity extends AppCompatActivity {
 
 
     private void hideKeyboard() {
@@ -59,14 +57,14 @@ public class Chat_Activity extends AppCompatActivity {
 
     private static final String TAG = "Chat_Activity_Error";
     private ActivityChatBinding binding;
-    private Messages_Adapter adapter;
+    private MessagesAdapter adapter;
     private ArrayList<Message> messages;
     private String senderRoom, receiverRoom;
     private FirebaseDatabase database;
     private FirebaseStorage storage;
     private ProgressDialog dialog;
 
-    private  Main_Activity mainActivity;
+    private MainActivity mainActivity;
     private String senderUid;
     private String receiverUid;
 
@@ -103,7 +101,7 @@ public class Chat_Activity extends AppCompatActivity {
 
 
         binding.toolbar.setOnClickListener(v -> {
-            Intent intent = new Intent(Chat_Activity.this, ProfileActivity.class);
+            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
             intent.putExtra("name", getIntent().getStringExtra("name"));
             intent.putExtra("image", getIntent().getStringExtra("image"));
             startActivity(intent);
@@ -128,7 +126,7 @@ public class Chat_Activity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(Chat_Activity.this, "Failed to mark messages as read: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to mark messages as read: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -179,7 +177,7 @@ public class Chat_Activity extends AppCompatActivity {
 
     private void initChat() {
         messages = new ArrayList<>();
-        adapter = new Messages_Adapter(this, messages, senderRoom, receiverRoom);
+        adapter = new MessagesAdapter(this, messages, senderRoom, receiverRoom);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setAdapter(adapter);
     }
@@ -248,12 +246,12 @@ public class Chat_Activity extends AppCompatActivity {
                                     sendNotification(message.getMessage());
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(Chat_Activity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     Log.e(TAG, "Failed to send message to receiver: ", e);
                                 });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(Chat_Activity.this, "Failed to send message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to send message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Failed to send message: ", e);
                     });
 
@@ -261,7 +259,7 @@ public class Chat_Activity extends AppCompatActivity {
 
 
         } else {
-            Toast.makeText(Chat_Activity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChatActivity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -296,11 +294,11 @@ public class Chat_Activity extends AppCompatActivity {
                     String filePath = uri.toString();
                     sendMessageWithImage(filePath);
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(Chat_Activity.this, "Failed to get download URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Failed to get download URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Failed to get download URL: ", e);
                 });
             } else {
-                Toast.makeText(Chat_Activity.this, "Image upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "Image upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Image upload failed: ", task.getException());
             }
         });
@@ -331,16 +329,16 @@ public class Chat_Activity extends AppCompatActivity {
                                     sendNotification("photo");
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(Chat_Activity.this, "Failed to send image to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this, "Failed to send image to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                     Log.e(TAG, "Failed to send image to receiver: ", e);
                                 });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(Chat_Activity.this, "Failed to send image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to send image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Failed to send image: ", e);
                     });
         } else {
-            Toast.makeText(Chat_Activity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChatActivity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -430,26 +428,26 @@ public class Chat_Activity extends AppCompatActivity {
                             if (token != null) {
                                 sendFCMNotification(token, message, senderName);
                             } else {
-                                Toast.makeText(Chat_Activity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(ChatActivity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "FCM Token is null");
                             }
                         }
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                             Log.e(TAG, "Database error: " + error.getMessage());
                         }
                     });
                 } else {
-                    Toast.makeText(Chat_Activity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Sender name is null");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Chat_Activity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Database error: " + error.getMessage());
             }
         });
@@ -478,7 +476,7 @@ public class Chat_Activity extends AppCompatActivity {
                         Log.d(TAG, "Notification Response: " + response.toString());
                     },
                     error -> {
-                        Toast.makeText(Chat_Activity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Notification Error: " + error.toString());
                     }) {
                 @Override
@@ -494,7 +492,7 @@ public class Chat_Activity extends AppCompatActivity {
             queue.add(request);
 
         } catch (JSONException e) {
-            Toast.makeText(Chat_Activity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChatActivity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "JSONException: " + e.getMessage());
         }
     }

@@ -15,17 +15,15 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chatsapp.Adapters.Top_Status_Adapter;
+import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.User_Status;
-import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentStatusBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +55,7 @@ public class StatusFragment extends Fragment {
     private FragmentStatusBinding binding;
     private FirebaseDatabase database;
     private ArrayList<User> users;
-    private Top_Status_Adapter statusAdapter;
+    private TopStatusAdapter statusAdapter;
     private ArrayList<User_Status> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
@@ -109,7 +107,7 @@ public class StatusFragment extends Fragment {
     }
 
     private void setupAdapters() {
-        statusAdapter = new Top_Status_Adapter(getContext(), userStatuses);
+        statusAdapter = new TopStatusAdapter(getContext(), userStatuses);
         binding.statusList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.statusList.setAdapter(statusAdapter);
         binding.statusList.showShimmerAdapter();

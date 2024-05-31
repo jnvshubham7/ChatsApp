@@ -11,7 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-public class Phone_Number_Activity extends AppCompatActivity {
+public class PhoneNumberActivity extends AppCompatActivity {
 
     ActivityPhoneNumberBinding binding;
     FirebaseAuth auth;
@@ -26,7 +26,7 @@ public class Phone_Number_Activity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
 
         if(auth.getCurrentUser() != null) {
-            Intent intent = new Intent(Phone_Number_Activity.this, Main_Activity.class);
+            Intent intent = new Intent(PhoneNumberActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
         }
@@ -38,7 +38,7 @@ public class Phone_Number_Activity extends AppCompatActivity {
         binding.continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Phone_Number_Activity.this, OTP_Activity.class);
+                Intent intent = new Intent(PhoneNumberActivity.this, OTPActivity.class);
                 intent.putExtra("phoneNumber", binding.phoneBox.getText().toString());
                 startActivity(intent);
 

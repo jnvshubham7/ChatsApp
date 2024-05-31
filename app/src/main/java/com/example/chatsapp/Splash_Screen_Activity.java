@@ -8,7 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.chatsapp.Activities.Phone_Number_Activity;
+import com.example.chatsapp.Activities.PhoneNumberActivity;
 import com.jaeger.library.StatusBarUtil;
 
 public class Splash_Screen_Activity extends AppCompatActivity {
@@ -47,7 +47,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
 
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    Intent intent = new Intent(Splash_Screen_Activity.this, Phone_Number_Activity.class);
+                    Intent intent = new Intent(Splash_Screen_Activity.this, PhoneNumberActivity.class);
                     startActivity(intent);
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                     finish();

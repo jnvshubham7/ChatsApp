@@ -25,12 +25,12 @@ import omari.hamza.storyview.StoryView;
 import omari.hamza.storyview.callback.StoryClickListeners;
 import omari.hamza.storyview.model.MyStory;
 
-public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.TopStatusViewHolder> {
+public class TopStatusAdapter extends RecyclerView.Adapter<TopStatusAdapter.TopStatusViewHolder> {
 
     private Context context;
     private ArrayList<User_Status> userStatuses;
 
-    public Top_Status_Adapter(Context context, ArrayList<User_Status> userStatuses) {
+    public TopStatusAdapter(Context context, ArrayList<User_Status> userStatuses) {
         this.context = context;
         this.userStatuses = userStatuses;
     }

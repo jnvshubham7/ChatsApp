@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="?android:attr/windowBackground"
-        tools:context=".Fragments.MainFragment">
+        tools:context=".Fragments.ChatsFragment">
 
         <!-- RecyclerView with Shimmer Effect -->
         <com.cooltechworks.views.shimmer.ShimmerRecyclerView

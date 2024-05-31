@@ -18,17 +18,15 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chatsapp.Activities.Phone_Number_Activity;
-import com.example.chatsapp.Activities.Profile_Editing;
-import com.example.chatsapp.Adapters.Top_Status_Adapter;
-import com.example.chatsapp.Adapters.Users_Adapter;
+import com.example.chatsapp.Activities.PhoneNumberActivity;
+import com.example.chatsapp.Activities.ProfileEditing;
+import com.example.chatsapp.Adapters.TopStatusAdapter;
+import com.example.chatsapp.Adapters.UsersAdapter;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.User_Status;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainFragment extends Fragment {
+public class ChatsFragment extends Fragment {
 
     private static final String TAG = "MainFragment";
     private static final int REQUEST_CODE_NOTIFICATION = 100;
@@ -49,8 +47,8 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private FirebaseDatabase database;
     private ArrayList<User> users;
-    private Users_Adapter usersAdapter;
-    private Top_Status_Adapter statusAdapter;
+    private UsersAdapter usersAdapter;
+    private TopStatusAdapter statusAdapter;
     private ArrayList<User_Status> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
@@ -106,8 +104,8 @@ public class MainFragment extends Fragment {
     }
 
     private void setupAdapters() {
-        usersAdapter = new Users_Adapter(getContext(), users);
-        statusAdapter = new Top_Status_Adapter(getContext(), userStatuses);
+        usersAdapter = new UsersAdapter(getContext(), users);
+        statusAdapter = new TopStatusAdapter(getContext(), userStatuses);
 
         binding.recyclerView.setAdapter(usersAdapter);
         binding.recyclerView.showShimmerAdapter();
@@ -261,11 +259,11 @@ public class MainFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.profile) {
-            startActivity(new Intent(getContext(), Profile_Editing.class));
+            startActivity(new Intent(getContext(), ProfileEditing.class));
             return true;
         } else if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getContext(), Phone_Number_Activity.class));
+            startActivity(new Intent(getContext(), PhoneNumberActivity.class));
             getActivity().finishAffinity();
             return true;
         }

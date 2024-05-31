@@ -12,8 +12,7 @@ import androidx.core.app.NotificationCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-import com.example.chatsapp.Activities.Main_Activity;
-import com.example.chatsapp.R;
+import com.example.chatsapp.Activities.MainActivity;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -70,7 +69,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showNotificationWithImage(String title, String body, String imageUrl) {
         Log.d(TAG, "showNotificationWithImage: called with title: " + title + ", body: " + body + ", imageUrl: " + imageUrl);
 
-        Intent intent = new Intent(this, Main_Activity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
@@ -116,7 +115,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void showNotification(String title, String body) {
         Log.d(TAG, "showNotification: called with title: " + title + ", body: " + body);
 
-        Intent intent = new Intent(this, Main_Activity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
