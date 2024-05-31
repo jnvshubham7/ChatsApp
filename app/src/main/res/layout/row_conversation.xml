@@ -88,7 +88,7 @@
         android:textAlignment="center"
         android:background="@drawable/circle_background"
         app:layout_constraintCircleAngle="270"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/profile" />
 

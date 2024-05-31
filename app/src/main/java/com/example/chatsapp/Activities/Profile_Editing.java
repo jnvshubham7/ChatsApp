@@ -4,12 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -46,6 +48,13 @@ public class Profile_Editing extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_editing);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle("Edit Profile");
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
+
         profileImageView = findViewById(R.id.profileImageView);
         nameEditText = findViewById(R.id.nameEditText);
         database = FirebaseDatabase.getInstance();
@@ -54,6 +63,11 @@ public class Profile_Editing extends AppCompatActivity {
         progressDialog.setMessage("Updating profile...");
         progressDialog.setCancelable(false);
 
+
+
+
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -61,6 +75,23 @@ public class Profile_Editing extends AppCompatActivity {
         });
 
         fetchCurrentUser();
+    }
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Close this activity and return to the previous one
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish(); // Close this activity and return to the previous one
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void fetchCurrentUser() {
