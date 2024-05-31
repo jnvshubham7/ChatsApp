@@ -62,9 +62,16 @@
 
         android:textSize="14sp"
 
+        android:text="55"
+
+        android:textColor="@color/text_light"
+
+
+
         android:textAlignment="center"
         android:background="@drawable/circle_background"
-        android:visibility="gone"
+        app:layout_constraintCircleAngle="270"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/profile" />
 

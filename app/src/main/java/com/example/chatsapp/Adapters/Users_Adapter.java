@@ -127,7 +127,7 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
 
                             if (unreadCount > 0) {
                                 SpannableString spannableString = new SpannableString(lastMsg);
-                                assert lastMsg != null;
+//                                assert lastMsg != null;
                                 spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 holder.binding.lastMsg.setText(spannableString);
