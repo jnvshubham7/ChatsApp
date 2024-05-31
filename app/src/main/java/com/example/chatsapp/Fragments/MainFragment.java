@@ -71,7 +71,7 @@ public class MainFragment extends Fragment {
         fetchCurrentUser();
         setupAdapters();
         fetchUsers();
-        setupBottomNavigationView();
+//        setupBottomNavigationView();
         retrieveFCMToken();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -173,23 +173,23 @@ public class MainFragment extends Fragment {
         usersAdapter.notifyDataSetChanged();
     }
 
-    private void setupBottomNavigationView() {
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.menu_main_activity:
-                    // Handle chat navigation
-                    return true;
-
-                case R.id.menu_status_activity:
-                    // Handle status navigation
-                    return true;
-
-                default:
-                    return true;
-            }
-        });
-    }
+//    private void setupBottomNavigationView() {
+//        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+//            Intent intent;
+//            switch (item.getItemId()) {
+//                case R.id.menu_main_activity:
+//                    // Handle chat navigation
+//                    return true;
+//
+//                case R.id.menu_status_activity:
+//                    // Handle status navigation
+//                    return true;
+//
+//                default:
+//                    return true;
+//            }
+//        });
+//    }
 
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
