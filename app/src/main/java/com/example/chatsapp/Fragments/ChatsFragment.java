@@ -24,7 +24,7 @@ import com.example.chatsapp.Activities.ProfileEditing;
 import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Adapters.UsersAdapter;
 import com.example.chatsapp.Models.User;
-import com.example.chatsapp.Models.User_Status;
+import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentMainBinding;
 import com.google.firebase.auth.FirebaseAuth;
@@ -49,7 +49,7 @@ public class ChatsFragment extends Fragment {
     private ArrayList<User> users;
     private UsersAdapter usersAdapter;
     private TopStatusAdapter statusAdapter;
-    private ArrayList<User_Status> userStatuses;
+    private ArrayList<UserStatus> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
 

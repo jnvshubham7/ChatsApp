@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 @SuppressWarnings("deprecation")
-public class Setup_Profile_Activity extends AppCompatActivity {
+public class SetupProfileActivity extends AppCompatActivity {
 
     private static final String TAG = "Setup_Profile_Activity";
     ActivitySetupProfileBinding binding;
@@ -96,7 +96,7 @@ public class Setup_Profile_Activity extends AppCompatActivity {
                                                 .setValue(user)
                                                 .addOnSuccessListener(aVoid -> {
                                                     dialog.dismiss();
-                                                    Intent intent = new Intent(Setup_Profile_Activity.this, MainActivity.class);
+                                                    Intent intent = new Intent(SetupProfileActivity.this, MainActivity.class);
                                                     startActivity(intent);
                                                     finish();
                                                 });
@@ -116,7 +116,7 @@ public class Setup_Profile_Activity extends AppCompatActivity {
                                     .setValue(user)
                                     .addOnSuccessListener(aVoid -> {
                                         dialog.dismiss();
-                                        Intent intent = new Intent(Setup_Profile_Activity.this, MainActivity.class);
+                                        Intent intent = new Intent(SetupProfileActivity.this, MainActivity.class);
                                         startActivity(intent);
                                         finish();
                                     });

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chatsapp.Models.Status;
-import com.example.chatsapp.Models.User_Status;
+import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ItemStatusBinding;
 
@@ -28,9 +28,9 @@ import omari.hamza.storyview.model.MyStory;
 public class TopStatusAdapter extends RecyclerView.Adapter<TopStatusAdapter.TopStatusViewHolder> {
 
     private Context context;
-    private ArrayList<User_Status> userStatuses;
+    private ArrayList<UserStatus> userStatuses;
 
-    public TopStatusAdapter(Context context, ArrayList<User_Status> userStatuses) {
+    public TopStatusAdapter(Context context, ArrayList<UserStatus> userStatuses) {
         this.context = context;
         this.userStatuses = userStatuses;
     }
@@ -44,7 +44,7 @@ public class TopStatusAdapter extends RecyclerView.Adapter<TopStatusAdapter.TopS
 
     @Override
     public void onBindViewHolder(@NonNull TopStatusViewHolder holder, int position) {
-        User_Status userStatus = userStatuses.get(position);
+        UserStatus userStatus = userStatuses.get(position);
         Status lastStatus = userStatus.getStatuses().get(userStatus.getStatuses().size() - 1);
 
         // Load the image using Glide
@@ -93,7 +93,7 @@ public class TopStatusAdapter extends RecyclerView.Adapter<TopStatusAdapter.TopS
         }
     }
 
-    private void showStoryView(User_Status userStatus) {
+    private void showStoryView(UserStatus userStatus) {
         ArrayList<MyStory> myStories = new ArrayList<>();
         for (Status status : userStatus.getStatuses()) {
             myStories.add(new MyStory(status.getImageUrl()));

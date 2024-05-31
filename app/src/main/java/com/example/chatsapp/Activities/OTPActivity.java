@@ -101,7 +101,7 @@ public class OTPActivity extends AppCompatActivity {
                     Toast.makeText(OTPActivity.this, "OTP Verified", Toast.LENGTH_SHORT).show();
 
 
-                    Intent intent = new Intent(OTPActivity.this, Setup_Profile_Activity.class);
+                    Intent intent = new Intent(OTPActivity.this, SetupProfileActivity.class);
                     startActivity(intent);
                     finishAffinity();
                 } else {

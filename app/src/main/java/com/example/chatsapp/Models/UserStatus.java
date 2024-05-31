@@ -2,15 +2,15 @@ package com.example.chatsapp.Models;
 
 import java.util.ArrayList;
 
-public class User_Status {
+public class UserStatus {
     private String name, profileImage;
     private long lastUpdated;
     private ArrayList<Status> statuses;
 
-    public User_Status() {
+    public UserStatus() {
     }
 
-    public User_Status(String name, String profileImage, long lastUpdated, ArrayList<Status> statuses) {
+    public UserStatus(String name, String profileImage, long lastUpdated, ArrayList<Status> statuses) {
         this.name = name;
         this.profileImage = profileImage;
         this.lastUpdated = lastUpdated;

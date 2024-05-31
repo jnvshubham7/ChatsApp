@@ -23,7 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User;
-import com.example.chatsapp.Models.User_Status;
+import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.databinding.FragmentStatusBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,7 +56,7 @@ public class StatusFragment extends Fragment {
     private FirebaseDatabase database;
     private ArrayList<User> users;
     private TopStatusAdapter statusAdapter;
-    private ArrayList<User_Status> userStatuses;
+    private ArrayList<UserStatus> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
     private Uri imageUri;
@@ -120,7 +120,7 @@ public class StatusFragment extends Fragment {
                 if (snapshot.exists()) {
                     userStatuses.clear();
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                        User_Status userStatus = new User_Status();
+                        UserStatus userStatus = new UserStatus();
                         userStatus.setName(Objects.requireNonNull(userSnapshot.child("name").getValue()).toString());
                         userStatus.setProfileImage(Objects.requireNonNull(userSnapshot.child("profileImage").getValue()).toString());
                         userStatus.setLastUpdated(Long.parseLong(Objects.requireNonNull(userSnapshot.child("lastUpdated").getValue()).toString()));
@@ -147,9 +147,9 @@ public class StatusFragment extends Fragment {
     }
 
     private void sortUserStatusesByLastUpdatedTime() {
-        Collections.sort(userStatuses, new Comparator<User_Status>() {
+        Collections.sort(userStatuses, new Comparator<UserStatus>() {
             @Override
-            public int compare(User_Status o1, User_Status o2) {
+            public int compare(UserStatus o1, UserStatus o2) {
                 Status lastStatus1 = o1.getStatuses().get(o1.getStatuses().size() - 1);
                 Status lastStatus2 = o2.getStatuses().get(o2.getStatuses().size() - 1);
                 return Long.compare(lastStatus2.getTimeStamp(), lastStatus1.getTimeStamp());
@@ -256,7 +256,7 @@ public class StatusFragment extends Fragment {
 
     private void saveStatusToDatabase(Uri uri) {
         Date date = new Date();
-        User_Status userStatus = new User_Status();
+        UserStatus userStatus = new UserStatus();
         userStatus.setName(currentUser.getName());
         userStatus.setProfileImage(currentUser.getProfileImage());
         userStatus.setLastUpdated(date.getTime());
