@@ -131,7 +131,7 @@ public class status_activity extends AppCompatActivity {
                     return true;
 
                 default:
-                    return false;
+                    return true;
             }
         });
     }

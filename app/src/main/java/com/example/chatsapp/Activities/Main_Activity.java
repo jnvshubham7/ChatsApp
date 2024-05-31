@@ -236,7 +236,7 @@ public class Main_Activity extends AppCompatActivity {
                     return true;
 
                 default:
-                    return false;
+                    return true;
             }
         });
     }
