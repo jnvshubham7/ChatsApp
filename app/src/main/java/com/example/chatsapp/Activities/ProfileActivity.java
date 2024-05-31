@@ -2,6 +2,7 @@ package com.example.chatsapp.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,14 +24,18 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-//        hide action bar
+
+
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.hide();
+            actionBar.setTitle("Profile");
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        ImageView backButton = findViewById(R.id.backButton);
-        backButton.setOnClickListener(v -> onBackPressed());
+
+
+
+
 
 
 
@@ -45,5 +50,23 @@ public class ProfileActivity extends AppCompatActivity {
             intent.putExtra("imageUrl", image);
             startActivity(intent);
         });
+    }
+
+
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        finish(); // Close this activity and return to the previous one
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish(); // Close this activity and return to the previous one
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
