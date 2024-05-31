@@ -9,9 +9,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
@@ -65,6 +67,16 @@ public class Main_Activity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+
+
+
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null && !actionBar.isShowing()) {
+            // If the action bar is hidden, remove the top margin from RecyclerView
+            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.recyclerView.getLayoutParams();
+            params.topMargin = 0;
+            binding.recyclerView.setLayoutParams(params);
+        }
 
         initializeComponents();
         fetchCurrentUser();
