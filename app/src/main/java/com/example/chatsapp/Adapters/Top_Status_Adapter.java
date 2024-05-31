@@ -17,6 +17,10 @@ import com.example.chatsapp.databinding.ItemStatusBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.Locale;
 
 import omari.hamza.storyview.StoryView;
@@ -31,6 +35,7 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
     public Top_Status_Adapter(Context context, ArrayList<User_Status> userStatuses) {
         this.context = context;
         this.userStatuses = userStatuses;
+       // sortUserStatusesByLastUpdatedTime();  // Sort the user statuses when initializing the adapter
     }
 
     @NonNull
@@ -54,10 +59,43 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
         // Set the username
         holder.binding.username.setText(userStatus.getName());
 
-        // Format and set the last updated time
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-        String lastUpdatedTime = sdf.format(lastStatus.getTimeStamp());
-        holder.binding.lastUpdatedTime.setText(lastUpdatedTime);
+        if (lastStatus.getTimeStamp() == 0) {
+            holder.binding.lastUpdatedTime.setText("");
+        } else {
+            // Get current time
+            long currentTime = System.currentTimeMillis();
+            long lastUpdatedTimeStamp = lastStatus.getTimeStamp();
+
+            // Calculate time difference in milliseconds
+            long timeDifference = currentTime - lastUpdatedTimeStamp;
+
+            // Format for time
+            SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
+            // Format for date
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+            if (timeDifference < 24 * 60 * 60 * 1000) { // within 24 hours
+                String formattedTime = timeFormat.format(new Date(lastUpdatedTimeStamp));
+                holder.binding.lastUpdatedTime.setText(formattedTime);
+            } else {
+                // Get calendar instance
+                Calendar messageCalendar = Calendar.getInstance();
+                messageCalendar.setTimeInMillis(lastUpdatedTimeStamp);
+                int messageDayOfYear = messageCalendar.get(Calendar.DAY_OF_YEAR);
+
+                Calendar currentCalendar = Calendar.getInstance();
+                currentCalendar.setTimeInMillis(currentTime);
+                int currentDayOfYear = currentCalendar.get(Calendar.DAY_OF_YEAR);
+
+                if (messageDayOfYear == currentDayOfYear - 1) {
+                    holder.binding.lastUpdatedTime.setText("Yesterday");
+                } else {
+                    String formattedDate = dateFormat.format(new Date(lastUpdatedTimeStamp));
+                    holder.binding.lastUpdatedTime.setText(formattedDate);
+                }
+            }
+        }
+
 
         holder.binding.statusItemLayout.setOnClickListener(v -> {
             ArrayList<MyStory> myStories = new ArrayList<>();
@@ -74,12 +112,12 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
                     .setStoryClickListeners(new StoryClickListeners() {
                         @Override
                         public void onDescriptionClickListener(int position1) {
-                            //your action
+                            // your action
                         }
 
                         @Override
                         public void onTitleIconClickListener(int position1) {
-                            //your action
+                            // your action
                         }
                     }) // Optional Listeners
                     .build() // Must be called before calling show method
@@ -91,6 +129,8 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
     public int getItemCount() {
         return userStatuses.size();
     }
+
+
 
     public static class TopStatusViewHolder extends RecyclerView.ViewHolder {
 
