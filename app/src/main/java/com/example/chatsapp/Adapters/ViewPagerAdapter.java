@@ -1,4 +1,4 @@
-package com.example.chatsapp;
+package com.example.chatsapp.Adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,10 +17,13 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if (position == 0) {
-            return new MainFragment();
-        } else {
-            return new StatusFragment();
+        switch (position) {
+            case 0:
+                return new MainFragment();
+            case 1:
+                return new StatusFragment();
+            default:
+                return new MainFragment();
         }
     }
 

@@ -1,13 +1,13 @@
 package com.example.chatsapp.Activities;
 
 import android.os.Bundle;
-import android.view.View;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import com.example.chatsapp.Fragments.MainFragment;
-import com.example.chatsapp.Fragments.StatusFragment;
+import com.example.chatsapp.Adapters.ViewPagerAdapter;
 import com.example.chatsapp.R;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class Main_Activity extends AppCompatActivity {
 
@@ -16,11 +16,21 @@ public class Main_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new StatusFragment())
-                    .commit();
-        }
-    }
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
 
+        viewPager.setAdapter(new ViewPagerAdapter(this));
+
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText("Chats");
+                            break;
+                        case 1:
+                            tab.setText("Status");
+                            break;
+                    }
+                }).attach();
+    }
 }
