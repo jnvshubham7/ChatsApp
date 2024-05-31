@@ -3,7 +3,6 @@ package com.example.chatsapp.Activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,43 +11,36 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.chatsapp.Adapters.Top_Status_Adapter;
 import com.example.chatsapp.Adapters.Users_Adapter;
-import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.User_Status;
 import com.example.chatsapp.R;
+import com.example.chatsapp.ViewPagerAdapter;
 import com.example.chatsapp.databinding.ActivityMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 public class Main_Activity extends AppCompatActivity {
 
-    private static final String TAG = "Main_Activity";
+    private static final String TAG = "Main_Activity_error";
     private static final int REQUEST_CODE_NOTIFICATION = 100;
 
     private ActivityMainBinding binding;
@@ -59,6 +51,7 @@ public class Main_Activity extends AppCompatActivity {
     private ArrayList<User_Status> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
+    private ViewPager2 viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,24 +59,53 @@ public class Main_Activity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Initialize Firebase
+        FirebaseApp.initializeApp(this);
+
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
-
-
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null && !actionBar.isShowing()) {
-            // If the action bar is hidden, remove the top margin from RecyclerView
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) binding.recyclerView.getLayoutParams();
-            params.topMargin = 0;
-            binding.recyclerView.setLayoutParams(params);
+        // Initialize ViewPager2 and BottomNavigationView
+        viewPager = binding.viewPager;
+        if (viewPager == null) {
+            Log.e(TAG, "ViewPager2 not found");
+            return;
         }
 
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_main_activity:
+                    viewPager.setCurrentItem(0);
+                    return true;
+                case R.id.menu_status_activity:
+                    viewPager.setCurrentItem(1);
+                    return true;
+            }
+            return false;
+        });
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        binding.bottomNavigationView.setSelectedItemId(R.id.menu_main_activity);
+                        break;
+                    case 1:
+                        binding.bottomNavigationView.setSelectedItemId(R.id.menu_status_activity);
+                        break;
+                }
+            }
+        });
+
+        // Setup ViewPager adapter
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this);
+        viewPager.setAdapter(adapter);
+
+        // Initialize other components and Firebase Database reference
         initializeComponents();
         fetchCurrentUser();
         setupAdapters();
         fetchUsers();
-//        fetchStories();
-        setupBottomNavigationView();
         retrieveFCMToken();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -96,6 +118,7 @@ public class Main_Activity extends AppCompatActivity {
         dialog.setMessage("Uploading Image...");
         dialog.setCancelable(false);
 
+        // Initialize Firebase Database reference
         database = FirebaseDatabase.getInstance();
         users = new ArrayList<>();
         userStatuses = new ArrayList<>();
@@ -123,10 +146,9 @@ public class Main_Activity extends AppCompatActivity {
 
         binding.recyclerView.setAdapter(usersAdapter);
         binding.recyclerView.showShimmerAdapter();
-
     }
 
-    public void fetchUsers() {
+    private void fetchUsers() {
         database.getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -186,29 +208,6 @@ public class Main_Activity extends AppCompatActivity {
         usersAdapter.notifyDataSetChanged();
     }
 
-
-    private void setupBottomNavigationView() {
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.chats:
-                    intent = new Intent(this, Main_Activity.class);
-                    startActivity(intent);
-                    return true;
-
-                case R.id.status:
-                    intent = new Intent(this, status_activity.class);
-                    startActivity(intent);
-                    return true;
-
-                default:
-                    return true;
-            }
-        });
-    }
-
-
-
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -225,7 +224,7 @@ public class Main_Activity extends AppCompatActivity {
     private void saveTokenToDatabase(String token) {
         String userId = FirebaseAuth.getInstance().getUid();
         if (userId != null) {
-            FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("token").setValue(token);
+            database.getReference().child("users").child(userId).child("token").setValue(token);
         }
     }
 
@@ -240,7 +239,6 @@ public class Main_Activity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         updatePresenceStatus("Offline");
-        fetchUsers();
     }
 
     private void updatePresenceStatus(String status) {

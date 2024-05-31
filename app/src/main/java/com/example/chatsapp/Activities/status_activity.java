@@ -88,7 +88,7 @@ public class status_activity extends AppCompatActivity {
         initializeComponents();
 
         fetchCurrentUser();
-        setupBottomNavigationView();
+//        setupBottomNavigationView();
         setupAdapters();
         fetchStories();
         setupAddStatusButton(); // Initialize the FloatingActionButton
@@ -148,25 +148,25 @@ public class status_activity extends AppCompatActivity {
         binding.statusList.showShimmerAdapter();
     }
 
-    private void setupBottomNavigationView() {
-        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            Intent intent;
-            switch (item.getItemId()) {
-                case R.id.chats:
-                    intent = new Intent(this, Main_Activity.class);
-                    startActivity(intent);
-                    return true;
-
-                case R.id.status:
-                    intent = new Intent(this, status_activity.class);
-                    startActivity(intent);
-                    return true;
-
-                default:
-                    return true;
-            }
-        });
-    }
+//    private void setupBottomNavigationView() {
+//        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+//            Intent intent;
+//            switch (item.getItemId()) {
+//                case R.id.:
+//                    intent = new Intent(this, Main_Activity.class);
+//                    startActivity(intent);
+//                    return true;
+//
+//                case R.id.status:
+//                    intent = new Intent(this, status_activity.class);
+//                    startActivity(intent);
+//                    return true;
+//
+//                default:
+//                    return true;
+//            }
+//        });
+//    }
 
 
     private void fetchStories() {
