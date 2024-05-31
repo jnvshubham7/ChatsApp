@@ -215,14 +215,14 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updatePresenceStatus("Online");
-        fetchUsers();
+//        fetchUsers();
     }
 
     @Override
     public void onPause() {
         super.onPause();
         updatePresenceStatus("Offline");
-        fetchUsers();
+//        fetchUsers();
     }
 
     private void updatePresenceStatus(String status) {
