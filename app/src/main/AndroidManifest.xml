@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
+
+
+
         <activity
             android:name=".Activities.status_activity"
             android:exported="false" />

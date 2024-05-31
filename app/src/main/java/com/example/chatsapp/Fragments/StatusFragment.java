@@ -8,11 +8,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.example.chatsapp.R;
+import com.example.chatsapp.databinding.ActivityStatus2Binding;
 
 public class StatusFragment extends Fragment {
+
+    private ActivityStatus2Binding binding;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.activity_status2, container, false); // Replace with your actual layout
+        // Use data binding to inflate the layout
+        binding = ActivityStatus2Binding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Initialize components and set up any necessary logic here
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null; // Avoid memory leaks
     }
 }
