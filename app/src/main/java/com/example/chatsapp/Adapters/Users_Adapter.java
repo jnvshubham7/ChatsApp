@@ -36,10 +36,8 @@ import java.util.Date;
 
 public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewHolder> {
 
-    Context context;
-    ArrayList<User> users;
-
-    User user;
+    private Context context;
+    private ArrayList<User> users;
 
     public Users_Adapter(Context context, ArrayList<User> users) {
         this.context = context;
@@ -74,22 +72,16 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                             if (time_date == null) {
                                 holder.binding.msgTime.setText("");
                             } else {
-                                // Get current time
                                 long currentTime = System.currentTimeMillis();
-
-                                // Calculate time difference in milliseconds
                                 long timeDifference = currentTime - time_date;
 
-                                // Format for time
                                 SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a");
-                                // Format for date
                                 SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
                                 if (timeDifference < 24 * 60 * 60 * 1000) { // within 24 hours
                                     String formattedTime = timeFormat.format(new Date(time_date));
                                     holder.binding.msgTime.setText(formattedTime);
                                 } else {
-                                    // Get calendar instance
                                     Calendar messageCalendar = Calendar.getInstance();
                                     messageCalendar.setTimeInMillis(time_date);
                                     int messageDayOfYear = messageCalendar.get(Calendar.DAY_OF_YEAR);
@@ -107,16 +99,14 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                                 }
                             }
 
-                            user.setLastMsgTime(time_date != null ? time_date : 0); // Set 0 if time_date is null
+                            user.setLastMsgTime(time_date != null ? time_date : 0);
 
                             Log.d("time_date_error", user.getTimeAndDate() + "");
 
-                            // Truncate the last message if it is too long
                             if (lastMsg != null && lastMsg.length() > 30) {
                                 lastMsg = lastMsg.substring(0, 30) + "...";
                             }
 
-                            // Count unread messages
                             long unreadCount = 0;
                             for (DataSnapshot messageSnapshot : snapshot.child("messages").getChildren()) {
                                 Message message = messageSnapshot.getValue(Message.class);
@@ -127,7 +117,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
 
                             if (unreadCount > 0) {
                                 SpannableString spannableString = new SpannableString(lastMsg);
-//                                assert lastMsg != null;
                                 spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                                 holder.binding.lastMsg.setText(spannableString);
@@ -154,7 +143,7 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-
+                        // Handle error
                     }
                 });
 
@@ -172,7 +161,6 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
             context.startActivity(intent);
         });
     }
-
 
     @Override
     public int getItemCount() {

@@ -6,10 +6,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chatsapp.Activities.status_activity;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User_Status;
 import com.example.chatsapp.R;
@@ -18,8 +18,6 @@ import com.example.chatsapp.databinding.ItemStatusBinding;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.Locale;
 
@@ -29,13 +27,12 @@ import omari.hamza.storyview.model.MyStory;
 
 public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.TopStatusViewHolder> {
 
-    Context context;
-    ArrayList<User_Status> userStatuses;
+    private Context context;
+    private ArrayList<User_Status> userStatuses;
 
     public Top_Status_Adapter(Context context, ArrayList<User_Status> userStatuses) {
         this.context = context;
         this.userStatuses = userStatuses;
-       // sortUserStatusesByLastUpdatedTime();  // Sort the user statuses when initializing the adapter
     }
 
     @NonNull
@@ -59,26 +56,26 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
         // Set the username
         holder.binding.username.setText(userStatus.getName());
 
+        // Set the last updated time
+        setLastUpdatedTime(holder, lastStatus);
+
+        holder.binding.statusItemLayout.setOnClickListener(v -> showStoryView(userStatus));
+    }
+
+    private void setLastUpdatedTime(@NonNull TopStatusViewHolder holder, Status lastStatus) {
         if (lastStatus.getTimeStamp() == 0) {
             holder.binding.lastUpdatedTime.setText("");
         } else {
-            // Get current time
             long currentTime = System.currentTimeMillis();
             long lastUpdatedTimeStamp = lastStatus.getTimeStamp();
-
-            // Calculate time difference in milliseconds
             long timeDifference = currentTime - lastUpdatedTimeStamp;
 
-            // Format for time
             SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm a", Locale.getDefault());
-            // Format for date
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
 
             if (timeDifference < 24 * 60 * 60 * 1000) { // within 24 hours
-                String formattedTime = timeFormat.format(new Date(lastUpdatedTimeStamp));
-                holder.binding.lastUpdatedTime.setText(formattedTime);
+                holder.binding.lastUpdatedTime.setText(timeFormat.format(new Date(lastUpdatedTimeStamp)));
             } else {
-                // Get calendar instance
                 Calendar messageCalendar = Calendar.getInstance();
                 messageCalendar.setTimeInMillis(lastUpdatedTimeStamp);
                 int messageDayOfYear = messageCalendar.get(Calendar.DAY_OF_YEAR);
@@ -90,39 +87,37 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
                 if (messageDayOfYear == currentDayOfYear - 1) {
                     holder.binding.lastUpdatedTime.setText("Yesterday");
                 } else {
-                    String formattedDate = dateFormat.format(new Date(lastUpdatedTimeStamp));
-                    holder.binding.lastUpdatedTime.setText(formattedDate);
+                    holder.binding.lastUpdatedTime.setText(dateFormat.format(new Date(lastUpdatedTimeStamp)));
                 }
             }
         }
+    }
 
+    private void showStoryView(User_Status userStatus) {
+        ArrayList<MyStory> myStories = new ArrayList<>();
+        for (Status status : userStatus.getStatuses()) {
+            myStories.add(new MyStory(status.getImageUrl()));
+        }
 
-        holder.binding.statusItemLayout.setOnClickListener(v -> {
-            ArrayList<MyStory> myStories = new ArrayList<>();
-            for (Status status : userStatus.getStatuses()) {
-                myStories.add(new MyStory(status.getImageUrl()));
-            }
+        new StoryView.Builder(((FragmentActivity) context).getSupportFragmentManager())
+                .setStoriesList(myStories)
+                .setStoryDuration(5000)
+                .setTitleText(userStatus.getName())
+                .setSubtitleText("")
+                .setTitleLogoUrl(userStatus.getProfileImage())
+                .setStoryClickListeners(new StoryClickListeners() {
+                    @Override
+                    public void onDescriptionClickListener(int position) {
+                        // Action on description click
+                    }
 
-            new StoryView.Builder(((status_activity) context).getSupportFragmentManager())
-                    .setStoriesList(myStories) // Required
-                    .setStoryDuration(5000) // Default is 2000 Millis (2 Seconds)
-                    .setTitleText(userStatus.getName()) // Default is Hidden
-                    .setSubtitleText("") // Default is Hidden
-                    .setTitleLogoUrl(userStatus.getProfileImage()) // Default is Hidden
-                    .setStoryClickListeners(new StoryClickListeners() {
-                        @Override
-                        public void onDescriptionClickListener(int position1) {
-                            // your action
-                        }
-
-                        @Override
-                        public void onTitleIconClickListener(int position1) {
-                            // your action
-                        }
-                    }) // Optional Listeners
-                    .build() // Must be called before calling show method
-                    .show();
-        });
+                    @Override
+                    public void onTitleIconClickListener(int position) {
+                        // Action on title icon click
+                    }
+                })
+                .build()
+                .show();
     }
 
     @Override
@@ -130,10 +125,7 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
         return userStatuses.size();
     }
 
-
-
     public static class TopStatusViewHolder extends RecyclerView.ViewHolder {
-
         ItemStatusBinding binding;
 
         public TopStatusViewHolder(@NonNull View itemView) {

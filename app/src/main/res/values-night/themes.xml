@@ -28,4 +28,11 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:windowBackground">@color/black</item>
     </style>
+
+    <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+
+
 </resources>
