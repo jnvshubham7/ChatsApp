@@ -148,7 +148,7 @@ public class Main_Activity extends AppCompatActivity {
         });
     }
 
-    private void fetchLastMsgTime(User user, List<User> tempUserzs, long totalUsers) {
+    private void fetchLastMsgTime(User user, List<User> tempUsers, long totalUsers) {
         String senderId = FirebaseAuth.getInstance().getUid();
         String senderRoom = senderId + user.getUid();
 
