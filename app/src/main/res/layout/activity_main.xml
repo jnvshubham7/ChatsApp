@@ -6,19 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".Activities.Main_Activity">
 
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/tabLayout"
+        android:layout_alignParentTop="true"
+        android:layout_weight="1"/>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:contentDescription="Tab Layout"
+        android:layout_alignParentBottom="true"
         android:background="?attr/colorPrimary"
         app:tabIndicatorColor="@android:color/white"
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@android:color/darker_gray" />
-
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/tabLayout" />
 
 </RelativeLayout>
