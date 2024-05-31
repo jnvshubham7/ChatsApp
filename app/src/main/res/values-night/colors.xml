@@ -28,18 +28,16 @@
 
     <color name="camera_icon_color">#FFFFFF</color>
 
-    <color name="background_dark">#121212</color>
-    <color name="text_dark">#FFFFFF</color>
-    <color name="surface_dark">#1E1E1E</color>
-    <color name="on_surface_dark">#FFFFFF</color>
     <color name="divider">#373737</color> <!-- Dark gray divider -->
 
     <color name="colorGray">#B0B0B0</color>
 
-    <color name="tab_background">#000000</color>
-    <color name="tab_text_color">#B0B0B0</color>
-    <color name="tab_text_color_selected">#FFFFFF</color>
+    <color name="tab_background">#4CAF50</color>
+    <color name="tab_text_color">#00BCD4</color>
+    <color name="tab_text_color_selected">#2196F3</color>
 
+    <color name="tab_unselected_color">#FFDDDDDD</color>
+    <color name="tab_selected_color">#7BCA7E</color>
 
 
 

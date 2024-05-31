@@ -53,6 +53,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:windowBackground">@color/white</item>
+
     </style>
 
     <!-- Light theme -->
@@ -72,6 +73,18 @@
     <style name="CustomTabTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
     </style>
+
+    <!-- Custom TabLayout style -->
+    <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/tab_background_selector</item>
+        <item name="tabSelectedTextColor">@color/tab_text_color_selected</item>
+        <item name="tabTextColor">@color/tab_text_color</item>
+        <item name="tabIndicatorHeight">0dp</item>
+    </style>
+
+
+
+
 
 
 
