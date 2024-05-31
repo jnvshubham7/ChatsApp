@@ -74,7 +74,9 @@ public class status_activity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
 
         initializeComponents();
+
         fetchCurrentUser();
+        setupBottomNavigationView();
         setupAdapters();
         fetchStories();
         setupAddStatusButton(); // Initialize the FloatingActionButton
@@ -113,6 +115,27 @@ public class status_activity extends AppCompatActivity {
         binding.statusList.setAdapter(statusAdapter);
         binding.statusList.showShimmerAdapter();
     }
+
+    private void setupBottomNavigationView() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.chats:
+                    intent = new Intent(this, Main_Activity.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.status:
+                    intent = new Intent(this, status_activity.class);
+                    startActivity(intent);
+                    return true;
+
+                default:
+                    return false;
+            }
+        });
+    }
+
 
     private void fetchStories() {
         database.getReference().child("stories").addValueEventListener(new ValueEventListener() {

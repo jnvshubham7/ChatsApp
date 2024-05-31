@@ -223,14 +223,24 @@ public class Main_Activity extends AppCompatActivity {
 
     private void setupBottomNavigationView() {
         binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == R.id.status) {
-                Intent intent = new Intent(Main_Activity.this, status_activity.class);
-                startActivity(intent);
-                return true;
+            Intent intent;
+            switch (item.getItemId()) {
+                case R.id.chats:
+                    intent = new Intent(this, Main_Activity.class);
+                    startActivity(intent);
+                    return true;
+
+                case R.id.status:
+                    intent = new Intent(this, status_activity.class);
+                    startActivity(intent);
+                    return true;
+
+                default:
+                    return false;
             }
-            return false;
         });
     }
+
 
 //    private void selectImageFromGallery() {
 //        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
