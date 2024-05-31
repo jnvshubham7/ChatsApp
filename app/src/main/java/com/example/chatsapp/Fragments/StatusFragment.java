@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -71,6 +73,17 @@ public class StatusFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Access the ActionBar from the hosting activity
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Status");
+//                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+
 
         initializeComponents();
         fetchCurrentUser();
@@ -274,4 +287,23 @@ public class StatusFragment extends Fragment {
             database.getReference().child("stories").child(uid).child("statuses").push().setValue(status);
         }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Access the ActionBar from the hosting activity
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Status");
+            }
+        }
+    }
+
+
+
+
 }
