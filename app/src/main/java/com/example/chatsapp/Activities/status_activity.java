@@ -1,15 +1,22 @@
 package com.example.chatsapp.Activities;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.chatsapp.Adapters.Top_Status_Adapter;
@@ -27,17 +34,26 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public class status_activity extends AppCompatActivity {
 
     private static final String TAG = "status_activity";
+    private static final int REQUEST_CODE_GALLERY = 75;
+//    private static final int REQUEST_CODE_CAMERA = 76;
+
+    private static final int REQUEST_CODE_CAMERA = 1;
+
 
     ActivityStatus2Binding binding;
 
@@ -47,6 +63,7 @@ public class status_activity extends AppCompatActivity {
     private ArrayList<User_Status> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
+    private Uri imageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +78,7 @@ public class status_activity extends AppCompatActivity {
         setupAdapters();
         fetchStories();
         setupAddStatusButton(); // Initialize the FloatingActionButton
+        setupAddStatusButtonCam();
     }
 
     private void initializeComponents() {
@@ -130,7 +148,6 @@ public class status_activity extends AppCompatActivity {
         });
     }
 
-
     private void sortUserStatusesByLastUpdatedTime() {
         Collections.sort(userStatuses, new Comparator<User_Status>() {
             @Override
@@ -148,18 +165,88 @@ public class status_activity extends AppCompatActivity {
     }
 
     private void selectImageFromGallery() {
+//        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_GALLERY);
+//        } else {
+            openGallery();
+//        }
+    }
+
+    private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, 75);
+        startActivityForResult(intent, REQUEST_CODE_GALLERY);
     }
+
+    private void setupAddStatusButtonCam() {
+        FloatingActionButton addStatusButtonCam = findViewById(R.id.addStatus_camera);
+        addStatusButtonCam.setOnClickListener(v -> openCamera());
+    }
+
+    private void openCamera() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_CAMERA);
+            launchCamera();
+        } else {
+            launchCamera();
+        }
+    }
+
+
+    private void launchCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = createImageFile();
+            if (photoFile != null) {
+                imageUri = FileProvider.getUriForFile(this, "com.example.chatsapp.fileprovider", photoFile);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                startActivityForResult(intent, REQUEST_CODE_CAMERA);
+            }
+        } else {
+            Log.e(TAG, "No camera app available");
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                launchCamera();
+            } else {
+                Log.e(TAG, "Camera or storage permission not granted");
+            }
+        }
+    }
+
+
+
+    private File createImageFile() {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = null;
+        try {
+            image = File.createTempFile(imageFileName, ".jpg", storageDir);
+        } catch (IOException e) {
+            Log.e(TAG, "Error creating image file", e);
+        }
+        return image;
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 75 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK && data != null && data.getData() != null) {
             uploadImage(data.getData());
+        } else if (requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK) {
+            uploadImage(imageUri);
         }
     }
+
 
     private void uploadImage(Uri imageUri) {
         dialog.show();
@@ -178,6 +265,7 @@ public class status_activity extends AppCompatActivity {
             }
         });
     }
+
 
     private void saveStatusToDatabase(Uri uri) {
         Date date = new Date();
