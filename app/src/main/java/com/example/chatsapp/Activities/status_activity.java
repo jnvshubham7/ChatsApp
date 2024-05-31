@@ -28,6 +28,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,7 +115,9 @@ public class status_activity extends AppCompatActivity {
                         }
                         userStatus.setStatuses(statuses);
                         userStatuses.add(userStatus);
+
                     }
+                    sortUserStatusesByLastUpdatedTime();
                     binding.statusList.hideShimmerAdapter();
                     statusAdapter.notifyDataSetChanged();
                 }
@@ -122,6 +126,18 @@ public class status_activity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e(TAG, "Error fetching stories", error.toException());
+            }
+        });
+    }
+
+
+    private void sortUserStatusesByLastUpdatedTime() {
+        Collections.sort(userStatuses, new Comparator<User_Status>() {
+            @Override
+            public int compare(User_Status o1, User_Status o2) {
+                Status lastStatus1 = o1.getStatuses().get(o1.getStatuses().size() - 1);
+                Status lastStatus2 = o2.getStatuses().get(o2.getStatuses().size() - 1);
+                return Long.compare(lastStatus2.getTimeStamp(), lastStatus1.getTimeStamp());
             }
         });
     }

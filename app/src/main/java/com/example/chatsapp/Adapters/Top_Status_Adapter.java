@@ -17,6 +17,8 @@ import com.example.chatsapp.databinding.ItemStatusBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Locale;
 
 import omari.hamza.storyview.StoryView;
@@ -31,6 +33,7 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
     public Top_Status_Adapter(Context context, ArrayList<User_Status> userStatuses) {
         this.context = context;
         this.userStatuses = userStatuses;
+       // sortUserStatusesByLastUpdatedTime();  // Sort the user statuses when initializing the adapter
     }
 
     @NonNull
@@ -74,12 +77,12 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
                     .setStoryClickListeners(new StoryClickListeners() {
                         @Override
                         public void onDescriptionClickListener(int position1) {
-                            //your action
+                            // your action
                         }
 
                         @Override
                         public void onTitleIconClickListener(int position1) {
-                            //your action
+                            // your action
                         }
                     }) // Optional Listeners
                     .build() // Must be called before calling show method
@@ -91,6 +94,8 @@ public class Top_Status_Adapter extends RecyclerView.Adapter<Top_Status_Adapter.
     public int getItemCount() {
         return userStatuses.size();
     }
+
+
 
     public static class TopStatusViewHolder extends RecyclerView.ViewHolder {
 
