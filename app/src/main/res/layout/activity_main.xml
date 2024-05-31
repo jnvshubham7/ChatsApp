@@ -23,6 +23,7 @@
         app:tabIndicatorColor="@android:color/white"
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@android:color/darker_gray"
-        app:tabTextAppearance="@style/CustomTabTextAppearance" />
+        app:tabTextAppearance="@style/CustomTabTextAppearance"
+        style="@style/CustomTabLayout"/>
 
 </RelativeLayout>
