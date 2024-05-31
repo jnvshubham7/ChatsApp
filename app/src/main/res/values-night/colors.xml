@@ -36,6 +36,10 @@
 
     <color name="colorGray">#B0B0B0</color>
 
+    <color name="tab_background">#000000</color>
+    <color name="tab_text_color">#B0B0B0</color>
+    <color name="tab_text_color_selected">#FFFFFF</color>
+
 
 
 

@@ -26,11 +26,20 @@ public class Main_Activity extends AppCompatActivity {
                     switch (position) {
                         case 0:
                             tab.setText("Chats");
+                            tab.setIcon(R.drawable.ic_chats); // Set your chat icon here
                             break;
                         case 1:
                             tab.setText("Status");
+                            tab.setIcon(R.drawable.ic_status); // Set your status icon here
                             break;
                     }
                 }).attach();
+
+        // Set colors for light and dark mode
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.tab_background, getTheme()));
+        tabLayout.setTabTextColors(
+                getResources().getColor(R.color.tab_text_color, getTheme()),
+                getResources().getColor(R.color.tab_text_color_selected, getTheme())
+        );
     }
 }

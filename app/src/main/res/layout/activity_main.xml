@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -23,6 +22,7 @@
         android:background="?attr/colorPrimary"
         app:tabIndicatorColor="@android:color/white"
         app:tabSelectedTextColor="@android:color/white"
-        app:tabTextColor="@android:color/darker_gray" />
+        app:tabTextColor="@android:color/darker_gray"
+        app:tabTextAppearance="@style/CustomTabTextAppearance" />
 
 </RelativeLayout>
