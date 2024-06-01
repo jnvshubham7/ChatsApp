@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="darkPrimary">#121212</color>
-    <color name="darkPrimaryVariant">#1F1F1F</color>
-    <color name="darkSecondary">#BB86FC</color>
-    <color name="darkSecondaryVariant">#3700B3</color>
-    <color name="darkBackground">#121212</color>
-    <color name="darkSurface">#1E1E1E</color>
+
 
 
     <color name="message_background">#2C2C2C</color>
@@ -74,6 +69,14 @@
     <color name="lightSecondaryVariant">#018786</color>
     <color name="lightBackground">#FFFFFF</color>
     <color name="lightSurface">#FFFFFF</color>
+
+
+    <color name="darkPrimary">#202c33</color>
+    <color name="darkPrimaryVariant">#1F1F1F</color>
+    <color name="darkSecondary">#BB86FC</color>
+    <color name="darkSecondaryVariant">#3700B3</color>
+    <color name="darkBackground">#111b21</color>
+    <color name="darkSurface">#1E1E1E</color>
 
 
     <color name="backgroundColor">#121212</color>

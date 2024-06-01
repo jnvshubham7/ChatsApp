@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground"
+    android:background="?selectableItemBackground"
     tools:context=".Activities.ChatActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -12,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:theme="?attr/actionBarTheme"
+        android:theme="@style/Theme.ChatsApp"
         android:elevation="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,7 +32,7 @@
                 android:layout_height="24dp"
                 android:layout_marginEnd="8dp"
                 app:srcCompat="@drawable/ic_left_arrow"
-                app:tint="@color/white" />
+                app:tint="?android:attr/textColorPrimary" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile"
@@ -51,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Shubham Kumar Bhokta"
-                    android:textColor="@color/white"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -60,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Online"
-                    android:textColor="@color/white"
+                    android:textColor="?android:attr/textColorPrimaryInverse"
                     android:textSize="14sp"
                     android:visibility="gone" />
             </LinearLayout>
@@ -116,7 +117,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 app:srcCompat="@drawable/ic_camera"
-                app:tint="#676767" />
+                app:tint="?android:attr/textColorSecondary" />
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -125,12 +127,12 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/circle_green" 
-    android:elevation="4dp"
-    android:padding="10dp"
-    app:layout_constraintBottom_toBottomOf="@+id/cardView"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@+id/cardView"
-    app:srcCompat="@drawable/ic_send"
-    app:tint="@color/white" />
+        android:background="@drawable/circle_green"
+        android:elevation="4dp"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/cardView"
+        app:srcCompat="@drawable/ic_send"
+        app:tint="?android:attr/textColorPrimaryInverse" />
 </androidx.constraintlayout.widget.ConstraintLayout>
