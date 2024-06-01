@@ -95,8 +95,9 @@
         android:id="@+id/continueBtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:backgroundTint="@color/buttonColor"
+
         android:text="NEXT"
+        style="@style/CustomButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintHorizontal_bias="0.498"

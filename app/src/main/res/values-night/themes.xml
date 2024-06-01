@@ -81,4 +81,11 @@
         <item name="tabIndicatorColor">@android:color/white</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
     </style>
+
+    <style name="CustomButton">
+        <item name="android:backgroundTint">@color/button_color_dark</item>
+        <item name="android:textColor">@color/button_text_color_dark</item>
+    </style>
+
+
 </resources>

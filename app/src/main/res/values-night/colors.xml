@@ -83,6 +83,9 @@
     <color name="otpLineColor">#BB86FC</color> <!-- Light color to ensure visibility in dark mode -->
     <color name="buttonColor">#03DAC6</color>
 
+    <color name="button_color_dark">#BB86FC</color>
+    <color name="button_text_color_dark">#000000</color>
+
 
 
 

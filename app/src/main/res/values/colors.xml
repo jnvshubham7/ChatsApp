@@ -83,6 +83,9 @@
     <color name="otpLineColor">#4CAF50</color>
     <color name="buttonColor">#4CAF50</color>
 
+    <color name="button_color_light">#6200EE</color>
+    <color name="button_text_color_light">#FFFFFF</color>
+
 
 
 
