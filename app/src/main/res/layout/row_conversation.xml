@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="Sample Name"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/profile"
@@ -59,7 +59,7 @@
         android:layout_height="30dp"
         android:layout_marginBottom="17dp"
         android:text="Tap to chat"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="@color/colorGray"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/view4"
         app:layout_constraintStart_toStartOf="@+id/username"
@@ -71,8 +71,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:text=""
-        android:textColor="?android:attr/textColorSecondary"
+        android:text="8:66"
+        android:textColor="@color/colorGray"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -87,14 +87,15 @@
 
         android:text="55"
 
-        android:textColor="@color/text_light"
+
+        android:textColor="@color/secondaryTextColor"
 
 
 
         android:textAlignment="center"
         android:background="@drawable/circle_background"
         app:layout_constraintCircleAngle="270"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@+id/profile" />
 
