@@ -32,6 +32,7 @@ import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentMainBinding;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -271,12 +272,16 @@ public class ChatsFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.topmenu, menu);
 
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
+
+        // Find your TabLayout
+        TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -292,7 +297,18 @@ public class ChatsFragment extends Fragment {
             }
         });
 
+        searchView.setOnSearchClickListener(v -> {
+            // Hide the TabLayout when search is expanded
+            if (tabLayout != null) {
+                tabLayout.setVisibility(View.GONE);
+            }
+        });
+
         searchView.setOnCloseListener(() -> {
+            // Show the TabLayout when search is closed
+            if (tabLayout != null) {
+                tabLayout.setVisibility(View.VISIBLE);
+            }
             searchUsers("");
             return false;
         });
