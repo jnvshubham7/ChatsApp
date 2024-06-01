@@ -22,14 +22,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatsapp.Activities.PhoneNumberActivity;
 import com.example.chatsapp.Activities.ProfileEditing;
-import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Adapters.UsersAdapter;
 import com.example.chatsapp.Models.User;
-import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentMainBinding;
 import com.google.android.material.tabs.TabLayout;
@@ -47,7 +44,7 @@ import java.util.Objects;
 
 public class ChatsFragment extends Fragment {
 
-    private static final String TAG = "MainFragment";
+    private static final String TAG = "ChatsFragment";
     private static final int REQUEST_CODE_NOTIFICATION = 100;
 
     private FragmentMainBinding binding;
@@ -55,17 +52,20 @@ public class ChatsFragment extends Fragment {
     private ArrayList<User> users;
     private ArrayList<User> allUsers;
     private UsersAdapter usersAdapter;
-    private TopStatusAdapter statusAdapter;
-    private ArrayList<UserStatus> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
+    private TabLayout tabLayout;
+    private boolean isSearchActive = false;
+    private Menu menu;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-        setHasOptionsMenu(true); // To handle menu in fragment
+        setHasOptionsMenu(true);
+
+        tabLayout = getActivity().findViewById(R.id.tabLayout);
 
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -74,7 +74,6 @@ public class ChatsFragment extends Fragment {
         usersAdapter = new UsersAdapter(getContext(), users);
         binding.recyclerView.setAdapter(usersAdapter);
 
-        // Initialize database here
         database = FirebaseDatabase.getInstance();
         fetchUsers();
 
@@ -100,12 +99,9 @@ public class ChatsFragment extends Fragment {
         dialog.setMessage("Uploading Image...");
         dialog.setCancelable(false);
 
-        // Initialize database here if not already initialized
         if (database == null) {
             database = FirebaseDatabase.getInstance();
         }
-
-        userStatuses = new ArrayList<>();
     }
 
     private void fetchCurrentUser() {
@@ -126,8 +122,6 @@ public class ChatsFragment extends Fragment {
 
     private void setupAdapters() {
         usersAdapter = new UsersAdapter(getContext(), users);
-        statusAdapter = new TopStatusAdapter(getContext(), userStatuses);
-
         binding.recyclerView.setAdapter(usersAdapter);
         binding.recyclerView.showShimmerAdapter();
     }
@@ -178,7 +172,6 @@ public class ChatsFragment extends Fragment {
                             sortUsersByLastMsgTime();
                             allUsers.addAll(tempUsers);
                             sortUsersByLastMsgTime1();
-
                         }
                     }
 
@@ -191,18 +184,15 @@ public class ChatsFragment extends Fragment {
 
     private void sortUsersByLastMsgTime() {
         Collections.sort(users, (u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
-
         binding.recyclerView.hideShimmerAdapter();
         usersAdapter.notifyDataSetChanged();
     }
 
     private void sortUsersByLastMsgTime1() {
         Collections.sort(allUsers, (u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
-
         binding.recyclerView.hideShimmerAdapter();
         usersAdapter.notifyDataSetChanged();
     }
-
 
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
@@ -229,7 +219,6 @@ public class ChatsFragment extends Fragment {
         super.onResume();
         updatePresenceStatus("Online");
 
-        // Access the ActionBar from the hosting activity
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null) {
             ActionBar actionBar = activity.getSupportActionBar();
@@ -273,15 +262,14 @@ public class ChatsFragment extends Fragment {
     }
 
 
+    // Ensure this code is part of your ChatsFragment class
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.topmenu, menu);
+        this.menu = menu;
 
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
-
-        // Find your TabLayout
-        TabLayout tabLayout = getActivity().findViewById(R.id.tabLayout);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -298,40 +286,53 @@ public class ChatsFragment extends Fragment {
         });
 
         searchView.setOnSearchClickListener(v -> {
-            // Hide the TabLayout when search is expanded
             if (tabLayout != null) {
                 tabLayout.setVisibility(View.GONE);
             }
+            isSearchActive = true;
         });
 
         searchView.setOnCloseListener(() -> {
-            // Show the TabLayout when search is closed
             if (tabLayout != null) {
                 tabLayout.setVisibility(View.VISIBLE);
             }
             searchUsers("");
+            isSearchActive = false;
             return false;
         });
     }
 
+    public boolean isSearchActive() {
+        return isSearchActive;
+    }
+
+    public void closeSearch() {
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setQuery("", false);
+        searchView.setIconified(true);
+        isSearchActive = false;
+        if (tabLayout != null) {
+            tabLayout.setVisibility(View.VISIBLE);
+        }
+        searchUsers("");
+    }
+
+
+
     private void searchUsers(String query) {
         List<User> filteredUsers = new ArrayList<>();
-        for (User user : allUsers) {  // Use 'allUsers' to filter from the original list
+        for (User user : allUsers) {
             if (user.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredUsers.add(user);
             }
         }
-        usersAdapter.updateUsers(filteredUsers);  // Update the adapter with the filtered list
+        usersAdapter.updateUsers(filteredUsers);
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        if (item.getItemId() == R.id.search) {
-//            return true;
-//        } else
-//
-     if (item.getItemId() == R.id.logout) {
+        if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getContext(), PhoneNumberActivity.class));
             return true;

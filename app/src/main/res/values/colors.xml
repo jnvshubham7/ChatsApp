@@ -73,13 +73,19 @@
     <color name="colorGray">#B0B0B0</color>
 
 
-    <color name="tab_background">#4CAF50</color>
-    <color name="tab_text_color">#00BCD4</color>
-    <color name="tab_text_color_selected">#2196F3</color>
+    <color name="tab_background">#FFFFFF</color>
+<!--    <color name="tab_text_color">#00BCD4</color>-->
+<!--    <color name="tab_text_color_selected">#2196F3</color>-->
 
-    <color name="tab_unselected_color">#FFDDDDDD</color>
-    <color name="tab_selected_color">#7BCA7E</color>
+<!--    <color name="tab_unselected_color">#FFDDDDDD</color>-->
+<!--    <color name="tab_selected_color">#7BCA7E</color>-->
 <!--    <color name="colorAccent">#FF4081</color>-->
+
+
+    <color name="tab_selected_color">#FF5722</color> <!-- Example color for selected tab in light mode -->
+    <color name="tab_unselected_color">#FFFFFF</color> <!-- Example color for unselected tab in light mode -->
+    <color name="tab_text_color">#8A8A8A</color> <!-- Example text color for unselected tab in light mode -->
+    <color name="tab_text_color_selected">#FFFFFF</color> <!-- Example text color for selected tab in light mode -->
 
 
 
