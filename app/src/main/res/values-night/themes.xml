@@ -71,6 +71,9 @@
         <item name="textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
         <item name="android:textStyle">bold</item>
+
+
+        <item name="android:textColor">?android:attr/textColorSecondary</item>
     </style>
 
     <style name="CustomTabLayout" parent="Widget.Design.TabLayout">
