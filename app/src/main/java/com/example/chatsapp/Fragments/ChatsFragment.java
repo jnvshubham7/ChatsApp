@@ -52,15 +52,12 @@ public class ChatsFragment extends Fragment {
     private FragmentMainBinding binding;
     private FirebaseDatabase database;
     private ArrayList<User> users;
+    private ArrayList<User> allUsers;
     private UsersAdapter usersAdapter;
     private TopStatusAdapter statusAdapter;
     private ArrayList<UserStatus> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
-
-    private RecyclerView recyclerView;
-    private UsersAdapter chatAdapter;
-    private List<User> userList;
 
     @Nullable
     @Override
@@ -69,12 +66,12 @@ public class ChatsFragment extends Fragment {
         View view = binding.getRoot();
         setHasOptionsMenu(true); // To handle menu in fragment
 
-        recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        userList = new ArrayList<>();
-        chatAdapter = new UsersAdapter(getContext(), (ArrayList<User>) userList);
-        recyclerView.setAdapter(chatAdapter);
+        users = new ArrayList<>();
+        allUsers = new ArrayList<>();
+        usersAdapter = new UsersAdapter(getContext(), users);
+        binding.recyclerView.setAdapter(usersAdapter);
 
         // Initialize database here
         database = FirebaseDatabase.getInstance();
@@ -90,7 +87,6 @@ public class ChatsFragment extends Fragment {
         initializeComponents();
         fetchCurrentUser();
         setupAdapters();
-        fetchUsers();
         retrieveFCMToken();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -108,7 +104,6 @@ public class ChatsFragment extends Fragment {
             database = FirebaseDatabase.getInstance();
         }
 
-        users = new ArrayList<>();
         userStatuses = new ArrayList<>();
     }
 
@@ -177,7 +172,9 @@ public class ChatsFragment extends Fragment {
 
                         if (tempUsers.size() == totalUsers - 1) {
                             users.clear();
+                            allUsers.clear();
                             users.addAll(tempUsers);
+                            allUsers.addAll(tempUsers);
                             sortUsersByLastMsgTime();
                         }
                     }
@@ -284,17 +281,23 @@ public class ChatsFragment extends Fragment {
                 return false;
             }
         });
+
+        searchView.setOnCloseListener(() -> {
+            searchUsers("");
+            return false;
+        });
     }
 
     private void searchUsers(String query) {
         List<User> filteredUsers = new ArrayList<>();
-        for (User user : users) {
+        for (User user : allUsers) {  // Use 'allUsers' to filter from the original list
             if (user.getName().toLowerCase().contains(query.toLowerCase())) {
                 filteredUsers.add(user);
             }
         }
-        usersAdapter.updateUsers(filteredUsers);
+        usersAdapter.updateUsers(filteredUsers);  // Update the adapter with the filtered list
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

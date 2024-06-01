@@ -169,10 +169,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     }
 
     public void updateUsers(List<User> filteredUsers) {
-        users.clear();
-        users.addAll(filteredUsers);
+        this.users.clear();
+        this.users.addAll(filteredUsers);
         notifyDataSetChanged();
     }
+
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
 
