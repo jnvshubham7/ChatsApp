@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
@@ -406,6 +407,21 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.chat_menu, menu);
+
+        MenuItem profile_m = menu.findItem(R.id.profile_menu);
+
+
+        profile_m.setOnMenuItemClickListener(item -> {
+
+
+            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
+            intent.putExtra("name", getIntent().getStringExtra("name"));
+            intent.putExtra("image", getIntent().getStringExtra("image"));
+            startActivity(intent);
+            return false;
+        });
+
+
         return super.onCreateOptionsMenu(menu);
     }
 
