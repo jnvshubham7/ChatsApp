@@ -28,7 +28,6 @@ import com.example.chatsapp.Activities.PhoneNumberActivity;
 import com.example.chatsapp.Activities.ProfileEditing;
 import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Adapters.UsersAdapter;
-import com.example.chatsapp.ChatAdapter;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
@@ -60,7 +59,7 @@ public class ChatsFragment extends Fragment {
     private User currentUser;
 
     private RecyclerView recyclerView;
-    private ChatAdapter chatAdapter;
+    private UsersAdapter chatAdapter;
     private List<User> userList;
 
     @Nullable
@@ -74,7 +73,7 @@ public class ChatsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         userList = new ArrayList<>();
-        chatAdapter = new ChatAdapter(getContext(), userList);
+        chatAdapter = new UsersAdapter(getContext(), (ArrayList<User>) userList);
         recyclerView.setAdapter(chatAdapter);
 
         // Initialize database here

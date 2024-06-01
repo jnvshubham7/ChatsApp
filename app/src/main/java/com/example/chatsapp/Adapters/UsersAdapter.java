@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
     private Context context;
@@ -169,7 +168,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     }
 
     public void updateUsers(List<User> filteredUsers) {
-        users = new ArrayList<>(filteredUsers);
+        users.clear();
+        users.addAll(filteredUsers);
         notifyDataSetChanged();
     }
 
