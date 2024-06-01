@@ -174,8 +174,10 @@ public class ChatsFragment extends Fragment {
                             users.clear();
                             allUsers.clear();
                             users.addAll(tempUsers);
-                            allUsers.addAll(tempUsers);
                             sortUsersByLastMsgTime();
+                            allUsers.addAll(tempUsers);
+                            sortUsersByLastMsgTime1();
+
                         }
                     }
 
@@ -192,6 +194,14 @@ public class ChatsFragment extends Fragment {
         binding.recyclerView.hideShimmerAdapter();
         usersAdapter.notifyDataSetChanged();
     }
+
+    private void sortUsersByLastMsgTime1() {
+        Collections.sort(allUsers, (u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
+
+        binding.recyclerView.hideShimmerAdapter();
+        usersAdapter.notifyDataSetChanged();
+    }
+
 
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
