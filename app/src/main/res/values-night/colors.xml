@@ -44,5 +44,8 @@
     <color name="tab_text_color">#B0B0B0</color> <!-- Example text color for unselected tab in dark mode -->
     <color name="tab_text_color_selected">#FFFFFF</color> <!-- Example text color for selected tab in dark mode -->
 
+    <color name="iconPrimaryColor">#128C7E</color> <!-- Darker Green -->
+    <color name="iconSecondaryColor">#EDEDED</color> <!-- Light Gray -->
+
 
 </resources>
