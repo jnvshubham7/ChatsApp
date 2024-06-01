@@ -3,9 +3,9 @@
     <solid android:color="@color/send_message_background"/> <!-- Reference the color resource -->
     <corners android:radius="8dp"/> <!-- Slightly rounded corners -->
     <padding
-        android:left="10dp"
-        android:top="5dp"
-        android:right="10dp"
-        android:bottom="5dp"/>
-    <stroke android:color="#A3C6A2" android:width="1dp"/> <!-- Border color and width -->
+        android:left="8dp"
+        android:top="4dp"
+        android:right="8dp"
+        android:bottom="4dp" />
+
 </shape>

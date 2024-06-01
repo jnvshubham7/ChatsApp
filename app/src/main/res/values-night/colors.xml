@@ -17,7 +17,7 @@
     <color name="textColorDark">#FFFFFF</color>
     <color name="colorBackgroundCard">#121212</color>
     <color name="received_message_background">#2E2E2E</color>
-    <color name="receive_message_background">#2E2E2E</color>
+    <color name="receive_message_background">#202c33</color>
     <color name="receive_message_text">#FFFFFF</color>
     <color name="send_message_background">#005c4b</color>
     <color name="send_message_text">#2C2C2C</color>
@@ -72,7 +72,7 @@
 
 
     <color name="darkPrimary">#202c33</color>
-    <color name="darkPrimaryVariant">#1F1F1F</color>
+    <color name="darkPrimaryVariant">#222e35</color>
     <color name="darkSecondary">#BB86FC</color>
     <color name="darkSecondaryVariant">#3700B3</color>
     <color name="darkBackground">#111b21</color>
