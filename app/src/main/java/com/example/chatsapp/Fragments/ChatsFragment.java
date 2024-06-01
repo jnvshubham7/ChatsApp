@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,11 +21,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.chatsapp.Activities.PhoneNumberActivity;
 import com.example.chatsapp.Activities.ProfileEditing;
 import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Adapters.UsersAdapter;
+import com.example.chatsapp.ChatAdapter;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
@@ -55,25 +59,39 @@ public class ChatsFragment extends Fragment {
     private ProgressDialog dialog;
     private User currentUser;
 
+    private RecyclerView recyclerView;
+    private ChatAdapter chatAdapter;
+    private List<User> userList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         setHasOptionsMenu(true); // To handle menu in fragment
-        return binding.getRoot();
+
+        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        userList = new ArrayList<>();
+        chatAdapter = new ChatAdapter(getContext(), userList);
+        recyclerView.setAdapter(chatAdapter);
+
+        // Initialize database here
+        database = FirebaseDatabase.getInstance();
+        fetchUsers();
+
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-
         initializeComponents();
         fetchCurrentUser();
         setupAdapters();
         fetchUsers();
-//        setupBottomNavigationView();
         retrieveFCMToken();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -86,7 +104,11 @@ public class ChatsFragment extends Fragment {
         dialog.setMessage("Uploading Image...");
         dialog.setCancelable(false);
 
-        database = FirebaseDatabase.getInstance();
+        // Initialize database here if not already initialized
+        if (database == null) {
+            database = FirebaseDatabase.getInstance();
+        }
+
         users = new ArrayList<>();
         userStatuses = new ArrayList<>();
     }
@@ -175,24 +197,6 @@ public class ChatsFragment extends Fragment {
         usersAdapter.notifyDataSetChanged();
     }
 
-//    private void setupBottomNavigationView() {
-//        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-//            Intent intent;
-//            switch (item.getItemId()) {
-//                case R.id.menu_main_activity:
-//                    // Handle chat navigation
-//                    return true;
-//
-//                case R.id.menu_status_activity:
-//                    // Handle status navigation
-//                    return true;
-//
-//                default:
-//                    return true;
-//            }
-//        });
-//    }
-
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
             if (!task.isSuccessful()) {
@@ -224,21 +228,14 @@ public class ChatsFragment extends Fragment {
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setTitle("ChatsApp");
-//                actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-
-
-//        fetchUsers();
-
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         updatePresenceStatus("Offline");
-//        fetchUsers();
     }
 
     private void updatePresenceStatus(String status) {
@@ -271,18 +268,47 @@ public class ChatsFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.topmenu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchUsers(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchUsers(newText);
+                return false;
+            }
+        });
+    }
+
+    private void searchUsers(String query) {
+        List<User> filteredUsers = new ArrayList<>();
+        for (User user : users) {
+            if (user.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredUsers.add(user);
+            }
+        }
+        usersAdapter.updateUsers(filteredUsers);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.profile) {
-            startActivity(new Intent(getContext(), ProfileEditing.class));
-            return true;
-        } else if (item.getItemId() == R.id.logout) {
+//        if (item.getItemId() == R.id.search) {
+//            return true;
+//        } else
+//
+     if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(getContext(), PhoneNumberActivity.class));
-            getActivity().finishAffinity();
+            return true;
+        } else if (item.getItemId() == R.id.profile) {
+            startActivity(new Intent(getContext(), ProfileEditing.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

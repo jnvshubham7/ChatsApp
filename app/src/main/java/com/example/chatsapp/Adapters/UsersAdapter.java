@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
@@ -165,6 +166,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     @Override
     public int getItemCount() {
         return users.size();
+    }
+
+    public void updateUsers(List<User> filteredUsers) {
+        users = new ArrayList<>(filteredUsers);
+        notifyDataSetChanged();
     }
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {

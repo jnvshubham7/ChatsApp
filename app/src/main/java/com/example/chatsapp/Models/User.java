@@ -3,27 +3,14 @@ package com.example.chatsapp.Models;
 public class User {
 
     private String uid, name, phoneNumber, profileImage, fcmToken;
+    private long timeAndDate;
+    private long lastMsgTime;
 
-    private  long timeAndDate;
-
-    private long lastMsgTime; // Add this field
-
-    // Existing constructors and methods
-
-    public long getLastMsgTime() {
-        return lastMsgTime;
-    }
-
-    public void setLastMsgTime(long lastMsgTime) {
-        this.lastMsgTime = lastMsgTime;
-    }
-
-
+    // Default constructor for Firebase
     public User() {
-
-
     }
 
+    // Parameterized constructor
     public User(String uid, String name, String phoneNumber, String profileImage, String fcmToken) {
         this.uid = uid;
         this.name = name;
@@ -32,17 +19,14 @@ public class User {
         this.fcmToken = fcmToken;
     }
 
-    public long getTimeAndDate() {
-        return timeAndDate;
+    // Getters and Setters
+    public long getLastMsgTime() {
+        return lastMsgTime;
     }
 
-    public void setTimeAndDate(long timeAndDate) {
-        this.timeAndDate = timeAndDate;
+    public void setLastMsgTime(long lastMsgTime) {
+        this.lastMsgTime = lastMsgTime;
     }
-
-
-
-
 
     public String getUid() {
         return uid;
@@ -74,5 +58,21 @@ public class User {
 
     public void setProfileImage(String profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getFcmToken() {
+        return fcmToken;
+    }
+
+    public void setFcmToken(String fcmToken) {
+        this.fcmToken = fcmToken;
+    }
+
+    public long getTimeAndDate() {
+        return timeAndDate;
+    }
+
+    public void setTimeAndDate(long timeAndDate) {
+        this.timeAndDate = timeAndDate;
     }
 }
