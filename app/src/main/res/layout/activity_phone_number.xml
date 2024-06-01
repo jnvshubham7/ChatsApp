@@ -42,7 +42,6 @@
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
         app:layout_constraintTop_toBottomOf="@+id/phoneLbl" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
@@ -61,20 +60,39 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/phoneBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textbox_outline"
-                android:ems="10"
-                android:hint="Type your phone number"
-                android:padding="10dp"
-                android:phoneNumber="true"
-                android:text="+91 "
-                android:textColor="@color/secondaryTextColor" />
+                android:orientation="horizontal">
 
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    app:ccp_defaultNameCode="IN"
+                    app:ccp_showFlag="true"
+                    app:ccp_showFullName="false"
+                    app:ccp_showNameCode="false"
+                    app:ccp_showPhoneCode="true" />
+
+                <EditText
+                    android:id="@+id/phoneBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/textbox_outline"
+                    android:hint="Type phone number"
+
+                    android:inputType="phone"
+
+                    android:padding="10dp"
+                    android:textColor="@color/secondaryTextColor" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+
 
     <Button
         android:id="@+id/continueBtn"
