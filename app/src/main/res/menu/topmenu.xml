@@ -4,20 +4,25 @@
 
     <item
         android:id="@+id/profile"
-        android:title="@string/my_profile" />
+        android:title="@string/my_profile"
+        android:icon="@drawable/ic_profile"/>
 
-    //logout
+
 
     <item
         android:id="@+id/logout"
-        android:title="Logout" />
+        android:title="Logout"
+        android:icon="@drawable/ic_logout"/>
 
 
-<!--    <item-->
-<!--        android:id="@+id/search"-->
-<!--        android:icon="@drawable/ic_search"-->
-<!--        android:title="Search"-->
-<!--        app:showAsAction="always" />-->
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:actionViewClass="android.widget.SearchView"
+        app:showAsAction="always" />
+
+
 <!--    <item-->
 <!--        android:id="@+id/group"-->
 <!--        android:title="Groups" />-->

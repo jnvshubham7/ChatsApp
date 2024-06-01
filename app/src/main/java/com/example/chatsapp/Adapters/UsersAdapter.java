@@ -18,7 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.chatsapp.Activities.Chat_Activity;
+import com.example.chatsapp.Activities.ChatActivity;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.R;
@@ -33,13 +33,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewHolder> {
+import java.util.List;
+public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
     private Context context;
     private ArrayList<User> users;
 
-    public Users_Adapter(Context context, ArrayList<User> users) {
+    public UsersAdapter(Context context, ArrayList<User> users) {
         this.context = context;
         this.users = users;
     }
@@ -154,7 +154,8 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
                 .into(holder.binding.profile);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(context, Chat_Activity.class);
+            Log.d("UsersAdapter", "Item clicked: " + user.getName());
+            Intent intent = new Intent(context, ChatActivity.class);
             intent.putExtra("name", user.getName());
             intent.putExtra("image", user.getProfileImage());
             intent.putExtra("uid", user.getUid());
@@ -166,6 +167,13 @@ public class Users_Adapter extends RecyclerView.Adapter<Users_Adapter.UsersViewH
     public int getItemCount() {
         return users.size();
     }
+
+    public void updateUsers(List<User> filteredUsers) {
+        this.users.clear();
+        this.users.addAll(filteredUsers);
+        notifyDataSetChanged();
+    }
+
 
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
 

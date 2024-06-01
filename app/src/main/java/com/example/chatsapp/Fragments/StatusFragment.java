@@ -15,17 +15,17 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.chatsapp.Adapters.Top_Status_Adapter;
+import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User;
-import com.example.chatsapp.Models.User_Status;
-import com.example.chatsapp.R;
+import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.databinding.FragmentStatusBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,8 +57,8 @@ public class StatusFragment extends Fragment {
     private FragmentStatusBinding binding;
     private FirebaseDatabase database;
     private ArrayList<User> users;
-    private Top_Status_Adapter statusAdapter;
-    private ArrayList<User_Status> userStatuses;
+    private TopStatusAdapter statusAdapter;
+    private ArrayList<UserStatus> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
     private Uri imageUri;
@@ -73,6 +73,17 @@ public class StatusFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // Access the ActionBar from the hosting activity
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Status");
+//                actionBar.setDisplayHomeAsUpEnabled(true);
+            }
+        }
+
 
         initializeComponents();
         fetchCurrentUser();
@@ -109,7 +120,7 @@ public class StatusFragment extends Fragment {
     }
 
     private void setupAdapters() {
-        statusAdapter = new Top_Status_Adapter(getContext(), userStatuses);
+        statusAdapter = new TopStatusAdapter(getContext(), userStatuses);
         binding.statusList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         binding.statusList.setAdapter(statusAdapter);
         binding.statusList.showShimmerAdapter();
@@ -122,7 +133,7 @@ public class StatusFragment extends Fragment {
                 if (snapshot.exists()) {
                     userStatuses.clear();
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
-                        User_Status userStatus = new User_Status();
+                        UserStatus userStatus = new UserStatus();
                         userStatus.setName(Objects.requireNonNull(userSnapshot.child("name").getValue()).toString());
                         userStatus.setProfileImage(Objects.requireNonNull(userSnapshot.child("profileImage").getValue()).toString());
                         userStatus.setLastUpdated(Long.parseLong(Objects.requireNonNull(userSnapshot.child("lastUpdated").getValue()).toString()));
@@ -149,9 +160,9 @@ public class StatusFragment extends Fragment {
     }
 
     private void sortUserStatusesByLastUpdatedTime() {
-        Collections.sort(userStatuses, new Comparator<User_Status>() {
+        Collections.sort(userStatuses, new Comparator<UserStatus>() {
             @Override
-            public int compare(User_Status o1, User_Status o2) {
+            public int compare(UserStatus o1, UserStatus o2) {
                 Status lastStatus1 = o1.getStatuses().get(o1.getStatuses().size() - 1);
                 Status lastStatus2 = o2.getStatuses().get(o2.getStatuses().size() - 1);
                 return Long.compare(lastStatus2.getTimeStamp(), lastStatus1.getTimeStamp());
@@ -258,7 +269,7 @@ public class StatusFragment extends Fragment {
 
     private void saveStatusToDatabase(Uri uri) {
         Date date = new Date();
-        User_Status userStatus = new User_Status();
+        UserStatus userStatus = new UserStatus();
         userStatus.setName(currentUser.getName());
         userStatus.setProfileImage(currentUser.getProfileImage());
         userStatus.setLastUpdated(date.getTime());
@@ -276,4 +287,23 @@ public class StatusFragment extends Fragment {
             database.getReference().child("stories").child(uid).child("statuses").push().setValue(status);
         }
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Access the ActionBar from the hosting activity
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("Status");
+            }
+        }
+    }
+
+
+
+
 }

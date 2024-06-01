@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Messages_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     Context context;
     ArrayList<Message> messages;
@@ -37,7 +37,7 @@ public class Messages_Adapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     String senderRoom;
     String receiverRoom;
 
-    public Messages_Adapter(Context context, ArrayList<Message> messages, String senderRoom, String receiverRoom) {
+    public MessagesAdapter(Context context, ArrayList<Message> messages, String senderRoom, String receiverRoom) {
         this.context = context;
         this.messages = messages;
         this.senderRoom = senderRoom;

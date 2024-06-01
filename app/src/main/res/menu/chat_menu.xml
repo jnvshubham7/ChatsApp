@@ -10,7 +10,13 @@
 <!--        android:icon="@drawable/ic_call"-->
 <!--        android:title="Audio Call"-->
 <!--        app:showAsAction="always" />-->
-    <item android:title="Profile" />
+    <item
+        android:id="@+id/profile_menu"
+
+        android:title="Profile"
+        android:icon="@drawable/ic_profile"
+
+        />
 <!--    <item android:title="Block" />-->
 <!--    <item android:title="Media, links, and docs" />-->
 <!--    <item android:title="Search" />-->

@@ -33,16 +33,16 @@
             android:name=".FullImageActivity"
             android:exported="false" /> <!-- Define application activities -->
         <activity
-            android:name=".Activities.Profile_Editing"
+            android:name=".Activities.ProfileEditing"
             android:exported="false" />
-        <activity android:name=".Activities.Phone_Number_Activity" />
+        <activity android:name=".Activities.PhoneNumberActivity" />
         <activity
-            android:name=".Activities.Chat_Activity"
+            android:name=".Activities.ChatActivity"
             android:theme="@style/Theme.ChatsApp.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity android:name=".Activities.Setup_Profile_Activity" />
+        <activity android:name=".Activities.SetupProfileActivity" />
         <activity
-            android:name=".Activities.OTP_Activity"
+            android:name=".Activities.OTPActivity"
             android:windowSoftInputMode="stateVisible" />
         <activity
             android:name=".Splash_Screen_Activity"
@@ -55,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.Main_Activity"
+            android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Define application services -->
         <service
             android:name=".MyFirebaseMessagingService"

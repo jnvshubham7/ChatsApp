@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.chatsapp.Fragments.MainFragment;
+import com.example.chatsapp.Fragments.ChatsFragment;
 import com.example.chatsapp.Fragments.StatusFragment;
 
 public class ViewPagerAdapter extends FragmentStateAdapter {
@@ -19,11 +19,11 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position) {
             case 0:
-                return new MainFragment();
+                return new ChatsFragment();
             case 1:
                 return new StatusFragment();
             default:
-                return new MainFragment();
+                return new ChatsFragment();
         }
     }
 

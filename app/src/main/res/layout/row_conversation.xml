@@ -10,22 +10,28 @@
     app:cardPreventCornerOverlap="false"
     app:cardMaxElevation="@dimen/cardview_compat_inset_shadow"
     android:outlineSpotShadowColor="@color/colorAccent"
-    android:outlineAmbientShadowColor="@color/colorAccent">
+    android:outlineAmbientShadowColor="@color/colorAccent"
+    android:clickable="true"
+    android:focusable="true"
+
+    >
 
 
 
 
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:background="?selectableItemBackground">
+    android:background="?selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    >
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profile"

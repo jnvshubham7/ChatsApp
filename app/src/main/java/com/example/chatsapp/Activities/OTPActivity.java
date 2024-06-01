@@ -1,7 +1,5 @@
 package com.example.chatsapp.Activities;
 
-import static android.content.ContentValues.TAG;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -15,9 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatsapp.databinding.ActivityOtpactivityBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -25,12 +20,11 @@ import com.google.firebase.auth.FirebaseAuthMissingActivityForRecaptchaException
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-public class OTP_Activity extends AppCompatActivity {
+public class OTPActivity extends AppCompatActivity {
 
     ActivityOtpactivityBinding binding;
     FirebaseAuth auth;
@@ -60,11 +54,11 @@ public class OTP_Activity extends AppCompatActivity {
         PhoneAuthOptions options = PhoneAuthOptions.newBuilder(auth)
                 .setPhoneNumber(phoneNumber)
                 .setTimeout(60L, TimeUnit.SECONDS)
-                .setActivity(OTP_Activity.this)
+                .setActivity(OTPActivity.this)
                 .setCallbacks(new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                     @Override
                     public void onVerificationCompleted(@NonNull PhoneAuthCredential phoneAuthCredential) {
-                        Toast.makeText(OTP_Activity.this, "Verified", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OTPActivity.this, "Verified", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -72,15 +66,15 @@ public class OTP_Activity extends AppCompatActivity {
                         dialog.dismiss();
                         if (e instanceof FirebaseAuthInvalidCredentialsException) {
                             // Invalid request
-                            Toast.makeText(OTP_Activity.this, "Invalid request: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(OTPActivity.this, "Invalid request: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         } else if (e instanceof FirebaseAuthMissingActivityForRecaptchaException) {
                             // reCAPTCHA verification requires an activity to be provided
-                            Toast.makeText(OTP_Activity.this, "reCAPTCHA verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(OTPActivity.this, "reCAPTCHA verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         } else {
                             // Other errors
-                            Toast.makeText(OTP_Activity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(OTPActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
-                        Intent intent = new Intent(OTP_Activity.this, Phone_Number_Activity.class);
+                        Intent intent = new Intent(OTPActivity.this, PhoneNumberActivity.class);
                         startActivity(intent);
                         Log.e("VerificationFailed", "Verification failed with error: " + e.getMessage());
                     }
@@ -88,7 +82,7 @@ public class OTP_Activity extends AppCompatActivity {
                     @Override
                     public void onCodeSent(@NonNull String verifyId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(verifyId, forceResendingToken);
-                        Toast.makeText(OTP_Activity.this, "OTP Sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OTPActivity.this, "OTP Sent", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                         verificationId = verifyId;
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -104,17 +98,17 @@ public class OTP_Activity extends AppCompatActivity {
 
             auth.signInWithCredential(credential).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
-                    Toast.makeText(OTP_Activity.this, "OTP Verified", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(OTPActivity.this, "OTP Verified", Toast.LENGTH_SHORT).show();
 
 
-                    Intent intent = new Intent(OTP_Activity.this, Setup_Profile_Activity.class);
+                    Intent intent = new Intent(OTPActivity.this, SetupProfileActivity.class);
                     startActivity(intent);
                     finishAffinity();
                 } else {
                     if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                        Toast.makeText(OTP_Activity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OTPActivity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(OTP_Activity.this, "Verification failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OTPActivity.this, "Verification failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });

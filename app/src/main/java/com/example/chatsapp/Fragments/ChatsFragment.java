@@ -12,23 +12,26 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.chatsapp.Activities.Phone_Number_Activity;
-import com.example.chatsapp.Activities.Profile_Editing;
-import com.example.chatsapp.Adapters.Top_Status_Adapter;
-import com.example.chatsapp.Adapters.Users_Adapter;
+import com.example.chatsapp.Activities.PhoneNumberActivity;
+import com.example.chatsapp.Activities.ProfileEditing;
+import com.example.chatsapp.Adapters.TopStatusAdapter;
+import com.example.chatsapp.Adapters.UsersAdapter;
 import com.example.chatsapp.Models.User;
-import com.example.chatsapp.Models.User_Status;
+import com.example.chatsapp.Models.UserStatus;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentMainBinding;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,7 +44,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainFragment extends Fragment {
+public class ChatsFragment extends Fragment {
 
     private static final String TAG = "MainFragment";
     private static final int REQUEST_CODE_NOTIFICATION = 100;
@@ -49,9 +52,10 @@ public class MainFragment extends Fragment {
     private FragmentMainBinding binding;
     private FirebaseDatabase database;
     private ArrayList<User> users;
-    private Users_Adapter usersAdapter;
-    private Top_Status_Adapter statusAdapter;
-    private ArrayList<User_Status> userStatuses;
+    private ArrayList<User> allUsers;
+    private UsersAdapter usersAdapter;
+    private TopStatusAdapter statusAdapter;
+    private ArrayList<UserStatus> userStatuses;
     private ProgressDialog dialog;
     private User currentUser;
 
@@ -59,8 +63,21 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
+        View view = binding.getRoot();
         setHasOptionsMenu(true); // To handle menu in fragment
-        return binding.getRoot();
+
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        users = new ArrayList<>();
+        allUsers = new ArrayList<>();
+        usersAdapter = new UsersAdapter(getContext(), users);
+        binding.recyclerView.setAdapter(usersAdapter);
+
+        // Initialize database here
+        database = FirebaseDatabase.getInstance();
+        fetchUsers();
+
+        return view;
     }
 
     @Override
@@ -70,8 +87,6 @@ public class MainFragment extends Fragment {
         initializeComponents();
         fetchCurrentUser();
         setupAdapters();
-        fetchUsers();
-//        setupBottomNavigationView();
         retrieveFCMToken();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -84,8 +99,11 @@ public class MainFragment extends Fragment {
         dialog.setMessage("Uploading Image...");
         dialog.setCancelable(false);
 
-        database = FirebaseDatabase.getInstance();
-        users = new ArrayList<>();
+        // Initialize database here if not already initialized
+        if (database == null) {
+            database = FirebaseDatabase.getInstance();
+        }
+
         userStatuses = new ArrayList<>();
     }
 
@@ -106,8 +124,8 @@ public class MainFragment extends Fragment {
     }
 
     private void setupAdapters() {
-        usersAdapter = new Users_Adapter(getContext(), users);
-        statusAdapter = new Top_Status_Adapter(getContext(), userStatuses);
+        usersAdapter = new UsersAdapter(getContext(), users);
+        statusAdapter = new TopStatusAdapter(getContext(), userStatuses);
 
         binding.recyclerView.setAdapter(usersAdapter);
         binding.recyclerView.showShimmerAdapter();
@@ -154,8 +172,12 @@ public class MainFragment extends Fragment {
 
                         if (tempUsers.size() == totalUsers - 1) {
                             users.clear();
+                            allUsers.clear();
                             users.addAll(tempUsers);
                             sortUsersByLastMsgTime();
+                            allUsers.addAll(tempUsers);
+                            sortUsersByLastMsgTime1();
+
                         }
                     }
 
@@ -173,23 +195,13 @@ public class MainFragment extends Fragment {
         usersAdapter.notifyDataSetChanged();
     }
 
-//    private void setupBottomNavigationView() {
-//        binding.bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-//            Intent intent;
-//            switch (item.getItemId()) {
-//                case R.id.menu_main_activity:
-//                    // Handle chat navigation
-//                    return true;
-//
-//                case R.id.menu_status_activity:
-//                    // Handle status navigation
-//                    return true;
-//
-//                default:
-//                    return true;
-//            }
-//        });
-//    }
+    private void sortUsersByLastMsgTime1() {
+        Collections.sort(allUsers, (u1, u2) -> Long.compare(u2.getLastMsgTime(), u1.getLastMsgTime()));
+
+        binding.recyclerView.hideShimmerAdapter();
+        usersAdapter.notifyDataSetChanged();
+    }
+
 
     private void retrieveFCMToken() {
         FirebaseMessaging.getInstance().getToken().addOnCompleteListener(task -> {
@@ -215,14 +227,21 @@ public class MainFragment extends Fragment {
     public void onResume() {
         super.onResume();
         updatePresenceStatus("Online");
-//        fetchUsers();
+
+        // Access the ActionBar from the hosting activity
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        if (activity != null) {
+            ActionBar actionBar = activity.getSupportActionBar();
+            if (actionBar != null) {
+                actionBar.setTitle("ChatsApp");
+            }
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
         updatePresenceStatus("Offline");
-//        fetchUsers();
     }
 
     private void updatePresenceStatus(String status) {
@@ -255,18 +274,53 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         inflater.inflate(R.menu.topmenu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
+
+        MenuItem searchItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) searchItem.getActionView();
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                searchUsers(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                searchUsers(newText);
+                return false;
+            }
+        });
+
+        searchView.setOnCloseListener(() -> {
+            searchUsers("");
+            return false;
+        });
     }
+
+    private void searchUsers(String query) {
+        List<User> filteredUsers = new ArrayList<>();
+        for (User user : allUsers) {  // Use 'allUsers' to filter from the original list
+            if (user.getName().toLowerCase().contains(query.toLowerCase())) {
+                filteredUsers.add(user);
+            }
+        }
+        usersAdapter.updateUsers(filteredUsers);  // Update the adapter with the filtered list
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.profile) {
-            startActivity(new Intent(getContext(), Profile_Editing.class));
-            return true;
-        } else if (item.getItemId() == R.id.logout) {
+//        if (item.getItemId() == R.id.search) {
+//            return true;
+//        } else
+//
+     if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getContext(), Phone_Number_Activity.class));
-            getActivity().finishAffinity();
+            startActivity(new Intent(getContext(), PhoneNumberActivity.class));
+            return true;
+        } else if (item.getItemId() == R.id.profile) {
+            startActivity(new Intent(getContext(), ProfileEditing.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
