@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f9f9f9"
+    android:background="@color/backgroundColor"
     tools:context=".Activities.PhoneNumberActivity">
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Enter your phone number"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -37,7 +37,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="ChatsApp will send an SMS message to verify your phone number."
-        android:textColor="@color/black"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
@@ -70,7 +70,8 @@
                 android:hint="Type your phone number"
                 android:padding="10dp"
                 android:phoneNumber="true"
-                android:text="+91 " />
+                android:text="+91 "
+                android:textColor="@color/secondaryTextColor" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -79,7 +80,7 @@
         android:id="@+id/continueBtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:backgroundTint="#4CAF50"
+        android:backgroundTint="@color/buttonColor"
         android:text="NEXT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"

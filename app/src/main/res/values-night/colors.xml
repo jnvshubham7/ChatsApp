@@ -76,6 +76,17 @@
     <color name="lightSurface">#FFFFFF</color>
 
 
+    <color name="backgroundColor">#121212</color>
+    <color name="primaryTextColor">#BB86FC</color>
+    <color name="secondaryTextColor">#FFFFFF</color>
+    <color name="otpItemBackground">#333333</color> <!-- Darker grey to contrast with the background -->
+    <color name="otpLineColor">#BB86FC</color> <!-- Light color to ensure visibility in dark mode -->
+    <color name="buttonColor">#03DAC6</color>
+
+
+
+
+
 
 
 

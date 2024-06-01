@@ -76,6 +76,16 @@
     <color name="darkSurface">#1E1E1E</color>
 
 
+    <color name="backgroundColor">#f9f9f9</color>
+    <color name="primaryTextColor">#FF6200EE</color>
+    <color name="secondaryTextColor">#000000</color>
+    <color name="otpItemBackground">#D3D3D3</color>
+    <color name="otpLineColor">#4CAF50</color>
+    <color name="buttonColor">#4CAF50</color>
+
+
+
+
 
 
 
