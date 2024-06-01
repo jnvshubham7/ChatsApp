@@ -4,9 +4,10 @@
 
     <item
         android:id="@+id/profile"
-        android:title="@string/my_profile" />
+        android:title="@string/my_profile"
+        android:icon=""/>
 
-    //logout
+
 
     <item
         android:id="@+id/logout"
