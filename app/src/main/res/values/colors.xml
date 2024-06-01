@@ -71,24 +71,15 @@
     <color name="divider">#BDBDBD</color> <!-- Light gray divider -->
 
     <color name="colorGray">#B0B0B0</color>
+    <color name="tab_background">#FFFFFF</color> <!-- White background -->
+    <color name="tab_selected_color">#25D366</color> <!-- WhatsApp Green for selected tab -->
+    <color name="tab_unselected_color">#E0E0E0</color> <!-- Light gray for unselected tab -->
+    <color name="tab_text_color">#757575</color> <!-- Medium gray for unselected tab text -->
+    <color name="tab_text_color_selected">#FFFFFF</color> <!-- White for selected tab text -->
 
+    <color name="iconPrimaryColor">#25D366</color> <!-- WhatsApp Green for primary icons -->
+    <color name="iconSecondaryColor">#FFFFFF</color> <!-- White for secondary icons -->
 
-    <color name="tab_background">#FFFFFF</color>
-<!--    <color name="tab_text_color">#00BCD4</color>-->
-<!--    <color name="tab_text_color_selected">#2196F3</color>-->
-
-<!--    <color name="tab_unselected_color">#FFDDDDDD</color>-->
-<!--    <color name="tab_selected_color">#7BCA7E</color>-->
-<!--    <color name="colorAccent">#FF4081</color>-->
-
-
-    <color name="tab_selected_color">#FF5722</color> <!-- Example color for selected tab in light mode -->
-    <color name="tab_unselected_color">#FFFFFF</color> <!-- Example color for unselected tab in light mode -->
-    <color name="tab_text_color">#8A8A8A</color> <!-- Example text color for unselected tab in light mode -->
-    <color name="tab_text_color_selected">#FFFFFF</color> <!-- Example text color for selected tab in light mode -->
-
-    <color name="iconPrimaryColor">#25D366</color> <!-- WhatsApp Green -->
-    <color name="iconSecondaryColor">#FFFFFF</color> <!-- White -->
 
 
 

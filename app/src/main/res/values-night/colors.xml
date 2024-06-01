@@ -32,20 +32,15 @@
 
     <color name="colorGray">#B0B0B0</color>
 
-    <color name="tab_background">#121212</color>
-<!--    <color name="tab_text_color">#00BCD4</color>-->
-<!--    <color name="tab_text_color_selected">#2196F3</color>-->
+    <color name="tab_background">#121212</color> <!-- Dark background -->
+    <color name="tab_selected_color">#25D366</color> <!-- WhatsApp Green for selected tab -->
+    <color name="tab_unselected_color">#303030</color> <!-- Dark gray for unselected tab -->
+    <color name="tab_text_color">#B0B0B0</color> <!-- Light gray for unselected tab text -->
+    <color name="tab_text_color_selected">#FFFFFF</color> <!-- White for selected tab text -->
 
-<!--    <color name="tab_unselected_color">#FFDDDDDD</color>-->
-<!--    <color name="tab_selected_color">#7BCA7E</color>-->
+    <color name="iconPrimaryColor">#128C7E</color> <!-- Darker WhatsApp Green for primary icons -->
+    <color name="iconSecondaryColor">#EDEDED</color> <!-- Light gray for secondary icons -->
 
-    <color name="tab_selected_color">#FF7043</color> <!-- Example color for selected tab in dark mode -->
-    <color name="tab_unselected_color">#303030</color> <!-- Example color for unselected tab in dark mode -->
-    <color name="tab_text_color">#B0B0B0</color> <!-- Example text color for unselected tab in dark mode -->
-    <color name="tab_text_color_selected">#FFFFFF</color> <!-- Example text color for selected tab in dark mode -->
-
-    <color name="iconPrimaryColor">#128C7E</color> <!-- Darker Green -->
-    <color name="iconSecondaryColor">#EDEDED</color> <!-- Light Gray -->
 
 
 </resources>
