@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#DCF8C6"/> <!-- Light green background color for sent message -->
+    <solid android:color="#005c4b"/> <!-- Reference the color resource -->
     <corners android:radius="8dp"/> <!-- Slightly rounded corners -->
-    <padding android:left="10dp"
+    <padding
+        android:left="10dp"
         android:top="5dp"
         android:right="10dp"
         android:bottom="5dp"/>

@@ -19,7 +19,7 @@
     <color name="received_message_background">#2E2E2E</color>
     <color name="receive_message_background">#2E2E2E</color>
     <color name="receive_message_text">#FFFFFF</color>
-    <color name="send_message_background">#2C2C2C</color>
+    <color name="send_message_background">#005c4b</color>
     <color name="send_message_text">#2C2C2C</color>
     <color name="camera_icon_color">#FFFFFF</color>
     <color name="divider">#373737</color>
