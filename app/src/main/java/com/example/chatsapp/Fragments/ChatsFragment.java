@@ -69,7 +69,7 @@ public class ChatsFragment extends Fragment {
         View view = binding.getRoot();
         setHasOptionsMenu(true); // To handle menu in fragment
 
-        recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         userList = new ArrayList<>();

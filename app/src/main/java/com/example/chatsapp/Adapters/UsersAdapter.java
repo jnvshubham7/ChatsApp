@@ -154,6 +154,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                 .into(holder.binding.profile);
 
         holder.itemView.setOnClickListener(v -> {
+            Log.d("UsersAdapter", "Item clicked: " + user.getName());
             Intent intent = new Intent(context, ChatActivity.class);
             intent.putExtra("name", user.getName());
             intent.putExtra("image", user.getProfileImage());
