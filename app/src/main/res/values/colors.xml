@@ -7,78 +7,76 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-
     <color name="grey">#E3E3E3</color>
     <color name="green">#065C54</color>
     <color name="greenDark">#0B554E</color>
     <color name="sentcolor">#DCF8C6</color>
-
     <color name="colorPrimary">#0b6156</color>
     <color name="colorPrimaryDark">#095049</color>
     <color name="colorAccent">#03DAC5</color>
-
     <color name="lightGrey">#EDEDED</color>
     <color name="whatsAppColor">#0b6156</color>
     <color name="red">#9F0B0B</color>
     <color name="status_background">#009688</color>
     <color name="chat_background">#8BC34A</color>
     <color name="fb_color">#3c5793</color>
-
     <color name="lightgreen">#e5ffcc</color>
-
     <color name="grayBackground">#BCBCBC</color>
     <color name="settingsIconColor">#0E8374</color>
     <color name="hint_color">#757575</color>
     <color name="icon_tint">#676767</color>
-
     <color name="dark_gray">#808080</color>
     <color name="gray">#C0C0C0</color>
-
-
     <color name="message_background_light">#FFFFFF</color>
     <color name="message_text_light">#000000</color>
-
-
-
     <color name="backgroundLight">#FFFFFF</color>
-
     <color name="textColorLight">#000000</color>
-
     <color name="message_background">#2C2C2C</color>
     <color name="message_text">#FFFFFF</color>
     <color name="backgroundDark">#121212</color>
     <color name="textColorDark">#FFFFFF</color>
-
     <color name="colorBackgroundCard">#FFFFFF</color>
     <color name="received_message_background">#D3D3D3</color>
-
-
-    <color name="receive_message_background">#EDEDED</color> <!-- Light gray for received messages -->
-    <color name="receive_message_text">#000000</color> <!-- Black text for received messages -->
-    <color name="send_message_background">#DCF8C6</color> <!-- Light green for sent messages -->
-    <color name="send_message_text">#000000</color> <!-- Black text for sent messages -->
-
-
-    <!-- Define the colorBackground attribute -->
+    <color name="receive_message_background">#EDEDED</color>
+    <color name="receive_message_text">#000000</color>
+    <color name="send_message_background">#DCF8C6</color>
+    <color name="send_message_text">#000000</color>
     <color name="colorBackground">#FFFFFF</color>
-
     <color name="camera_icon_color">#676767</color>
-
     <color name="background_light">#FFFFFF</color>
     <color name="text_light">#000000</color>
     <color name="surface_light">#FFFFFF</color>
     <color name="on_surface_light">#000000</color>
-    <color name="divider">#BDBDBD</color> <!-- Light gray divider -->
-
+    <color name="divider">#BDBDBD</color>
     <color name="colorGray">#B0B0B0</color>
-    <color name="tab_background">#FFFFFF</color> <!-- White background -->
-    <color name="tab_selected_color">#25D366</color> <!-- WhatsApp Green for selected tab -->
-    <color name="tab_unselected_color">#E0E0E0</color> <!-- Light gray for unselected tab -->
-    <color name="tab_text_color">#757575</color> <!-- Medium gray for unselected tab text -->
-    <color name="tab_text_color_selected">#FFFFFF</color> <!-- White for selected tab text -->
+    <color name="tab_background">#FFFFFF</color>
+    <color name="tab_selected_color">#25D366</color>
+    <color name="tab_unselected_color">#E0E0E0</color>
+    <color name="tab_text_color">#757575</color>
+    <color name="tab_text_color_selected">#FFFFFF</color>
+    <color name="iconPrimaryColor">#25D366</color>
+    <color name="iconSecondaryColor">#FFFFFF</color>
 
-    <color name="iconPrimaryColor">#25D366</color> <!-- WhatsApp Green for primary icons -->
-    <color name="iconSecondaryColor">#FFFFFF</color> <!-- White for secondary icons -->
+
+    <!-- Light mode colors -->
+    <color name="lightPrimary">#6200EE</color>
+    <color name="lightPrimaryVariant">#3700B3</color>
+    <color name="lightSecondary">#03DAC5</color>
+    <color name="lightSecondaryVariant">#018786</color>
+    <color name="lightBackground">#FFFFFF</color>
+    <color name="lightSurface">#FFFFFF</color>
+
+
+
+    <color name="darkPrimary">#121212</color>
+    <color name="darkPrimaryVariant">#1F1F1F</color>
+    <color name="darkSecondary">#BB86FC</color>
+    <color name="darkSecondaryVariant">#3700B3</color>
+    <color name="darkBackground">#121212</color>
+    <color name="darkSurface">#1E1E1E</color>
+
+
+
 
 
 
