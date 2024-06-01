@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f9f9f9"
+    android:background="@color/backgroundColor"
     tools:context=".Activities.PhoneNumberActivity">
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Verify +916299360050"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -37,7 +37,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Enter the OTP code to verify your phone number."
-        android:textColor="@color/black"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
@@ -69,9 +69,9 @@
                 android:layout_marginTop="5dp"
                 android:focusableInTouchMode="true"
                 android:inputType="number"
-                android:itemBackground="@color/grey"
+                android:itemBackground="@color/otpItemBackground"
                 app:OtpItemCount="6"
-                app:OtpLineColor="@color/green"
+                app:OtpLineColor="@color/otpLineColor"
                 app:OtpViewType="line" />
 
         </LinearLayout>
@@ -83,7 +83,7 @@
         android:layout_height="36dp"
         android:layout_marginTop="15dp"
         android:text="Enter 6-digit code"
-        android:textColor="@color/black"
+        android:textColor="@color/secondaryTextColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintHorizontal_bias="0.576"
@@ -95,8 +95,9 @@
         android:id="@+id/continueBtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:backgroundTint="#4CAF50"
+
         android:text="NEXT"
+        style="@style/CustomButton"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView3"
         app:layout_constraintHorizontal_bias="0.498"

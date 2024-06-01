@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f9f9f9"
+    android:background="@color/backgroundColor"
     tools:context=".Activities.PhoneNumberActivity">
 
     <ImageView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Enter your phone number"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -37,12 +37,11 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="ChatsApp will send an SMS message to verify your phone number."
-        android:textColor="@color/black"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
         app:layout_constraintTop_toBottomOf="@+id/phoneLbl" />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView2"
         android:layout_width="match_parent"
@@ -61,28 +60,49 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/phoneBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textbox_outline"
-                android:ems="10"
-                android:hint="Type your phone number"
-                android:padding="10dp"
-                android:phoneNumber="true"
-                android:text="+91 " />
+                android:orientation="horizontal">
 
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="0dp"
+                    app:ccp_defaultNameCode="IN"
+                    app:ccp_showFlag="true"
+                    app:ccp_showFullName="false"
+                    app:ccp_showNameCode="false"
+                    app:ccp_showPhoneCode="true" />
+
+                <EditText
+                    android:id="@+id/phoneBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/textbox_outline"
+                    android:hint="Type phone number"
+
+                    android:inputType="phone"
+
+                    android:padding="10dp"
+                    android:textColor="@color/secondaryTextColor" />
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
+
+
 
     <Button
         android:id="@+id/continueBtn"
         android:layout_width="100dp"
         android:layout_height="50dp"
-        android:backgroundTint="#4CAF50"
+
         android:text="NEXT"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/cardView2"
+        style="@style/CustomButton"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/cardView2"

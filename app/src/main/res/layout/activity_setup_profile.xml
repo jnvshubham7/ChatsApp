@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Profile info"
-        android:textColor="?android:attr/textColorPrimary"
+        android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
@@ -37,7 +37,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="Please provide your name and an optional profile photo"
-        android:textColor="?android:attr/textColorSecondary"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/phoneLbl"
         app:layout_constraintStart_toStartOf="@+id/phoneLbl"
@@ -78,10 +78,13 @@
         android:layout_width="153dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="56dp"
-        android:backgroundTint="?attr/colorPrimary"
+
         android:text="Setup Profile"
-        android:textColor="?android:attr/textColorPrimaryInverse"
+
         app:layout_constraintEnd_toEndOf="parent"
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView5" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView5"
+        style="@style/CustomButton"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

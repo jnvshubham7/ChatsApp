@@ -10,4 +10,5 @@
     <string name="name_edit_hint">Type your name here</string>
     <string name="save_profile">Save Profile</string>
     <string name="image_description">Image</string>
+    <string name="provide_your_name">Please provide your name and an optional profile photo</string>
 </resources>
