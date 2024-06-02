@@ -21,7 +21,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
 
         StatusBarUtil.setTransparent(this);
 
-        ImageView logo = findViewById(R.id.imageView4);
+        ImageView logo = findViewById(R.id.textViewC);
         TextView appName = findViewById(R.id.textView);
 
         // Wait for the splash display duration, then start the next activity
