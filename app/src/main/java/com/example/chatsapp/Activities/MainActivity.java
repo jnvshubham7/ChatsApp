@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setBackgroundColor(getResources().getColor(R.color.tab_background, getTheme()));
         tabLayout.setTabTextColors(
                 getResources().getColor(R.color.tab_text_color, getTheme()),
-                getResources().getColor(R.color.tab_text_color_selected, getTheme())
+                getResources().getColor(R.color.secondaryTextColor, getTheme())
         );
     }
 
