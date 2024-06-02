@@ -50,7 +50,7 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_double_check_blue"
+            android:src="@drawable/ic_check"
             app:layout_constraintStart_toStartOf="@+id/lastMsg"
             app:layout_constraintEnd_toEndOf="@+id/lastMsg"
             app:layout_constraintBottom_toBottomOf="@+id/lastMsg"
