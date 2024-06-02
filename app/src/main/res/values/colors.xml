@@ -91,12 +91,8 @@
 
     <color name="msg_time_unread">#00a884</color>
 
-
-
-
-
-
-
+    <color name="selected_color">@color/whatsAppColor</color> <!-- Black color for selected state -->
+    <color name="unselected_color">@color/black</color> <!-- Gray color for unselected state -->
 
 
 

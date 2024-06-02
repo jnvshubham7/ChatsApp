@@ -80,6 +80,7 @@
         <item name="tabTextColor">#757575</item>
         <item name="tabIndicatorHeight">0dp</item>
         <item name="tabTextAppearance">@style/CustomTabTextAppearance</item>
+        <item name="tabIconTint">@color/tab_icon_color_selector</item>
     </style>
 
     <style name="CustomButton">
