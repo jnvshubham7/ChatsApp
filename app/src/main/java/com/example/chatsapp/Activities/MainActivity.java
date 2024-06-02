@@ -42,8 +42,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }).attach();
 
-
-
         tabLayout.setBackgroundColor(getResources().getColor(R.color.tab_background, getTheme()));
         tabLayout.setTabTextColors(
                 getResources().getColor(R.color.tab_text_color, getTheme()),
@@ -55,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         int currentItem = viewPager.getCurrentItem();
         if (currentItem == 0) {
-            ChatsFragment chatsFragment = (ChatsFragment) viewPagerAdapter.createFragment(0);
+            ChatsFragment chatsFragment = (ChatsFragment) getSupportFragmentManager().findFragmentByTag("f" + currentItem);
             if (chatsFragment != null && chatsFragment.isSearchActive()) {
                 chatsFragment.closeSearch();
             } else {
