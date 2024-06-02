@@ -74,5 +74,5 @@
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout"
         app:layout_constraintTop_toTopOf="@+id/linearLayout"
-        app:srcCompat="@drawable/ic_fb_love" />
+         />
 </androidx.constraintlayout.widget.ConstraintLayout>
