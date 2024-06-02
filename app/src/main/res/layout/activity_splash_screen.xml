@@ -25,7 +25,6 @@
         android:layout_marginEnd="50dp"
         android:gravity="center"
         android:text="ChatsApp"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        style="@style/AppNameTextStyle" />
+
 </RelativeLayout>

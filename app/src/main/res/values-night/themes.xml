@@ -88,6 +88,18 @@
 <!--        <item name="android:textColor">@color/button_text_color_dark</item>-->
 <!--    </style>-->
 
+    <style name="AppNameTextStyle">
+        <item name="android:textColor">@color/app_name_color</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:textStyle">bold</item>
+<!--        <item name="android:fontFamily">@font/your_custom_font</item> &lt;!&ndash; Optional: add custom font &ndash;&gt;-->
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">1.5</item>
+    </style>
+
+
 
 
 

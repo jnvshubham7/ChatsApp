@@ -94,6 +94,9 @@
     <color name="selected_color">@color/whatsAppColor</color> <!-- Black color for selected state -->
     <color name="unselected_color">@color/black</color> <!-- Gray color for unselected state -->
 
+    <color name="app_name_color">@color/lightPrimary</color> <!-- Example color -->
+
+
 
 
 </resources>

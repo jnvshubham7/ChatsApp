@@ -95,6 +95,10 @@
     <color name="unselected_color">@color/white</color> <!-- Gray color for unselected state -->
 
 
+    <color name="app_name_color">@color/green</color> <!-- Example color -->
+
+
+
 
 
 
