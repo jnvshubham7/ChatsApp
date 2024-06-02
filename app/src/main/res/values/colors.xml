@@ -59,12 +59,12 @@
 
 
     <!-- Light mode colors -->
-    <color name="lightPrimary">#6200EE</color>
-    <color name="lightPrimaryVariant">#3700B3</color>
-    <color name="lightSecondary">#03DAC5</color>
-    <color name="lightSecondaryVariant">#018786</color>
-    <color name="lightBackground">#FFFFFF</color>
-    <color name="lightSurface">#FFFFFF</color>
+    <color name="lightPrimary">@color/whatsAppColor</color> <!-- A deeper shade of blue for primary -->
+    <color name="lightPrimaryVariant">@color/colorPrimaryDark</color> <!-- Keeping this as it complements well -->
+    <color name="lightSecondary">#03DAC6</color> <!-- Slightly brightened the secondary color -->
+    <color name="lightSecondaryVariant">#018786</color> <!-- Keeping this as it complements well -->
+    <color name="lightBackground">#F9F9F9</color> <!-- A very light grey for a softer background -->
+    <color name="lightSurface">#FFFFFF</color> <!-- Keeping white for surface -->
 
 
 
