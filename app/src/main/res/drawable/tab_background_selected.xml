@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Highlight -->
-    <item android:bottom="30dp" android:left="50dp" android:right="50dp" android:top="10dp">
+    <item android:bottom="34dp" android:left="60dp" android:right="60dp" android:top="6dp">
         <shape android:shape="rectangle">
-            <solid android:color="#92EAB6"/>
+            <solid android:color="@color/tab_selected_color"/>
             <corners android:radius="15dp"/>
         </shape>
     </item>
