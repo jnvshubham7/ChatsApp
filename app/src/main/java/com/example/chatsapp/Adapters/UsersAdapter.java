@@ -1,5 +1,7 @@
 package com.example.chatsapp.Adapters;
 
+import static android.graphics.Color.parseColor;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -39,6 +41,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     private Context context;
     private ArrayList<User> users;
 
+
     public UsersAdapter(Context context, ArrayList<User> users) {
         this.context = context;
         this.users = users;
@@ -48,12 +51,16 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     @Override
     public UsersViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.row_conversation, parent, false);
+
         return new UsersViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
         User user = users.get(position);
+
+
+
 
         String senderId = FirebaseAuth.getInstance().getUid();
         String senderRoom = senderId + user.getUid();
@@ -116,18 +123,20 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                             }
 
                             if (unreadCount > 0) {
-                                SpannableString spannableString = new SpannableString(lastMsg);
-                                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                                holder.binding.lastMsg.setText(spannableString);
+//                                SpannableString spannableString = new SpannableString(lastMsg);
+//                                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//                                spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+                                holder.binding.lastMsg.setText(lastMsg);
 
-                                holder.binding.msgTime.setTextColor(Color.GREEN);
+                                holder.binding.msgTime.setTextColor(parseColor("#00a884"));
 
                                 holder.binding.unreadCount.setVisibility(View.VISIBLE);
                                 holder.binding.unreadCount.setText(String.valueOf(unreadCount));
+
+
                             } else {
                                 holder.binding.lastMsg.setText(lastMsg);
-                                holder.binding.lastMsg.setTypeface(Typeface.DEFAULT);
+
 
                                 holder.binding.msgTime.setTextColor(holder.binding.msgTime.getTextColors());
                                 holder.binding.lastMsg.setTextColor(holder.binding.lastMsg.getTextColors());
@@ -159,6 +168,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             intent.putExtra("name", user.getName());
             intent.putExtra("image", user.getProfileImage());
             intent.putExtra("uid", user.getUid());
+            holder.binding.msgTime.setTextColor(parseColor("#B0B0B0"));
             context.startActivity(intent);
         });
     }

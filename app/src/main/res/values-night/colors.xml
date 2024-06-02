@@ -89,6 +89,10 @@
     <color name="button_color_dark">#BB86FC</color>
     <color name="button_text_color_dark">#000000</color>
 
+    <color name="msg_time_unread">#00a884</color>
+
+
+
 
 
 
