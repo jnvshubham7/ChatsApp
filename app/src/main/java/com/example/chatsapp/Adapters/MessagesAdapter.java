@@ -95,6 +95,13 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             }
             viewHolder.binding.timestamp.setText(sdf.format(new Date(message.getTimestamp())));
 
+            // Set status icon
+            if (message.isRead()) {
+                viewHolder.binding.statusIcon.setImageResource(R.drawable.ic_double_check_blue);
+            } else {
+                viewHolder.binding.statusIcon.setImageResource(R.drawable.ic_double_check);
+            }
+
             viewHolder.itemView.setOnLongClickListener(v -> {
                 showDeleteDialog(message);
                 return false;
@@ -129,7 +136,6 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             });
         }
     }
-
 
     private void showDeleteDialog(Message message) {
         View view = LayoutInflater.from(context).inflate(R.layout.delete_dialog, null);

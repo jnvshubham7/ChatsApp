@@ -61,7 +61,7 @@
                 android:layout_height="16dp"
                 android:layout_marginStart="4dp"
                 android:visibility="visible"
-                app:srcCompat="@drawable/ic_check" />
+                app:srcCompat="@drawable/ic_double_check" />
         </LinearLayout>
     </LinearLayout>
 
