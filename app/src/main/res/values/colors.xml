@@ -99,6 +99,8 @@
     <color name="whatsAppColor_icon">#25D366</color> <!-- WhatsApp green color -->
     <color name="whatsAppBackgroundColor">#EDEDED</color> <!-- Example background color -->
 
+    <color name="launcher_background_color">#FFFFFF</color>
+
 
 
 
