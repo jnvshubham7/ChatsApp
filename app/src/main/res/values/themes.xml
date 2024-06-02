@@ -83,10 +83,10 @@
     </style>
 
 
-    <style name="CustomButton">
-        <item name="android:backgroundTint">@color/button_color_light</item>
-        <item name="android:textColor">@color/button_text_color_light</item>
-    </style>
+<!--    <style name="CustomButton">-->
+<!--        <item name="android:backgroundTint">@color/button_color_light</item>-->
+<!--        <item name="android:textColor">@color/button_text_color_light</item>-->
+<!--    </style>-->
 
 
 

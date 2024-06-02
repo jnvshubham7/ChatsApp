@@ -83,10 +83,10 @@
         <item name="tabIconTint">@color/tab_icon_color_selector</item>
     </style>
 
-    <style name="CustomButton">
-        <item name="android:backgroundTint">@color/button_color_dark</item>
-        <item name="android:textColor">@color/button_text_color_dark</item>
-    </style>
+<!--    <style name="CustomButton">-->
+<!--        <item name="android:backgroundTint">@color/button_color_dark</item>-->
+<!--        <item name="android:textColor">@color/button_text_color_dark</item>-->
+<!--    </style>-->
 
 
 

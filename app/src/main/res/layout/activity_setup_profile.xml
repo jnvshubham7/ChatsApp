@@ -85,6 +85,6 @@
 
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView5"
-        style="@style/CustomButton"
+
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
