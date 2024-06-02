@@ -59,9 +59,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
     public void onBindViewHolder(@NonNull UsersViewHolder holder, int position) {
         User user = users.get(position);
 
-
-
-
         String senderId = FirebaseAuth.getInstance().getUid();
         String senderRoom = senderId + user.getUid();
 
@@ -115,38 +112,42 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                             }
 
                             long unreadCount = 0;
+                            boolean isSeen = false;
                             for (DataSnapshot messageSnapshot : snapshot.child("messages").getChildren()) {
                                 Message message = messageSnapshot.getValue(Message.class);
                                 if (message != null && !message.isRead() && !message.getSenderId().equals(senderId)) {
                                     unreadCount++;
                                 }
+                                if (message != null && message.isRead() && message.getSenderId().equals(senderId)) {
+                                    isSeen = true;
+                                }
                             }
 
                             if (unreadCount > 0) {
-//                                SpannableString spannableString = new SpannableString(lastMsg);
-//                                spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                                spannableString.setSpan(new ForegroundColorSpan(Color.GREEN), 0, lastMsg.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
                                 holder.binding.lastMsg.setText(lastMsg);
 
                                 holder.binding.msgTime.setTextColor(parseColor("#00a884"));
-
                                 holder.binding.unreadCount.setVisibility(View.VISIBLE);
                                 holder.binding.unreadCount.setText(String.valueOf(unreadCount));
-
-
                             } else {
                                 holder.binding.lastMsg.setText(lastMsg);
-
-
                                 holder.binding.msgTime.setTextColor(holder.binding.msgTime.getTextColors());
                                 holder.binding.lastMsg.setTextColor(holder.binding.lastMsg.getTextColors());
-
                                 holder.binding.unreadCount.setVisibility(View.GONE);
+                            }
+
+                            if (isSeen) {
+                                holder.binding.statusIcon.setImageResource(R.drawable.ic_double_check_blue); // Set seen icon
+                            } else {
+                                holder.binding.statusIcon.setImageResource(R.drawable.ic_double_check); // Set sent icon (or use delivered icon as needed)
                             }
                         } else {
                             holder.binding.lastMsg.setText("Tap to chat");
                             holder.binding.msgTime.setText("");
                             holder.binding.unreadCount.setVisibility(View.GONE);
+
+
                         }
                     }
 
@@ -169,9 +170,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
             intent.putExtra("image", user.getProfileImage());
             intent.putExtra("uid", user.getUid());
             holder.binding.msgTime.setTextColor(parseColor("#B0B0B0"));
+
             context.startActivity(intent);
         });
     }
+
 
     @Override
     public int getItemCount() {
@@ -195,3 +198,4 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         }
     }
 }
+
