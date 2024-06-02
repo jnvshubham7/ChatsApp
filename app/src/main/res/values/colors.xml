@@ -96,6 +96,9 @@
 
     <color name="app_name_color">@color/lightPrimary</color> <!-- Example color -->
 
+    <color name="whatsAppColor_icon">#25D366</color> <!-- WhatsApp green color -->
+    <color name="whatsAppBackgroundColor">#EDEDED</color> <!-- Example background color -->
+
 
 
 
