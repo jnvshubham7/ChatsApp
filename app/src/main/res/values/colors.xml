@@ -37,7 +37,7 @@
     <color name="textColorDark">#FFFFFF</color>
     <color name="colorBackgroundCard">#FFFFFF</color>
     <color name="received_message_background">#D3D3D3</color>
-    <color name="receive_message_background">#ffffff</color>
+    <color name="receive_message_background">#EDEDED</color>
     <color name="receive_message_text">#000000</color>
     <color name="send_message_background">#d8fdd2</color>
     <color name="send_message_text">#000000</color>
@@ -93,6 +93,14 @@
 
     <color name="selected_color">@color/whatsAppColor</color> <!-- Black color for selected state -->
     <color name="unselected_color">@color/black</color> <!-- Gray color for unselected state -->
+
+    <color name="app_name_color">@color/lightPrimary</color> <!-- Example color -->
+
+    <color name="whatsAppColor_icon">#25D366</color> <!-- WhatsApp green color -->
+    <color name="whatsAppBackgroundColor">#EDEDED</color> <!-- Example background color -->
+
+    <color name="launcher_background_color">#FFFFFF</color>
+
 
 
 

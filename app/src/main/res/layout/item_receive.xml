@@ -71,6 +71,6 @@
         app:layout_constraintEnd_toEndOf="@id/messageContainer"
         app:layout_constraintStart_toEndOf="@id/messageContainer"
         app:layout_constraintTop_toTopOf="@id/messageContainer"
-        app:srcCompat="@drawable/ic_fb_love" />
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

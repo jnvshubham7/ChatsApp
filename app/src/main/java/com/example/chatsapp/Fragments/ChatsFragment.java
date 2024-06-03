@@ -306,6 +306,7 @@ public class ChatsFragment extends Fragment {
         return isSearchActive;
     }
 
+
     public void closeSearch() {
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -317,6 +318,7 @@ public class ChatsFragment extends Fragment {
         }
         searchUsers("");
     }
+
 
 
 

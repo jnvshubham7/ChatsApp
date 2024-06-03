@@ -100,7 +100,6 @@
 
                 android:text="Save Profile"
 
-                style="@style/CustomButton"
                 android:onClick="saveProfile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"

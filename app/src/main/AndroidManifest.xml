@@ -13,10 +13,11 @@
 
     <application
 
+
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_chatsapp"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/ic_chatsapp"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
@@ -70,7 +71,7 @@
             android:resource="@array/preloaded_fonts" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
+            android:resource="@drawable/ic_chats" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/green" />
