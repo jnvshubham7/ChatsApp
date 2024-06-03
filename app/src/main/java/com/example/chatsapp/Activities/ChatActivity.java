@@ -327,7 +327,7 @@ public class ChatActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
-                                    sendNotification("photo");
+                                    sendNotification_Image("Photo", filePath);
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(ChatActivity.this, "Failed to send image to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -512,6 +512,92 @@ public class ChatActivity extends AppCompatActivity {
             Log.e(TAG, "JSONException: " + e.getMessage());
         }
     }
+
+
+
+    private void sendNotification_Image(String message, String imageUrl) {
+        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String senderName = snapshot.getValue(String.class);
+                if (senderName != null) {
+                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            String token = snapshot.getValue(String.class);
+                            if (token != null) {
+                                sendFCMNotification_Image(token, message, senderName, imageUrl);
+                            } else {
+                                Toast.makeText(ChatActivity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
+                                Log.e(TAG, "FCM Token is null");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Database error: " + error.getMessage());
+                        }
+                    });
+                } else {
+                    Toast.makeText(ChatActivity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
+                    Log.e(TAG, "Sender name is null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Database error: " + error.getMessage());
+            }
+        });
+    }
+
+
+    private void sendFCMNotification_Image(String token, String message, String senderName, String imageUrl) {
+        String notificationTitle = senderName;
+
+        try {
+            JSONObject notification = new JSONObject();
+            notification.put("title", notificationTitle);
+            notification.put("body", message);
+            notification.put("image", imageUrl); // Add image URL to notification payload
+
+            JSONObject data = new JSONObject();
+            data.put("message", message);
+            data.put("imageUrl", imageUrl); // Add image URL to data payload
+
+            JSONObject notificationBody = new JSONObject();
+            notificationBody.put("to", token);
+            notificationBody.put("notification", notification);
+            notificationBody.put("data", data);
+
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
+                    response -> {
+                        Log.d(TAG, "Notification Response: " + response.toString());
+                    },
+                    error -> {
+                        Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Notification Error: " + error.toString());
+                    }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    headers.put("Authorization", "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+            };
+
+            RequestQueue queue = Volley.newRequestQueue(this);
+            queue.add(request);
+
+        } catch (JSONException e) {
+            Toast.makeText(ChatActivity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "JSONException: " + e.getMessage());
+        }
+    }
+
 
 }
 
