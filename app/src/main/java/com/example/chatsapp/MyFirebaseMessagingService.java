@@ -3,16 +3,19 @@ package com.example.chatsapp;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-import com.example.chatsapp.Activities.MainActivity;
+import com.example.chatsapp.Activities.ChatActivity; // Update this import based on your package structure
+import com.example.chatsapp.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -25,53 +28,57 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String CHANNEL_NAME = "Default Channel";
 
     @Override
-    public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, "onMessageReceived: called");
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
 
-        String title = null;
-        String body = null;
-        String imageUrl = null;
+        String senderUid = remoteMessage.getData().get("sender_uid");
+        String senderName = remoteMessage.getData().get("sender_name");
+        String senderImage = remoteMessage.getData().get("sender_image");
+        String message = remoteMessage.getData().get("message");
 
-        if (remoteMessage.getNotification() != null) {
-            title = remoteMessage.getNotification().getTitle();
-            body = remoteMessage.getNotification().getBody();
-            if (remoteMessage.getNotification().getImageUrl() != null) {
-                imageUrl = remoteMessage.getNotification().getImageUrl().toString();
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("uid", senderUid);
+        intent.putExtra("name", senderName);
+        intent.putExtra("image", senderImage);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                (int) System.currentTimeMillis(),  // Using a unique request code
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(senderName)
+                .setContentText(message)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT);
+                notificationManager.createNotificationChannel(channel);
             }
-            Log.d(TAG, "Notification payload: title=" + title + ", body=" + body + ", imageUrl=" + imageUrl);
-        } else if (!remoteMessage.getData().isEmpty()) {
-            Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
-            title = remoteMessage.getData().get("title");
-            body = remoteMessage.getData().get("body");
-            imageUrl = remoteMessage.getData().get("image");
-
-            if (title == null) {
-                title = "Default Title";
-            }
-            if (body == null) {
-                body = remoteMessage.getData().get("message");
-                if (body == null) {
-                    body = "Default Body";
-                }
-            }
-        } else {
-            Log.d(TAG, "Message data payload is empty");
-        }
-
-        if (imageUrl != null) {
-            showNotificationWithImage(title, body, imageUrl);
-        } else {
-            showNotification(title, body);
+            notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());  // Using unique notification ID
         }
     }
 
-    private void showNotificationWithImage(String title, String body, String imageUrl) {
+    private void showNotificationWithImage(String title, String body, String imageUrl, String senderUid) {
         Log.d(TAG, "showNotificationWithImage: called with title: " + title + ", body: " + body + ", imageUrl: " + imageUrl);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("uid", senderUid);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                (int) System.currentTimeMillis(),  // Using a unique request code
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {
@@ -97,27 +104,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             NotificationCompat.Builder notificationBuilder =
                     new NotificationCompat.Builder(this, CHANNEL_ID)
-                            .setSmallIcon(R.drawable.ic_splash_app_icon)
+                            .setSmallIcon(R.drawable.ic_splash_app_icon) // Update this with your icon
                             .setContentTitle(title)
                             .setContentText(body)
                             .setAutoCancel(true)
                             .setContentIntent(pendingIntent)
                             .setStyle(style);
 
-            notificationManager.notify(0, notificationBuilder.build());
+            notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());  // Using unique notification ID
             Log.d(TAG, "Notification with image displayed");
         } catch (ExecutionException | InterruptedException e) {
             Log.e(TAG, "Error displaying notification with image", e);
-            showNotification(title, body); // fallback to text notification
+            showNotification(title, body, senderUid); // fallback to text notification
         }
     }
 
-    private void showNotification(String title, String body) {
-        Log.d(TAG, "showNotification: called with title: " + title + ", body: " + body);
+    private void showNotification(String title, String body, String senderUid) {
+        Log.d(TAG, "showNotification: called with title: " + title + ", body: " + body + ", senderUid: " + senderUid);
 
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
+        Intent intent = new Intent(this, ChatActivity.class);
+        intent.putExtra("uid", senderUid);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(
+                this,
+                (int) System.currentTimeMillis(),  // Using a unique request code
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (notificationManager == null) {
@@ -132,24 +146,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.ic_chats)
+                        .setSmallIcon(R.drawable.ic_chats) // Update this with your icon
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)
                         .setContentIntent(pendingIntent);
 
         try {
-            notificationManager.notify(0, notificationBuilder.build());
+            notificationManager.notify((int) System.currentTimeMillis(), notificationBuilder.build());  // Using unique notification ID
             Log.d(TAG, "Notification displayed");
         } catch (Exception e) {
             Log.e(TAG, "Error displaying notification", e);
         }
-    }
-
-    @Override
-    public void onNewToken(String token) {
-        super.onNewToken(token);
-        Log.d(TAG, "New token: " + token);
-        // Send the token to your server
     }
 }

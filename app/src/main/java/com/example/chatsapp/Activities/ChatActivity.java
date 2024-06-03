@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,9 +30,11 @@ import com.example.chatsapp.Adapters.MessagesAdapter;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityChatBinding;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -47,6 +50,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -57,6 +61,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private static final String TAG = "Chat_Activity_Error";
+
+    private static final  String YOUR_SERVER_KEY = "AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5" ;
     private ActivityChatBinding binding;
     private MessagesAdapter adapter;
     private ArrayList<Message> messages;
@@ -69,12 +75,30 @@ public class ChatActivity extends AppCompatActivity {
     private String senderUid;
     private String receiverUid;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+
+
+        FirebaseApp.initializeApp(this);
+
+
+        database = FirebaseDatabase.getInstance();
+        storage = FirebaseStorage.getInstance();
+
+
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Uploading image...");
+        dialog.setCancelable(false);
 
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
@@ -88,12 +112,37 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        AtomicReference<Intent> intent = new AtomicReference<>(getIntent());
+
+        String senderUid = getIntent().getStringExtra("uid");
+        String senderName = getIntent().getStringExtra("name");
+        String senderImage = getIntent().getStringExtra("image");
+
+        if (senderUid != null) {
+            Log.d(TAG, "Opening chat with sender UID: " + senderUid);
+            openChatWithSender(senderUid, senderName, senderImage);
+        }
+
+
+//        if (intent.get() != null && intent.get().hasExtra("sender_uid")) {
+//            String senderUid = intent.get().getStringExtra("sender_uid");
+//            Log.d(TAG, "Sender UID: " + senderUid);
+//
+//            // Use the senderUid to open the chat with the specific user
+//            openChatWithSender(senderUid);
+//        }
+
+//        Intent intent = getIntent();
+//        String senderUid = intent.getStringExtra("sender_uid");
+//        Log.d("ChatActivity", "Received senderUid: " + senderUid);
+
 
 
         initViews();
         initFirebase();
         initChat();
         loadMessages();
+        enter_button();
         setupSendButton();
         setupCameraButton();
         setupTypingIndicator();
@@ -102,13 +151,25 @@ public class ChatActivity extends AppCompatActivity {
 
 
         binding.toolbar.setOnClickListener(v -> {
-            Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
-            intent.putExtra("name", getIntent().getStringExtra("name"));
-            intent.putExtra("image", getIntent().getStringExtra("image"));
-            startActivity(intent);
+             intent.set(new Intent(ChatActivity.this, ProfileActivity.class));
+            intent.get().putExtra("name", getIntent().getStringExtra("name"));
+            intent.get().putExtra("image", getIntent().getStringExtra("image"));
+            startActivity(intent.get());
         });
 
 
+    }
+
+    private void openChatWithSender(String senderUid, String senderName, String senderImage) {
+        // Use the senderUid, senderName, and senderImage to open the chat with the specific user
+        binding.name.setText(senderName);
+        Glide.with(this).load(senderImage).placeholder(R.drawable.avatar).into(binding.profile);
+
+        receiverUid = senderUid;
+        senderRoom = FirebaseAuth.getInstance().getUid() + receiverUid;
+        receiverRoom = receiverUid + FirebaseAuth.getInstance().getUid();
+
+        loadMessages();
     }
 
     private void markMessagesAsRead() {
@@ -146,12 +207,12 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initFirebase() {
-        database = FirebaseDatabase.getInstance();
-        storage = FirebaseStorage.getInstance();
-
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("Uploading image...");
-        dialog.setCancelable(false);
+//        database = FirebaseDatabase.getInstance();
+//        storage = FirebaseStorage.getInstance();
+//
+//        dialog = new ProgressDialog(this);
+//        dialog.setMessage("Uploading image...");
+//        dialog.setCancelable(false);
 
         receiverUid = getIntent().getStringExtra("uid");
         senderUid = Objects.requireNonNull(FirebaseAuth.getInstance().getUid());
@@ -222,6 +283,20 @@ public class ChatActivity extends AppCompatActivity {
         });
     }
 
+    private void enter_button() {
+        binding.messageBox.setOnKeyListener((v, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                binding.messageBox.requestFocus();
+                String messageTxt = binding.messageBox.getText().toString();
+                if (!messageTxt.trim().isEmpty()) {
+                    sendMessage(messageTxt);
+                }
+                return true;
+            }
+            return false;
+        });
+    }
+
     private void sendMessage(String messageTxt) {
         Date date = new Date();
         Message message = new Message(messageTxt, senderUid, date.getTime());
@@ -244,7 +319,9 @@ public class ChatActivity extends AppCompatActivity {
                     .addOnSuccessListener(aVoid -> {
                         database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
-                                    sendNotification(message.getMessage());
+                                    Log.d(TAG, message.getMessage() + " sent to receiver: " + receiverUid + " from sender: " + senderUid);
+                                    sendNotification(message.getMessage(), senderUid, receiverUid);
+
                                 })
                                 .addOnFailureListener(e -> {
                                     Toast.makeText(ChatActivity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -431,18 +508,22 @@ public class ChatActivity extends AppCompatActivity {
         return super.onSupportNavigateUp();
     }
 
-    private void sendNotification(String message) {
-        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+    private void sendNotification(String message, String senderUid, String receiverUid) {
+        DatabaseReference senderRef = database.getReference().child("users").child(senderUid).child("name");
+        DatabaseReference receiverRef = database.getReference().child("users").child(receiverUid).child("token");
+
+        senderRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String senderName = snapshot.getValue(String.class);
                 if (senderName != null) {
-                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
+                    receiverRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             String token = snapshot.getValue(String.class);
                             if (token != null) {
-                                sendFCMNotification(token, message, senderName);
+                                sendFCMNotification(token, message, senderName, senderUid);
+                                Log.e("sender id", senderUid);
                             } else {
                                 Toast.makeText(ChatActivity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
                                 Log.e(TAG, "FCM Token is null");
@@ -470,16 +551,18 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    private void sendFCMNotification(String token, String message, String senderName) {
-        String notificationTitle = senderName;
-
+    private void sendFCMNotification(String token, String message, String senderName, String senderUid) {
         try {
             JSONObject notification = new JSONObject();
-            notification.put("title", notificationTitle);
+            notification.put("title", senderName);
             notification.put("body", message);
 
             JSONObject data = new JSONObject();
             data.put("message", message);
+            data.put("sender_uid", senderUid);
+            data.put("sender_name", senderName);
+            data.put("sender_image", database.getReference().child("users").child(senderUid).child("image").toString());
+            Log.d("sender image", database.getReference().child("users").child(senderUid).child("image").toString());
 
             JSONObject notificationBody = new JSONObject();
             notificationBody.put("to", token);
@@ -487,10 +570,7 @@ public class ChatActivity extends AppCompatActivity {
             notificationBody.put("data", data);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
-                    response -> {
-//                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "Notification Response: " + response.toString());
-                    },
+                    response -> Log.d(TAG, "Notification Response: " + response.toString()),
                     error -> {
                         Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Notification Error: " + error.toString());
@@ -506,12 +586,13 @@ public class ChatActivity extends AppCompatActivity {
 
             RequestQueue queue = Volley.newRequestQueue(this);
             queue.add(request);
-
         } catch (JSONException e) {
             Toast.makeText(ChatActivity.this, "JSONException: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             Log.e(TAG, "JSONException: " + e.getMessage());
         }
     }
+
+
 
 
 
@@ -566,6 +647,7 @@ public class ChatActivity extends AppCompatActivity {
             JSONObject data = new JSONObject();
             data.put("message", message);
             data.put("imageUrl", imageUrl); // Add image URL to data payload
+            data.put("senderName", senderName); // Add sender name to data payload
 
             JSONObject notificationBody = new JSONObject();
             notificationBody.put("to", token);
