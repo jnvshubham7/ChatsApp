@@ -95,6 +95,7 @@ public class ChatActivity extends AppCompatActivity {
         initChat();
         loadMessages();
         setupSendButton();
+        initEnterButton();
         setupCameraButton();
         setupTypingIndicator();
 
@@ -108,6 +109,17 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+
+    }
+
+    private void initEnterButton() {
+        binding.messageBox.setOnEditorActionListener((v, actionId, event) -> {
+            String messageTxt = binding.messageBox.getText().toString();
+            if (!messageTxt.trim().isEmpty()) {
+                sendMessage(messageTxt);
+            }
+            return true;
+        });
 
     }
 
