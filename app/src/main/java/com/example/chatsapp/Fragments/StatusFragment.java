@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,11 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
@@ -26,6 +30,7 @@ import com.example.chatsapp.Adapters.TopStatusAdapter;
 import com.example.chatsapp.Models.Status;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.Models.UserStatus;
+import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentStatusBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,6 +79,16 @@ public class StatusFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
+//example
+//        int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+//        if (actionBarTitleId > 0) {
+//            TextView title = (TextView) findViewById(actionBarTitleId);
+//            if (title != null) {
+//                title.setTextColor(Color.RED);
+//            }
+//        }
+
         // Access the ActionBar from the hosting activity
         AppCompatActivity activity = (AppCompatActivity) getActivity();
         if (activity != null) {
@@ -83,6 +98,11 @@ public class StatusFragment extends Fragment {
 //                actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
+
+
+
+
+
 
 
         initializeComponents();

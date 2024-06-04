@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
+    <color name="purple_200">#1dab61</color>
+    <color name="purple_500">#1dab61</color>
+    <color name="purple_700">#1dab61</color>
+    <color name="teal_200">#1dab61</color>
+    <color name="teal_700">#1dab61</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#E3E3E3</color>
-    <color name="green">#065C54</color>
-    <color name="greenDark">#0B554E</color>
+    <color name="green">#1dab61</color>
+    <color name="greenDark">#1dab61</color>
     <color name="sentcolor">#DCF8C6</color>
-    <color name="colorPrimary">#0b6156</color>
-    <color name="colorPrimaryDark">#095049</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#1dab61</color>
+    <color name="colorPrimaryDark">#1dab61</color>
+    <color name="colorAccent">#1dab61</color>
     <color name="lightGrey">#EDEDED</color>
     <color name="whatsAppColor">#0b6156</color>
     <color name="red">#9F0B0B</color>
-    <color name="status_background">#009688</color>
+    <color name="status_background">#1dab61</color>
     <color name="chat_background">#8BC34A</color>
     <color name="fb_color">#3c5793</color>
     <color name="lightgreen">#e5ffcc</color>
     <color name="grayBackground">#BCBCBC</color>
-    <color name="settingsIconColor">#0E8374</color>
+    <color name="settingsIconColor">#1dab61</color>
     <color name="hint_color">#757575</color>
     <color name="icon_tint">#676767</color>
     <color name="dark_gray">#808080</color>
@@ -35,7 +35,7 @@
     <color name="message_text">#FFFFFF</color>
     <color name="backgroundDark">#121212</color>
     <color name="textColorDark">#FFFFFF</color>
-    <color name="colorBackgroundCard">#FFFFFF</color>
+    <color name="colorBackgroundCard">#1dab61</color>
     <color name="received_message_background">#D3D3D3</color>
     <color name="receive_message_background">#EDEDED</color>
     <color name="receive_message_text">#000000</color>
@@ -59,21 +59,21 @@
 
 
     <!-- Light mode colors -->
-    <color name="lightPrimary">@color/whatsAppColor</color> <!-- A deeper shade of blue for primary -->
+    <color name="lightPrimary">#1dab61</color> <!-- A deeper shade of blue for primary -->
     <color name="lightPrimaryVariant">@color/colorPrimaryDark</color> <!-- Keeping this as it complements well -->
-    <color name="lightSecondary">#03DAC6</color> <!-- Slightly brightened the secondary color -->
-    <color name="lightSecondaryVariant">#018786</color> <!-- Keeping this as it complements well -->
+    <color name="lightSecondary">#1dab61</color> <!-- Slightly brightened the secondary color -->
+    <color name="lightSecondaryVariant">#1dab61</color> <!-- Keeping this as it complements well -->
     <color name="lightBackground">#F9F9F9</color> <!-- A very light grey for a softer background -->
     <color name="lightSurface">#FFFFFF</color> <!-- Keeping white for surface -->
 
 
 
-    <color name="darkPrimary">#202c33</color>
+    <color name="darkPrimary">#0b141b</color>
     <color name="darkPrimaryVariant">#222e35</color>
     <color name="darkSecondary">#BB86FC</color>
     <color name="darkSecondaryVariant">#3700B3</color>
-    <color name="darkBackground">#111b21</color>
-    <color name="darkSurface">#1E1E1E</color>
+    <color name="darkBackground">#0b141b</color>
+    <color name="darkSurface">#0b141b</color>
 
 
     <color name="backgroundColor">#f9f9f9</color>
@@ -81,15 +81,15 @@
     <color name="secondaryTextColor">#000000</color>
     <color name="otpItemBackground">#D3D3D3</color>
     <color name="otpLineColor">#4CAF50</color>
-    <color name="buttonColor">#4CAF50</color>
+    <color name="buttonColor">#1dab61</color>
 
-    <color name="button_color_light">#6200EE</color>
+    <color name="button_color_light">#1dab61</color>
     <color name="button_text_color_light">#FFFFFF</color>
 
-    <color name="button_color_dark">#BB86FC</color>
+    <color name="button_color_dark">#1dab61</color>
     <color name="button_text_color_dark">#000000</color>
 
-    <color name="msg_time_unread">#00a884</color>
+    <color name="msg_time_unread">#1dab61</color>
 
     <color name="selected_color">@color/whatsAppColor</color> <!-- Black color for selected state -->
     <color name="unselected_color">@color/black</color> <!-- Gray color for unselected state -->
@@ -100,6 +100,8 @@
     <color name="whatsAppBackgroundColor">#EDEDED</color> <!-- Example background color -->
 
     <color name="launcher_background_color">#FFFFFF</color>
+
+    <color name="Button_Floating">@color/black</color>
 
 
 
