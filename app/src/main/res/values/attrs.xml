@@ -1,0 +1,6 @@
+<!-- res/values/attrs.xml -->
+<resources>
+    <declare-styleable name="CustomAttributes">
+        <attr name="Button_Floating" format="color" />
+    </declare-styleable>
+</resources>
