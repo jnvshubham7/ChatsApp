@@ -11,13 +11,13 @@
     <color name="green">#065C54</color>
     <color name="greenDark">#0B554E</color>
     <color name="sentcolor">#DCF8C6</color>
-    <color name="colorPrimary">#0b6156</color>
-    <color name="colorPrimaryDark">#095049</color>
+    <color name="colorPrimary">#00a884</color>
+    <color name="colorPrimaryDark">#00a884</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="lightGrey">#EDEDED</color>
-    <color name="whatsAppColor">#0b6156</color>
+    <color name="whatsAppColor">#00a884</color>
     <color name="red">#9F0B0B</color>
-    <color name="status_background">#009688</color>
+    <color name="status_background">#00a884</color>
     <color name="chat_background">#8BC34A</color>
     <color name="fb_color">#3c5793</color>
     <color name="lightgreen">#e5ffcc</color>
@@ -35,7 +35,7 @@
     <color name="message_text">#FFFFFF</color>
     <color name="backgroundDark">#121212</color>
     <color name="textColorDark">#FFFFFF</color>
-    <color name="colorBackgroundCard">#FFFFFF</color>
+    <color name="colorBackgroundCard">#00a884</color>
     <color name="received_message_background">#D3D3D3</color>
     <color name="receive_message_background">#EDEDED</color>
     <color name="receive_message_text">#000000</color>
@@ -81,12 +81,12 @@
     <color name="secondaryTextColor">#000000</color>
     <color name="otpItemBackground">#D3D3D3</color>
     <color name="otpLineColor">#4CAF50</color>
-    <color name="buttonColor">#4CAF50</color>
+    <color name="buttonColor">#00a884</color>
 
-    <color name="button_color_light">#6200EE</color>
+    <color name="button_color_light">#00a884</color>
     <color name="button_text_color_light">#FFFFFF</color>
 
-    <color name="button_color_dark">#BB86FC</color>
+    <color name="button_color_dark">#00a884</color>
     <color name="button_text_color_dark">#000000</color>
 
     <color name="msg_time_unread">#00a884</color>
