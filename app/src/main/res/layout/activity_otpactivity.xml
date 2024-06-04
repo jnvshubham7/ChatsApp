@@ -25,6 +25,9 @@
         android:text="Verify +916299360050"
         android:textColor="@color/primaryTextColor"
         android:textSize="18sp"
+        android:autoLink="phone"
+
+        android:autofillHints="phone"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="@+id/imageView"

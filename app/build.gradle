@@ -4,10 +4,12 @@ plugins {
     id 'com.google.gms.google-services'
 
 }
-apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdk 34
     buildToolsVersion "30.0.3"
+    compileSdkVersion 34
+    namespace 'com.example.chatsapp'
 
     buildFeatures {
         viewBinding true
@@ -80,9 +82,50 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    // Top-level build file where you can add configuration options common to all sub-projects/modules.
+    buildscript {
+        repositories {
+            google()
+            mavenCentral()
+            gradlePluginPortal()
+        }
+        dependencies {
+            classpath 'com.android.tools.build:gradle:8.4.1'
+            classpath 'com.google.gms:google-services:4.3.10'
+            classpath 'gradle.plugin.com.onesignal:onesignal-gradle-plugin:[0.12.10, 0.99.99]'
 
-    implementation 'com.hbb20:ccp:2.7.3'
+            // NOTE: Do not place your application dependencies here; they belong
+            // in the individual module build.gradle files
+        }
+    }
 
+    allprojects {
+        repositories {
+            google()
+            mavenCentral()
+            jcenter() {
+                content {
+                    // Warning: this repository is going to shut down soon
+                    includeGroup "com.github.User"
+                }
+            }
+            maven { url "https://jitpack.io" }
+        }
+    }
+
+    task clean(type: Delete) {
+        delete rootProject.buildDir
+    }
+
+
+
+
+//    implementation 'androidx.browser:browser:1.5.0'
+//
+//
+//
+//    implementation 'com.google.android.gms:play-services-safetynet:18.0.1'
+//
 
 
 }

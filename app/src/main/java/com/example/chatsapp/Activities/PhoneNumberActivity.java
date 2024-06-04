@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.ActivityPhoneNumberBinding;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.hbb20.CountryCodePicker;
 
@@ -22,12 +23,17 @@ public class PhoneNumberActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityPhoneNumberBinding.inflate(getLayoutInflater());
+        // Initialize FirebaseApp
+        FirebaseApp.initializeApp(this);
         setContentView(binding.getRoot());
+
+
+
+        // Initialize Firebase Auth
+        auth = FirebaseAuth.getInstance();
 
         // Register the EditText with CountryCodePicker
         binding.ccp.registerCarrierNumberEditText(binding.phoneBox);
-
-        auth = FirebaseAuth.getInstance();
 
         if (auth.getCurrentUser() != null) {
             Intent intent = new Intent(PhoneNumberActivity.this, MainActivity.class);
