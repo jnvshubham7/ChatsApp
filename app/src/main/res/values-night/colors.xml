@@ -24,7 +24,7 @@
     <color name="camera_icon_color">#FFFFFF</color>
     <color name="divider">#373737</color>
     <color name="colorGray">#B0B0B0</color>
-    <color name="tab_background">#121212</color>
+    <color name="tab_background">#0b141b</color>
     <color name="tab_selected_color">#103629</color>
     <color name="tab_unselected_color">#303030</color>
     <color name="tab_text_color">#B0B0B0</color>
