@@ -6,16 +6,16 @@
 
     <color name="message_background">#2C2C2C</color>
     <color name="message_text">#FFFFFF</color>
-    <color name="colorPrimary">#BB86FC</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#1dab61</color>
+    <color name="colorPrimaryDark">#0B141B</color>
+    <color name="colorAccent">#1dab61</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="backgroundLight">#121212</color>
-    <color name="backgroundDark">#121212</color>
+    <color name="backgroundLight">#0B141B</color>
+    <color name="backgroundDark">#0B141B</color>
     <color name="textColorLight">#FFFFFF</color>
     <color name="textColorDark">#FFFFFF</color>
-    <color name="colorBackgroundCard">#121212</color>
+    <color name="colorBackgroundCard">#0B141B</color>
     <color name="received_message_background">#2E2E2E</color>
     <color name="receive_message_background">#202c33</color>
     <color name="receive_message_text">#FFFFFF</color>
@@ -37,13 +37,13 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="grey">#E3E3E3</color>
-    <color name="green">#065C54</color>
-    <color name="greenDark">#0B554E</color>
+    <color name="green">#0B141B</color>
+    <color name="greenDark">#0B141B</color>
     <color name="sentcolor">#DCF8C6</color>
     <color name="lightGrey">#EDEDED</color>
-    <color name="whatsAppColor">#0b6156</color>
+    <color name="whatsAppColor">#1dab61</color>
     <color name="red">#9F0B0B</color>
-    <color name="status_background">#009688</color>
+    <color name="status_background">#1dab61</color>
     <color name="chat_background">#8BC34A</color>
     <color name="fb_color">#3c5793</color>
     <color name="lightgreen">#e5ffcc</color>
@@ -101,6 +101,9 @@
     <color name="whatsAppBackgroundColor">#EDEDED</color> <!-- Example background color -->
 
     <color name="launcher_background_color">#FFFFFF</color>
+
+
+
 
 
 
