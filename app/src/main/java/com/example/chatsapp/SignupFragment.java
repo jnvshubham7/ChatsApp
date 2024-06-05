@@ -21,14 +21,8 @@ public class SignupFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        // Navigate to LoginFragment
-        binding.TVSignIn.setOnClickListener(v -> {
-            getParentFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new LoginFragment())
-                    .commit();
-        });
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
