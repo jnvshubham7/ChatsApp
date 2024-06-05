@@ -26,7 +26,7 @@ public class Splash_Screen_Activity extends AppCompatActivity {
 
         // Wait for the splash display duration, then start the next activity
         new Handler().postDelayed(() -> {
-            Intent intent = new Intent(Splash_Screen_Activity.this, google_sign_in.class);
+            Intent intent = new Intent(Splash_Screen_Activity.this, MainActivity_login.class);
             startActivity(intent);
             finish();
         }, SPLASH_DISPLAY_LENGTH);

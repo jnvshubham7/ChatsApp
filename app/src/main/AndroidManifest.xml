@@ -52,6 +52,10 @@
         <activity
             android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Define application services -->
+
+
+        <activity android:name=".MainActivity_login"/>
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="true"
