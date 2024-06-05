@@ -9,6 +9,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.databinding.ActivitySetupProfileBinding;
 import com.google.firebase.FirebaseApp;
@@ -49,17 +50,29 @@ public class SetupProfileActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).hide();
 
+        Intent intent = getIntent();
+        String googleName = intent.getStringExtra("name");
+        String googleEmail = intent.getStringExtra("email");
+        String googlePhotoUrl = intent.getStringExtra("photoUrl");
+
+        if (googleName != null) {
+            binding.nameBox.setText(googleName);
+        }
+        if (googlePhotoUrl != null) {
+            Glide.with(this).load(googlePhotoUrl).into(binding.imageView);
+        }
+
         binding.imageView.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*");
-            startActivityForResult(intent, 45);
+            Intent intent1 = new Intent();
+            intent1.setAction(Intent.ACTION_GET_CONTENT);
+            intent1.setType("image/*");
+            startActivityForResult(intent1, 45);
         });
 
         binding.continueBtn.setOnClickListener(v -> {
             String name = binding.nameBox.getText().toString();
 
-            if(name.isEmpty()) {
+            if (name.isEmpty()) {
                 binding.nameBox.setError("Please type a name");
                 return;
             }
@@ -77,18 +90,17 @@ public class SetupProfileActivity extends AppCompatActivity {
                         String fcmToken = task.getResult();
                         Log.d(TAG, "FCM Registration Token: " + fcmToken);
 
-                        if(selectedImage != null) {
+                        if (selectedImage != null) {
                             StorageReference reference = storage.getReference().child("Profiles").child(Objects.requireNonNull(auth.getUid()));
                             reference.putFile(selectedImage).addOnCompleteListener(task1 -> {
-                                if(task1.isSuccessful()) {
+                                if (task1.isSuccessful()) {
                                     reference.getDownloadUrl().addOnSuccessListener(uri -> {
                                         String imageUrl = uri.toString();
 
                                         String uid = auth.getUid();
                                         String phone = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
-                                        String name1 = binding.nameBox.getText().toString();
 
-                                        User user = new User(uid, name1, phone, imageUrl, fcmToken);
+                                        User user = new User(uid, name, phone, imageUrl, fcmToken);
 
                                         database.getReference()
                                                 .child("users")
@@ -96,8 +108,8 @@ public class SetupProfileActivity extends AppCompatActivity {
                                                 .setValue(user)
                                                 .addOnSuccessListener(aVoid -> {
                                                     dialog.dismiss();
-                                                    Intent intent = new Intent(SetupProfileActivity.this, MainActivity.class);
-                                                    startActivity(intent);
+                                                    Intent intent1 = new Intent(SetupProfileActivity.this, MainActivity.class);
+                                                    startActivity(intent1);
                                                     finish();
                                                 });
                                     });
@@ -116,8 +128,8 @@ public class SetupProfileActivity extends AppCompatActivity {
                                     .setValue(user)
                                     .addOnSuccessListener(aVoid -> {
                                         dialog.dismiss();
-                                        Intent intent = new Intent(SetupProfileActivity.this, MainActivity.class);
-                                        startActivity(intent);
+                                        Intent intent1 = new Intent(SetupProfileActivity.this, MainActivity.class);
+                                        startActivity(intent1);
                                         finish();
                                     });
                         }
@@ -129,14 +141,14 @@ public class SetupProfileActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(data != null) {
-            if(data.getData() != null) {
+        if (data != null) {
+            if (data.getData() != null) {
                 Uri uri = data.getData(); // filepath
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 long time = new Date().getTime();
-                StorageReference reference = storage.getReference().child("Profiles").child(time+"");
+                StorageReference reference = storage.getReference().child("Profiles").child(time + "");
                 reference.putFile(uri).addOnCompleteListener(task -> {
-                    if(task.isSuccessful()) {
+                    if (task.isSuccessful()) {
                         reference.getDownloadUrl().addOnSuccessListener(uri1 -> {
                             String filePath = uri1.toString();
                             HashMap<String, Object> obj = new HashMap<>();

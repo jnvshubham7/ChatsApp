@@ -29,6 +29,7 @@ import com.example.chatsapp.Adapters.UsersAdapter;
 import com.example.chatsapp.Models.User;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.FragmentMainBinding;
+import com.example.chatsapp.google_sign_in;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -336,7 +337,7 @@ public class ChatsFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getContext(), PhoneNumberActivity.class));
+            startActivity(new Intent(getContext(), google_sign_in.class));
             return true;
         } else if (item.getItemId() == R.id.profile) {
             startActivity(new Intent(getContext(), ProfileEditing.class));

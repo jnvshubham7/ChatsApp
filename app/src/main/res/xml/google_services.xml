@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Profile Settings">
+        <EditTextPreference
+            android:key="user_name"
+            android:title="User Name"
+            android:summary="Enter your user name"
+            android:inputType="text" />
+
+        <Preference
+            android:key="profile_picture"
+            android:title="Profile Picture"
+            android:summary="Tap to change your profile picture" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Notification Settings">
+        <SwitchPreferenceCompat
+            android:key="notifications"
+            android:title="Enable Notifications"
+            android:summary="Toggle notifications on or off" />
+
+        <RingtonePreference
+            android:key="notification_tone"
+            android:title="Notification Tone"
+            android:summary="Select your notification tone" />
+    </PreferenceCategory>
+</PreferenceScreen>
