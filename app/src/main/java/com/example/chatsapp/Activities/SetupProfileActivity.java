@@ -119,7 +119,7 @@ public class SetupProfileActivity extends AppCompatActivity {
                             String uid = auth.getUid();
                             String phone = Objects.requireNonNull(auth.getCurrentUser()).getPhoneNumber();
 
-                            User user = new User(uid, name, phone, "No Image", fcmToken);
+                            User user = new User(uid, name, phone, googlePhotoUrl, fcmToken);
 
                             assert uid != null;
                             database.getReference()

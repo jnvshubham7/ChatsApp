@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -336,10 +337,20 @@ public class ChatsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.logout) {
+            // Sign out the user from Firebase Authentication
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(getContext(), google_sign_in.class));
+
+            // Show a toast message indicating the user has been logged out
+            Toast.makeText(getContext(), "You have been logged out", Toast.LENGTH_SHORT).show();
+
+            // Redirect the user to the google_sign_in activity
+            Intent intent = new Intent(getContext(), google_sign_in.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
+            startActivity(intent);
+
             return true;
-        } else if (item.getItemId() == R.id.profile) {
+        }
+        else if (item.getItemId() == R.id.profile) {
             startActivity(new Intent(getContext(), ProfileEditing.class));
             return true;
         }
