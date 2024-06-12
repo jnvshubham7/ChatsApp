@@ -4,16 +4,10 @@
     <!-- Specify hardware features and permissions -->
     <uses-feature
         android:name="android.hardware.camera"
-        android:required="false" />
-
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
+        android:required="false" /> <!-- <uses-permission android:name="android.permission.CAMERA" /> -->
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
-
-
     <application
-
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,12 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
-
-
-
-
-
-
+        <activity
+            android:name=".ProfileSetupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".google_sign_in"
+            android:exported="false" />
         <activity
             android:name=".Activities.ProfileActivity"
             android:exported="false" />
@@ -58,6 +52,10 @@
         <activity
             android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Define application services -->
+
+
+        <activity android:name=".MainActivity_login"/>
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="true"
@@ -76,7 +74,6 @@
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/green" />
 
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"
@@ -87,7 +84,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.google-services"-->
+<!--            android:resource="@xml/google_services" />-->
     </application>
 
 </manifest>

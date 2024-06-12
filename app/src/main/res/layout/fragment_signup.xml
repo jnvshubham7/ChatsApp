@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="14dp"
+        android:background="@android:color/transparent"
+        app:cardCornerRadius="4dp"
+        android:layout_marginRight="14dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:id="@+id/sign_up_text"
+                android:text="Create Account"
+                android:layout_marginTop="9dp"
+                android:textSize="24dp"
+                android:layout_marginBottom="29dp"
+                android:textColor="#515151"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:id="@+id/username_edittext"
+                android:hint="Username"
+                android:padding="14dp"
+                android:background="@drawable/edittext_border"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:drawableLeft="@drawable/ic_person_black_24dp"
+                android:paddingBottom="14dp"
+                android:drawablePadding="11dp"
+                android:layout_marginBottom="9dp"
+                android:textSize="15dp"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="9dp"
+                android:layout_marginRight="9dp"
+                android:id="@+id/ETemail"
+                android:hint="Email"
+                android:padding="14dp"
+                android:textCursorDrawable="@drawable/color_cursor"
+                android:background="@drawable/edittext_border"
+                android:drawableLeft="@drawable/ic_email_black_24dp"
+                android:paddingBottom="14dp"
+                android:drawablePadding="11dp"
+                android:layout_marginBottom="9dp"
+                android:textSize="16dp"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:hintEnabled="false"
+                app:passwordToggleEnabled="true">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:id="@+id/ETpassword"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:padding="14dp"
+                    android:background="@drawable/edittext_border"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:drawableStart="@drawable/ic_card_travel_black_24dp"
+                    android:drawableLeft="@drawable/ic_card_travel_black_24dp"
+                    android:paddingBottom="14dp"
+                    android:layout_marginBottom="9dp"
+                    android:drawablePadding="11dp"
+                    android:textSize="16dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginRight="9dp"
+                    android:id="@+id/Confpassword"
+                    android:hint="Confirm Password"
+                    android:inputType="textPassword"
+                    android:padding="14dp"
+                    android:background="@drawable/edittext_border"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:drawableStart="@drawable/ic_card_travel_black_24dp"
+                    android:drawableLeft="@drawable/ic_card_travel_black_24dp"
+                    android:paddingBottom="14dp"
+                    android:drawablePadding="11dp"
+                    android:textSize="16dp"
+                    android:layout_marginTop="9dp"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSignUp"
+                android:layout_marginLeft="49dp"
+                android:layout_marginRight="49dp"
+                android:layout_marginTop="14dp"
+                android:background="@drawable/edittext_border"
+                android:backgroundTint="@color/colorPrimary"
+                android:layout_marginBottom="9dp"
+                android:text="Register"
+                android:textSize="17dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="#515151"
+                    android:text="Have an account?"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/TVSignIn"
+                    android:layout_marginLeft="2dp"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_marginBottom="9dp"
+                    android:text="Sign In"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/signup_progressbar"
+        android:visibility="gone"
+        android:layout_centerInParent="true"/>
+
+</RelativeLayout>
