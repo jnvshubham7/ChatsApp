@@ -12,10 +12,9 @@ ChatsApp is a messaging Android application that allows users to connect, share 
 ## Screenshots
 
 <p float="left">
-<p float="left">
   <img src="Screenshot/1.png" width="200" />
   <img src="Screenshot/2.png" width="200" />
-   <img src="Screenshot/2_1.png" width="200" />
+  <img src="Screenshot/2_1.png" width="200" />
   <img src="Screenshot/3.png" width="200" />
   <img src="Screenshot/4.png" width="200" />
   <img src="Screenshot/5.png" width="200" />
@@ -29,7 +28,6 @@ ChatsApp is a messaging Android application that allows users to connect, share 
   <img src="Screenshot/13.png" width="200" />
   <img src="Screenshot/14.png" width="200" />
   <img src="Screenshot/15.png" width="200" />
- 
 </p>
 
 ## Features
