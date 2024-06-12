@@ -1,12 +1,10 @@
 # ChatsApp
 
-ChatsApp is a messaging Android application that allows users to connect, share stories, send photos, engage in group chats, and express themselves with emojis. The app is currently available on the Mi App Store and has gained popularity with over 105+ users.
+ChatsApp is a messaging Android application that allows users to connect, share stories, send photos, and engage in one-on-one chats. The app is currently available on the Mi App Store and has gained popularity with over 105+ users.
 
 <h2 align="center">
   <a href="https://global.app.mi.com/details?lo=IN&la=en_US&id=com.example.chatsapp" style="display: inline-block;">Deploy Link - ChatsApp</a>
-
 </h2>
-
 
 ## Screenshots
 <p float="left">
@@ -33,8 +31,12 @@ ChatsApp is a messaging Android application that allows users to connect, share 
 - Free messaging
 - Story sharing
 - Photo sending
-- Group chatting
-- Emoji reactions
+- Notification support
+- Dark mode and light mode
+- Sign in with Google
+- Unread message count
+- Message sorting by latest time
+- Double tick message status
 
 ## Technology Stack
 
@@ -61,6 +63,15 @@ To run the ChatsApp project locally, follow these steps:
 
    Open the project in Android Studio and build the app using the IDE's build and run commands.
 
-Now you should be able to explore and test the ChatsApp on your local development environment.
+Now you should be able to explore and test ChatsApp in your local development environment.
 
+## New Features
 
+- **Sign in with Google**: Simplifies the login process for users.
+- **Enhanced UI**: Redesigned interface for a more intuitive user experience.
+- **Dark Mode/Light Mode**: Allows users to switch between themes, with dark mode showing dark icons and backgrounds.
+- **Notification Support**: Receivers get notifications for new messages.
+- **Fragment Navigation**: Uses fragments to navigate between chat and status sections, similar to WhatsApp.
+- **Unread Message Count**: Displays the number of unread messages.
+- **Message Sorting**: Messages are sorted based on the latest time.
+- **Double Tick Status**: Indicates message status with single and double ticks.
