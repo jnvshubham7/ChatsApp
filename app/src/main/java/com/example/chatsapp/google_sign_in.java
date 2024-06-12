@@ -2,6 +2,7 @@ package com.example.chatsapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.chatsapp.Activities.MainActivity;
+import com.example.chatsapp.Activities.PhoneNumberActivity;
 import com.example.chatsapp.Activities.SetupProfileActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,7 +36,7 @@ public class google_sign_in extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-    private Button btnGoogleSignIn;
+//    private Button btnGoogleSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +51,11 @@ public class google_sign_in extends AppCompatActivity {
             finish();
         }
 
-        btnGoogleSignIn = findViewById(R.id.btn_google_sign_in);
+
+        CardView btnGoogleSignIn = findViewById(R.id.btn_google_sign_in);
+        CardView cardPhone = findViewById(R.id.card_phone);
+
+//        btnGoogleSignIn = findViewById(R.id.btn_google_sign_in);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(DEFAULT_WEB_CLIENT_ID)
@@ -65,6 +71,18 @@ public class google_sign_in extends AppCompatActivity {
                 signIn();
             }
         });
+
+        cardPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(google_sign_in.this, PhoneNumberActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+
     }
 
     private void signIn() {

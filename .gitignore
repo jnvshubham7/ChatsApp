@@ -13,5 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
 /app/google-services.json
 /.vscode
+
