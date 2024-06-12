@@ -8,9 +8,6 @@ ChatsApp is a messaging Android application that allows users to connect, share 
 </h2>
 
 
-
-## Screenshots
-
 ## Screenshots
 <p float="left">
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/1.png" width="200" />
