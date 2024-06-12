@@ -48,6 +48,7 @@ Now you should be able to explore and test the ChatsApp on your local developmen
 <p float="left">
   <img src="Screenshot/1.png" width="200" />
   <img src="Screenshot/2.png" width="200" />
+   <img src="Screenshot/2_1.png" width="200" />
   <img src="Screenshot/3.png" width="200" />
   <img src="Screenshot/4.png" width="200" />
   <img src="Screenshot/5.png" width="200" />
@@ -61,5 +62,5 @@ Now you should be able to explore and test the ChatsApp on your local developmen
   <img src="Screenshot/13.png" width="200" />
   <img src="Screenshot/14.png" width="200" />
   <img src="Screenshot/15.png" width="200" />
-  <img src="Screenshot/2_1.png" width="200" />
+ 
 </p>
