@@ -43,24 +43,21 @@ To run the ChatsApp project locally, follow these steps:
 Now you should be able to explore and test the ChatsApp on your local development environment.
 
 ## Screenshots
-
 <p float="left">
-<p float="left">
-  <img src="Screenshot/1.png" width="200" />
-  <img src="Screenshot/2.png" width="200" />
-  <img src="Screenshot/2_1.png" width="200" />
-  <img src="Screenshot/3.png" width="200" />
-  <img src="Screenshot/4.png" width="200" />
-  <img src="Screenshot/5.png" width="200" />
-  <img src="Screenshot/6.png" width="200" />
-  <img src="Screenshot/7.png" width="200" />
-  <img src="Screenshot/8.png" width="200" />
-  <img src="Screenshot/9.png" width="200" />
-  <img src="Screenshot/10.png" width="200" />
-  <img src="Screenshot/11.png" width="200" />
-  <img src="Screenshot/12.png" width="200" />
-  <img src="Screenshot/13.png" width="200" />
-  <img src="Screenshot/14.png" width="200" />
-  <img src="Screenshot/15.png" width="200" />
-  
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/1.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/2.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/2_1.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/3.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/4.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/5.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/6.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/7.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/8.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/9.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/10.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/11.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/12.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/13.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/14.png" width="200" />
+  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/15.png" width="200" />
 </p>
