@@ -13,17 +13,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="10dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="8dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/card_phone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:cardPreventCornerOverlap="false"
-        app:cardMaxElevation="@dimen/cardview_compat_inset_shadow"
-        android:outlineSpotShadowColor="@color/colorAccent"
-        android:outlineAmbientShadowColor="@color/colorAccent"
+
+
         >
 
         <LinearLayout
@@ -59,17 +57,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:cardElevation="5dp"
-        app:cardCornerRadius="10dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="8dp"
         app:cardBackgroundColor="@android:color/transparent"
         app:layout_constraintTop_toBottomOf="@+id/btn_google_sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:cardPreventCornerOverlap="false"
-        app:cardMaxElevation="@dimen/cardview_compat_inset_shadow"
-        android:outlineSpotShadowColor="@color/colorAccent"
-        android:outlineAmbientShadowColor="@color/colorAccent"
+
         >
 
         <LinearLayout
