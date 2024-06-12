@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Continue with Google"
-                android:textColor="@android:color/black"
+                android:textColor="@color/secondaryTextColor"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp"
                 android:gravity="center_vertical"/>
@@ -77,7 +77,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Continue with Phone"
-                android:textColor="@android:color/black"
+                android:textColor="@color/secondaryTextColor"
                 android:textStyle="bold"
                 android:layout_marginStart="8dp"
                 android:gravity="center_vertical"/>
