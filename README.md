@@ -21,7 +21,6 @@ ChatsApp is a messaging Android application that allows users to connect, share 
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/8.png" width="200" />
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/9.png" width="200" />
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/10.png" width="200" />
-  <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/11.png" width="200" />
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/12.png" width="200" />
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/13.png" width="200" />
   <img src="https://github.com/jnvshubham7/ChatsApp/raw/main/Screenshot/14.png" width="200" />
