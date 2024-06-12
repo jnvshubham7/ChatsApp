@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.chatsapp.Activities.MainActivity;
@@ -36,7 +35,6 @@ public class google_sign_in extends AppCompatActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
-//    private Button btnGoogleSignIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +49,8 @@ public class google_sign_in extends AppCompatActivity {
             finish();
         }
 
-
         CardView btnGoogleSignIn = findViewById(R.id.btn_google_sign_in);
         CardView cardPhone = findViewById(R.id.card_phone);
-
-//        btnGoogleSignIn = findViewById(R.id.btn_google_sign_in);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(DEFAULT_WEB_CLIENT_ID)
@@ -79,10 +74,6 @@ public class google_sign_in extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
-
-
     }
 
     private void signIn() {
