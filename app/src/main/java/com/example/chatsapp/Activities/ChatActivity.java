@@ -2,9 +2,11 @@ package com.example.chatsapp.Activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.android.volley.Request;
@@ -41,12 +44,16 @@ import com.google.firebase.storage.StorageReference;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import top.zibin.luban.Luban;
+import top.zibin.luban.OnCompressListener;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -285,10 +292,36 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void uploadImage(Uri selectedImage) {
+        File originalFile = new File(getRealPathFromURI(selectedImage));
+
+        Luban.with(this)
+                .load(originalFile)
+                .ignoreBy(20)
+                .setCompressListener(new OnCompressListener() {
+                    @Override
+                    public void onStart() {
+                        // Compression start
+                    }
+
+                    @Override
+                    public void onSuccess(File compressedFile) {
+                        Uri compressedImageUri = Uri.fromFile(compressedFile);
+                        uploadCompressedImage(compressedImageUri);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.makeText(ChatActivity.this, "Failed to compress image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Log.e(TAG, "Failed to compress image: ", e);
+                    }
+                }).launch();
+    }
+
+    private void uploadCompressedImage(Uri compressedImageUri) {
         Calendar calendar = Calendar.getInstance();
         StorageReference reference = storage.getReference().child("chats").child(String.valueOf(calendar.getTimeInMillis()));
         dialog.show();
-        reference.putFile(selectedImage).addOnCompleteListener(task -> {
+        reference.putFile(compressedImageUri).addOnCompleteListener(task -> {
             dialog.dismiss();
             if (task.isSuccessful()) {
                 reference.getDownloadUrl().addOnSuccessListener(uri -> {
@@ -304,6 +337,19 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
+    }
+
+
 
     private void sendMessageWithImage(String filePath) {
         Date date = new Date();
