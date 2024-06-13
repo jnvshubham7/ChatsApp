@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.chatsapp.FullImageActivity;
+import com.example.chatsapp.Image_View;
 import com.example.chatsapp.Models.Message;
 import com.example.chatsapp.R;
 import com.example.chatsapp.databinding.DeleteDialogBinding;
@@ -84,7 +85,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(viewHolder.binding.image);
 
                 viewHolder.binding.image.setOnClickListener(v -> {
-                    Intent intent = new Intent(context, FullImageActivity.class);
+                    Intent intent = new Intent(context, Image_View.class);
                     intent.putExtra("imageUrl", message.getImageUrl());
                     context.startActivity(intent);
                 });
@@ -119,7 +120,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                         .into(viewHolder.binding.image);
 
                 viewHolder.binding.image.setOnClickListener(v -> {
-                    Intent intent = new Intent(context, FullImageActivity.class);
+                    Intent intent = new Intent(context, Image_View.class);
                     intent.putExtra("imageUrl", message.getImageUrl());
                     context.startActivity(intent);
                 });

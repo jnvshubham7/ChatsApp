@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ChatsApp"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".Image_View"
+            android:exported="false" />
+        <activity
             android:name=".ProfileSetupActivity"
             android:exported="false" />
         <activity
@@ -52,9 +55,7 @@
         <activity
             android:name=".Activities.MainActivity"
             android:windowSoftInputMode="stateAlwaysHidden" /> <!-- Define application services -->
-
-
-        <activity android:name=".MainActivity_login"/>
+        <activity android:name=".MainActivity_login" />
 
         <service
             android:name=".MyFirebaseMessagingService"
@@ -83,10 +84,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-
-<!--        <meta-data-->
-<!--            android:name="com.google.android.gms.google-services"-->
-<!--            android:resource="@xml/google_services" />-->
     </application>
 
 </manifest>
