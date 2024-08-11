@@ -36,11 +36,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHolder> {
 
     private Context context;
     private ArrayList<User> users;
-
 
     public UsersAdapter(Context context, ArrayList<User> users) {
         this.context = context;
@@ -138,15 +138,19 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                             }
 
                             if (isSeen) {
-                                holder.binding.statusIcon.setImageResource(R.drawable.ic_double_check_blue); // Set seen icon
+                                holder.binding.statusIcon.setImageResource(R.drawable.ic_double_check_blue); // Set seen
+                                                                                                             // icon
                             } else {
-                                holder.binding.statusIcon.setImageResource(R.drawable.ic_double_check); // Set sent icon (or use delivered icon as needed)
+                                holder.binding.statusIcon.setImageResource(R.drawable.ic_double_check); // Set sent icon
+                                                                                                        // (or use
+                                                                                                        // delivered
+                                                                                                        // icon as
+                                                                                                        // needed)
                             }
                         } else {
                             holder.binding.lastMsg.setText("Tap to chat");
                             holder.binding.msgTime.setText("");
                             holder.binding.unreadCount.setVisibility(View.GONE);
-
 
                         }
                     }
@@ -175,7 +179,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         });
     }
 
-
     @Override
     public int getItemCount() {
         return users.size();
@@ -187,7 +190,6 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         notifyDataSetChanged();
     }
 
-
     public static class UsersViewHolder extends RecyclerView.ViewHolder {
 
         RowConversationBinding binding;
@@ -198,4 +200,3 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
         }
     }
 }
-

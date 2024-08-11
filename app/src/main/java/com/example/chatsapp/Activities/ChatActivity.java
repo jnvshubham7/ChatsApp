@@ -57,7 +57,6 @@ import top.zibin.luban.OnCompressListener;
 
 public class ChatActivity extends AppCompatActivity {
 
-
     private void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(binding.messageBox.getWindowToken(), 0);
@@ -86,16 +85,15 @@ public class ChatActivity extends AppCompatActivity {
         FirebaseMessaging.getInstance().setAutoInitEnabled(true);
         FirebaseMessaging.getInstance().setDeliveryMetricsExportToBigQuery(true);
 
-        binding.messageBox.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                binding.messageBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                binding.messageBox.requestFocus();
-                hideKeyboard();
-            }
-        });
-
-
+        binding.messageBox.getViewTreeObserver()
+                .addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        binding.messageBox.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        binding.messageBox.requestFocus();
+                        hideKeyboard();
+                    }
+                });
 
         initViews();
         initFirebase();
@@ -107,14 +105,12 @@ public class ChatActivity extends AppCompatActivity {
 
         markMessagesAsRead();
 
-
         binding.toolbar.setOnClickListener(v -> {
             Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
             intent.putExtra("name", getIntent().getStringExtra("name"));
             intent.putExtra("image", getIntent().getStringExtra("image"));
             startActivity(intent);
         });
-
 
     }
 
@@ -134,11 +130,11 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        Toast.makeText(ChatActivity.this, "Failed to mark messages as read: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to mark messages as read: " + error.getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-
 
     private void initViews() {
         setSupportActionBar(binding.toolbar);
@@ -218,7 +214,6 @@ public class ChatActivity extends AppCompatActivity {
                 });
     }
 
-
     private void setupSendButton() {
         binding.sendBtn.setOnClickListener(v -> {
             binding.messageBox.requestFocus();
@@ -234,7 +229,6 @@ public class ChatActivity extends AppCompatActivity {
         Message message = new Message(messageTxt, senderUid, date.getTime());
         message.setRead(false); // Set read to false
 
-
         binding.messageBox.setText("");
 
         String randomKey = database.getReference().push().getKey();
@@ -247,33 +241,34 @@ public class ChatActivity extends AppCompatActivity {
         database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
         if (randomKey != null) {
-            database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
+            database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey)
+                    .setValue(message)
                     .addOnSuccessListener(aVoid -> {
-                        database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
+                        database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey)
+                                .setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
                                     sendNotification(message.getMessage());
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(ChatActivity.this, "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this,
+                                            "Failed to send message to receiver: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                            .show();
                                     Log.e(TAG, "Failed to send message to receiver: ", e);
                                 });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(ChatActivity.this, "Failed to send message: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to send message: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Failed to send message: ", e);
                     });
 
-//            mainActivity.fetchUsers();
-
+            // mainActivity.fetchUsers();
 
         } else {
             Toast.makeText(ChatActivity.this, "Failed to generate message key", Toast.LENGTH_SHORT).show();
         }
 
     }
-
-
-
 
     private void setupCameraButton() {
         binding.camera.setOnClickListener(v -> {
@@ -311,7 +306,8 @@ public class ChatActivity extends AppCompatActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        Toast.makeText(ChatActivity.this, "Failed to compress image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to compress image: " + e.getMessage(),
+                                Toast.LENGTH_SHORT).show();
                         Log.e(TAG, "Failed to compress image: ", e);
                     }
                 }).launch();
@@ -319,7 +315,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private void uploadCompressedImage(Uri compressedImageUri) {
         Calendar calendar = Calendar.getInstance();
-        StorageReference reference = storage.getReference().child("chats").child(String.valueOf(calendar.getTimeInMillis()));
+        StorageReference reference = storage.getReference().child("chats")
+                .child(String.valueOf(calendar.getTimeInMillis()));
         dialog.show();
         reference.putFile(compressedImageUri).addOnCompleteListener(task -> {
             dialog.dismiss();
@@ -328,11 +325,13 @@ public class ChatActivity extends AppCompatActivity {
                     String filePath = uri.toString();
                     sendMessageWithImage(filePath);
                 }).addOnFailureListener(e -> {
-                    Toast.makeText(ChatActivity.this, "Failed to get download URL: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChatActivity.this, "Failed to get download URL: " + e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
                     Log.e(TAG, "Failed to get download URL: ", e);
                 });
             } else {
-                Toast.makeText(ChatActivity.this, "Image upload failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ChatActivity.this, "Image upload failed: " + task.getException().getMessage(),
+                        Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "Image upload failed: ", task.getException());
             }
         });
@@ -348,8 +347,6 @@ public class ChatActivity extends AppCompatActivity {
         cursor.close();
         return result;
     }
-
-
 
     private void sendMessageWithImage(String filePath) {
         Date date = new Date();
@@ -369,19 +366,24 @@ public class ChatActivity extends AppCompatActivity {
         database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
         if (randomKey != null) {
-            database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey).setValue(message)
+            database.getReference().child("chats").child(senderRoom).child("messages").child(randomKey)
+                    .setValue(message)
                     .addOnSuccessListener(aVoid -> {
-                        database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey).setValue(message)
+                        database.getReference().child("chats").child(receiverRoom).child("messages").child(randomKey)
+                                .setValue(message)
                                 .addOnSuccessListener(aVoid1 -> {
                                     sendNotification_Image("Photo", filePath);
                                 })
                                 .addOnFailureListener(e -> {
-                                    Toast.makeText(ChatActivity.this, "Failed to send image to receiver: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(ChatActivity.this,
+                                            "Failed to send image to receiver: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                            .show();
                                     Log.e(TAG, "Failed to send image to receiver: ", e);
                                 });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(ChatActivity.this, "Failed to send image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Failed to send image: " + e.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
                         Log.e(TAG, "Failed to send image: ", e);
                     });
         } else {
@@ -401,7 +403,8 @@ public class ChatActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 database.getReference().child("presence").child(senderUid).setValue("Typing...");
                 handler.removeCallbacksAndMessages(null);
-                handler.postDelayed(() -> database.getReference().child("presence").child(senderUid).setValue("Online"), 1000);
+                handler.postDelayed(() -> database.getReference().child("presence").child(senderUid).setValue("Online"),
+                        1000);
             }
 
             @Override
@@ -410,7 +413,6 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onResume() {
@@ -447,18 +449,13 @@ public class ChatActivity extends AppCompatActivity {
         database.getReference().child("presence").child(senderUid).setValue("Offline");
     }
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.chat_menu, menu);
 
         MenuItem profile_m = menu.findItem(R.id.profile_menu);
 
-
         profile_m.setOnMenuItemClickListener(item -> {
-
 
             Intent intent = new Intent(ChatActivity.this, ProfileActivity.class);
             intent.putExtra("name", getIntent().getStringExtra("name"));
@@ -466,7 +463,6 @@ public class ChatActivity extends AppCompatActivity {
             startActivity(intent);
             return false;
         });
-
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -478,43 +474,47 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendNotification(String message) {
-        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String senderName = snapshot.getValue(String.class);
-                if (senderName != null) {
-                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String token = snapshot.getValue(String.class);
-                            if (token != null) {
-                                sendFCMNotification(token, message, senderName);
-                            } else {
-                                Toast.makeText(ChatActivity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "FCM Token is null");
-                            }
-                        }
+        database.getReference().child("users").child(senderUid).child("name")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String senderName = snapshot.getValue(String.class);
+                        if (senderName != null) {
+                            database.getReference().child("users").child(receiverUid).child("token")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String token = snapshot.getValue(String.class);
+                                            if (token != null) {
+                                                sendFCMNotification(token, message, senderName);
+                                            } else {
+                                                Toast.makeText(ChatActivity.this, "FCM Token is null",
+                                                        Toast.LENGTH_SHORT).show();
+                                                Log.e(TAG, "FCM Token is null");
+                                            }
+                                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, "Database error: " + error.getMessage());
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(),
+                                                    Toast.LENGTH_SHORT).show();
+                                            Log.e(TAG, "Database error: " + error.getMessage());
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Sender name is null");
                         }
-                    });
-                } else {
-                    Toast.makeText(ChatActivity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Sender name is null");
-                }
-            }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Database error: " + error.getMessage());
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                        Log.e(TAG, "Database error: " + error.getMessage());
+                    }
+                });
     }
-
 
     private void sendFCMNotification(String token, String message, String senderName) {
         String notificationTitle = senderName;
@@ -532,19 +532,23 @@ public class ChatActivity extends AppCompatActivity {
             notificationBody.put("notification", notification);
             notificationBody.put("data", data);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                    "https://fcm.googleapis.com/fcm/send", notificationBody,
                     response -> {
-//                        Toast.makeText(Chat_Activity.this, "Notification sent: " + response.toString(), Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(Chat_Activity.this, "Notification sent: " +
+                        // response.toString(), Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "Notification Response: " + response.toString());
                     },
                     error -> {
-                        Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT)
+                                .show();
                         Log.e(TAG, "Notification Error: " + error.toString());
                     }) {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
+                    headers.put("Authorization",
+                            "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
                     headers.put("Content-Type", "application/json");
                     return headers;
                 }
@@ -559,46 +563,48 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void sendNotification_Image(String message, String imageUrl) {
-        database.getReference().child("users").child(senderUid).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String senderName = snapshot.getValue(String.class);
-                if (senderName != null) {
-                    database.getReference().child("users").child(receiverUid).child("token").addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            String token = snapshot.getValue(String.class);
-                            if (token != null) {
-                                sendFCMNotification_Image(token, message, senderName, imageUrl);
-                            } else {
-                                Toast.makeText(ChatActivity.this, "FCM Token is null", Toast.LENGTH_SHORT).show();
-                                Log.e(TAG, "FCM Token is null");
-                            }
-                        }
+        database.getReference().child("users").child(senderUid).child("name")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String senderName = snapshot.getValue(String.class);
+                        if (senderName != null) {
+                            database.getReference().child("users").child(receiverUid).child("token")
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            String token = snapshot.getValue(String.class);
+                                            if (token != null) {
+                                                sendFCMNotification_Image(token, message, senderName, imageUrl);
+                                            } else {
+                                                Toast.makeText(ChatActivity.this, "FCM Token is null",
+                                                        Toast.LENGTH_SHORT).show();
+                                                Log.e(TAG, "FCM Token is null");
+                                            }
+                                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
-                            Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                            Log.e(TAG, "Database error: " + error.getMessage());
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(),
+                                                    Toast.LENGTH_SHORT).show();
+                                            Log.e(TAG, "Database error: " + error.getMessage());
+                                        }
+                                    });
+                        } else {
+                            Toast.makeText(ChatActivity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "Sender name is null");
                         }
-                    });
-                } else {
-                    Toast.makeText(ChatActivity.this, "Sender name is null", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "Sender name is null");
-                }
-            }
+                    }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "Database error: " + error.getMessage());
-            }
-        });
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Toast.makeText(ChatActivity.this, "Database error: " + error.getMessage(), Toast.LENGTH_SHORT)
+                                .show();
+                        Log.e(TAG, "Database error: " + error.getMessage());
+                    }
+                });
     }
-
 
     private void sendFCMNotification_Image(String token, String message, String senderName, String imageUrl) {
         String notificationTitle = senderName;
@@ -618,18 +624,21 @@ public class ChatActivity extends AppCompatActivity {
             notificationBody.put("notification", notification);
             notificationBody.put("data", data);
 
-            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", notificationBody,
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST,
+                    "https://fcm.googleapis.com/fcm/send", notificationBody,
                     response -> {
                         Log.d(TAG, "Notification Response: " + response.toString());
                     },
                     error -> {
-                        Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ChatActivity.this, "Notification Error: " + error.toString(), Toast.LENGTH_SHORT)
+                                .show();
                         Log.e(TAG, "Notification Error: " + error.toString());
                     }) {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> headers = new HashMap<>();
-                    headers.put("Authorization", "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
+                    headers.put("Authorization",
+                            "key=AAAA0z2eAHs:APA91bEhUzjy-PvcFSZjmq82YiRzsvS60lSqFnEZs34iS3jVm0xInu7Xf8aWksnXORA9JFCLmiD8pB0kbIN8Zv1c0i5WBq0B_QBgaeD8UzqjTmKI0iTHSeubne-FemVVrrWKqCO8A6z5");
                     headers.put("Content-Type", "application/json");
                     return headers;
                 }
@@ -644,6 +653,4 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-
 }
-

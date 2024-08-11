@@ -21,7 +21,7 @@ public class Image_View extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
 
-//        Objects.requireNonNull(getSupportActionBar()).hide();
+        // Objects.requireNonNull(getSupportActionBar()).hide();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -30,7 +30,6 @@ public class Image_View extends AppCompatActivity {
         }
 
         PhotoView photoView = findViewById(R.id.image_view);
-
 
         Intent intent = getIntent();
         String imageUrl = intent.getStringExtra("imageUrl");
@@ -44,8 +43,7 @@ public class Image_View extends AppCompatActivity {
 
         photoView.setOnClickListener(v -> onBackPressed());
 
-//        backButton.setOnClickListener(v -> onBackPressed());
-
+        // backButton.setOnClickListener(v -> onBackPressed());
 
     }
 

@@ -45,15 +45,15 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setBackgroundColor(getResources().getColor(R.color.tab_background, getTheme()));
         tabLayout.setTabTextColors(
                 getResources().getColor(R.color.tab_text_color, getTheme()),
-                getResources().getColor(R.color.secondaryTextColor, getTheme())
-        );
+                getResources().getColor(R.color.secondaryTextColor, getTheme()));
     }
 
     @Override
     public void onBackPressed() {
         int currentItem = viewPager.getCurrentItem();
         if (currentItem == 0) {
-            ChatsFragment chatsFragment = (ChatsFragment) getSupportFragmentManager().findFragmentByTag("f" + currentItem);
+            ChatsFragment chatsFragment = (ChatsFragment) getSupportFragmentManager()
+                    .findFragmentByTag("f" + currentItem);
             if (chatsFragment != null && chatsFragment.isSearchActive()) {
                 chatsFragment.closeSearch();
             } else {

@@ -1,6 +1,5 @@
 package com.example.chatsapp;
 
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

@@ -21,7 +21,7 @@ public class FullImageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_full_image);
 
-//        Objects.requireNonNull(getSupportActionBar()).hide();
+        // Objects.requireNonNull(getSupportActionBar()).hide();
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -30,7 +30,6 @@ public class FullImageActivity extends AppCompatActivity {
         }
 
         PhotoView photoView = findViewById(R.id.fullImageView);
-
 
         Intent intent = getIntent();
         String imageUrl = intent.getStringExtra("imageUrl");
@@ -44,8 +43,7 @@ public class FullImageActivity extends AppCompatActivity {
 
         photoView.setOnClickListener(v -> onBackPressed());
 
-//        backButton.setOnClickListener(v -> onBackPressed());
-
+        // backButton.setOnClickListener(v -> onBackPressed());
 
     }
 

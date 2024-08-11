@@ -1,4 +1,5 @@
 package com.example.chatsapp;
+
 import android.os.Bundle;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.appcompat.app.AppCompatActivity;

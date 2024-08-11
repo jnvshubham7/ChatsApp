@@ -70,7 +70,8 @@ public class StatusFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         binding = FragmentStatusBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -79,15 +80,15 @@ public class StatusFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-//example
-//        int actionBarTitleId = Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
-//        if (actionBarTitleId > 0) {
-//            TextView title = (TextView) findViewById(actionBarTitleId);
-//            if (title != null) {
-//                title.setTextColor(Color.RED);
-//            }
-//        }
+        // example
+        // int actionBarTitleId =
+        // Resources.getSystem().getIdentifier("action_bar_title", "id", "android");
+        // if (actionBarTitleId > 0) {
+        // TextView title = (TextView) findViewById(actionBarTitleId);
+        // if (title != null) {
+        // title.setTextColor(Color.RED);
+        // }
+        // }
 
         // Access the ActionBar from the hosting activity
         AppCompatActivity activity = (AppCompatActivity) getActivity();
@@ -95,15 +96,9 @@ public class StatusFragment extends Fragment {
             ActionBar actionBar = activity.getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setTitle("Status");
-//                actionBar.setDisplayHomeAsUpEnabled(true);
+                // actionBar.setDisplayHomeAsUpEnabled(true);
             }
         }
-
-
-
-
-
-
 
         initializeComponents();
         fetchCurrentUser();
@@ -155,8 +150,10 @@ public class StatusFragment extends Fragment {
                     for (DataSnapshot userSnapshot : snapshot.getChildren()) {
                         UserStatus userStatus = new UserStatus();
                         userStatus.setName(Objects.requireNonNull(userSnapshot.child("name").getValue()).toString());
-                        userStatus.setProfileImage(Objects.requireNonNull(userSnapshot.child("profileImage").getValue()).toString());
-                        userStatus.setLastUpdated(Long.parseLong(Objects.requireNonNull(userSnapshot.child("lastUpdated").getValue()).toString()));
+                        userStatus.setProfileImage(
+                                Objects.requireNonNull(userSnapshot.child("profileImage").getValue()).toString());
+                        userStatus.setLastUpdated(Long.parseLong(
+                                Objects.requireNonNull(userSnapshot.child("lastUpdated").getValue()).toString()));
 
                         ArrayList<Status> statuses = new ArrayList<>();
                         for (DataSnapshot statusSnapshot : userSnapshot.child("statuses").getChildren()) {
@@ -211,9 +208,12 @@ public class StatusFragment extends Fragment {
     }
 
     private void openCamera() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_CAMERA);
+        if (ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                ContextCompat.checkSelfPermission(getContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] { Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE },
+                    REQUEST_CODE_CAMERA);
             launchCamera();
         } else {
             launchCamera();
@@ -235,10 +235,12 @@ public class StatusFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_CAMERA) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 launchCamera();
             } else {
                 Log.e(TAG, "Camera or storage permission not granted");
@@ -262,7 +264,8 @@ public class StatusFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_GALLERY && resultCode == getActivity().RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == getActivity().RESULT_OK && data != null
+                && data.getData() != null) {
             uploadImage(data.getData());
         } else if (requestCode == REQUEST_CODE_CAMERA && resultCode == getActivity().RESULT_OK) {
             uploadImage(imageUri);
@@ -308,7 +311,6 @@ public class StatusFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -322,8 +324,5 @@ public class StatusFragment extends Fragment {
             }
         }
     }
-
-
-
 
 }

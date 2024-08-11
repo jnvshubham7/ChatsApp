@@ -24,7 +24,6 @@ public class MainActivity_login extends AppCompatActivity {
 
         // Attach TabLayout with ViewPager2
         new TabLayoutMediator(binding.tabLayout, binding.viewPager,
-                (tab, position) -> tab.setText(position == 0 ? "Login" : "Sign Up")
-        ).attach();
+                (tab, position) -> tab.setText(position == 0 ? "Login" : "Sign Up")).attach();
     }
 }

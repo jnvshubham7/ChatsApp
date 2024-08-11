@@ -53,7 +53,6 @@ public class ProfileEditing extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
         profileImageView = findViewById(R.id.profileImageView);
         nameEditText = findViewById(R.id.nameEditText);
         database = FirebaseDatabase.getInstance();
@@ -61,11 +60,6 @@ public class ProfileEditing extends AppCompatActivity {
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Updating profile...");
         progressDialog.setCancelable(false);
-
-
-
-
-
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
@@ -75,7 +69,6 @@ public class ProfileEditing extends AppCompatActivity {
 
         fetchCurrentUser();
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -103,14 +96,13 @@ public class ProfileEditing extends AppCompatActivity {
                     nameEditText.setText(currentUser.getName());
                     // Load profile image using a library like Glide or Picasso
 
-                    if(currentUser.getProfileImage().equals("No Image")){
+                    if (currentUser.getProfileImage().equals("No Image")) {
                         profileImageView.setImageResource(R.drawable.avatar);
-                    }else{
-                        Glide.with(ProfileEditing.this).load(currentUser.getProfileImage()).placeholder(R.drawable.avatar).into(profileImageView);
+                    } else {
+                        Glide.with(ProfileEditing.this).load(currentUser.getProfileImage())
+                                .placeholder(R.drawable.avatar).into(profileImageView);
 
                     }
-
-
 
                 }
             }
@@ -155,7 +147,8 @@ public class ProfileEditing extends AppCompatActivity {
     }
 
     private void uploadProfileImage(final String name) {
-        StorageReference reference = storage.getReference().child("profile_images").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
+        StorageReference reference = storage.getReference().child("profile_images")
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()));
         reference.putFile(selectedImageUri).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 reference.getDownloadUrl().addOnSuccessListener(uri -> {

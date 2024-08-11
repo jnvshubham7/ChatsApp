@@ -24,20 +24,11 @@ public class ProfileActivity extends AppCompatActivity {
         binding = ActivityProfileBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setTitle("Profile");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-
-
-
-
-
-
-
 
         String name = getIntent().getStringExtra("name");
         String image = getIntent().getStringExtra("image");
@@ -51,8 +42,6 @@ public class ProfileActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
-
 
     @Override
     public boolean onSupportNavigateUp() {

@@ -72,9 +72,11 @@ public class OTPActivity extends AppCompatActivity {
                         dialog.dismiss();
                         Log.e(TAG, "Verification failed: " + e.getMessage());
                         if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                            Toast.makeText(OTPActivity.this, "Invalid request: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(OTPActivity.this, "Invalid request: " + e.getMessage(), Toast.LENGTH_LONG)
+                                    .show();
                         } else if (e instanceof FirebaseAuthMissingActivityForRecaptchaException) {
-                            Toast.makeText(OTPActivity.this, "reCAPTCHA verification failed: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(OTPActivity.this, "reCAPTCHA verification failed: " + e.getMessage(),
+                                    Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(OTPActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -84,7 +86,8 @@ public class OTPActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCodeSent(@NonNull String verifyId, @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                    public void onCodeSent(@NonNull String verifyId,
+                            @NonNull PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         super.onCodeSent(verifyId, forceResendingToken);
                         Log.e(TAG, "OTP sent, verificationId: " + verifyId);
                         Toast.makeText(OTPActivity.this, "OTP Sent", Toast.LENGTH_SHORT).show();
@@ -118,7 +121,8 @@ public class OTPActivity extends AppCompatActivity {
                     if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                         Toast.makeText(OTPActivity.this, "Invalid OTP", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(OTPActivity.this, "Verification failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(OTPActivity.this, "Verification failed: " + task.getException().getMessage(),
+                                Toast.LENGTH_SHORT).show();
                     }
                 }
             });

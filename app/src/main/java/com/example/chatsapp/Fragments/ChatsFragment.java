@@ -62,7 +62,8 @@ public class ChatsFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         binding = FragmentMainBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
         setHasOptionsMenu(true);
@@ -245,14 +246,17 @@ public class ChatsFragment extends Fragment {
 
     private void requestNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(getContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity(), new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_NOTIFICATION);
+            if (ContextCompat.checkSelfPermission(getContext(),
+                    android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity(),
+                        new String[] { android.Manifest.permission.POST_NOTIFICATIONS }, REQUEST_CODE_NOTIFICATION);
             }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_CODE_NOTIFICATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -262,7 +266,6 @@ public class ChatsFragment extends Fragment {
             }
         }
     }
-
 
     // Ensure this code is part of your ChatsFragment class
     @Override
@@ -308,7 +311,6 @@ public class ChatsFragment extends Fragment {
         return isSearchActive;
     }
 
-
     public void closeSearch() {
         MenuItem searchItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) searchItem.getActionView();
@@ -320,9 +322,6 @@ public class ChatsFragment extends Fragment {
         }
         searchUsers("");
     }
-
-
-
 
     private void searchUsers(String query) {
         List<User> filteredUsers = new ArrayList<>();
@@ -345,12 +344,12 @@ public class ChatsFragment extends Fragment {
 
             // Redirect the user to the google_sign_in activity
             Intent intent = new Intent(getContext(), google_sign_in.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity
+                                                                                              // stack
             startActivity(intent);
 
             return true;
-        }
-        else if (item.getItemId() == R.id.profile) {
+        } else if (item.getItemId() == R.id.profile) {
             startActivity(new Intent(getContext(), ProfileEditing.class));
             return true;
         }

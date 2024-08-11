@@ -1,4 +1,5 @@
 package com.example.chatsapp;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
