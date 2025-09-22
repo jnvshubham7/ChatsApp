@@ -2,9 +2,6 @@
 
 ChatsApp is a messaging Android application that allows users to connect, share stories, send photos, and engage in one-on-one chats. The app is currently available on the Mi App Store and has gained popularity with over 105+ users.
 
-<h2 align="center">
-  <a href="https://global.app.mi.com/details?lo=IN&la=en_US&id=com.example.chatsapp" style="display: inline-block;">Deploy Link - ChatsApp</a>
-</h2>
 
 ## Screenshots
 <p float="left">
